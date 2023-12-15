@@ -16,7 +16,6 @@ export const databaseProviders = [
         // synchronize: false, production
       });
       
-
       return dataSource.initialize();
     },
   },

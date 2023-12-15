@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MotoristaModule } from './motorista/motorista.module';
-import { motoristaProviders } from './motorista/entities/motorista.provider';
+import { DriverModule } from './driver/driver.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
-  imports: [MotoristaModule],
+  imports: [ DriverModule, AddressModule],
   controllers: [AppController],
-  providers: [...motoristaProviders,AppService],
-
+  providers: [AppService],
 })
+
 export class AppModule {}
