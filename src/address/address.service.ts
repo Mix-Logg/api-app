@@ -8,18 +8,18 @@ import { Address } from './entities/address.entity';
 export class AddressService {
   constructor(
     @Inject('ADDRESS_REPOSITORY') 
-    private driverRepository: Repository<Address>,
+    private addressRepository: Repository<Address>,
   ){}
   create(createAddressDto: CreateAddressDto) {
-    return this.driverRepository.save(createAddressDto);
+    return this.addressRepository.save(createAddressDto);
   }
 
   findAll() {
-    return this.driverRepository.find();
+    return this.addressRepository.find();
   }
 
   findOne(id: number) {
-    return this.driverRepository.findOne({where:{id}});
+    return this.addressRepository.findOne({where:{id}});
   }
 
   update(id: number, updateAddressDto: UpdateAddressDto) {

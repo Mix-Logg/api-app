@@ -8,7 +8,7 @@ export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
   @Post()
-  create(@Body() createDriverDto: CreateDriverDto) {
+  async create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
   }
 
