@@ -35,9 +35,6 @@ export class Address {
 
     // ######TIMESTAMP###### \\
 
-    @Column({ length: 1, default:'0' })
-    situacaoCadastral: string;
-
     @CreateDateColumn({type: "timestamp"})
     create_at: Date;
 

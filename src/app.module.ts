@@ -3,9 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DriverModule } from './driver/driver.module';
 import { AddressModule } from './address/address.module';
+import { UploadBucketModule } from './upload-bucket/upload-bucket.module';
+import { VehicleModule } from './vehicle/vehicle.module';
 
 @Module({
-  imports: [ DriverModule, AddressModule],
+  imports: [ DriverModule, AddressModule, UploadBucketModule, VehicleModule],
   controllers: [AppController],
   providers: [AppService],
 })
