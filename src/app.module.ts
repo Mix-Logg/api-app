@@ -5,9 +5,11 @@ import { DriverModule } from './driver/driver.module';
 import { AddressModule } from './address/address.module';
 import { UploadBucketModule } from './upload-bucket/upload-bucket.module';
 import { VehicleModule } from './vehicle/vehicle.module';
+import { AdminModule } from './admin/admin.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [ DriverModule, AddressModule, UploadBucketModule, VehicleModule],
+  imports: [ DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
