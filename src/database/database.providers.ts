@@ -12,7 +12,7 @@ export const databaseProviders = [
         password: 'AVNS_qetteE6jvV3iQswf6hQ',
         database: 'mix',
         entities: [__dirname + '/../**/*.entity{.ts,.js}',],
-        synchronize: true, 
+        synchronize: false, 
         // synchronize: false, production
       });
       
