@@ -10,7 +10,7 @@ export const databaseProviders = [
         port: 25060,
         username: 'doadmin',
         password: 'AVNS_qetteE6jvV3iQswf6hQ',
-        database: 'mix_teste',
+        database: 'mix',
         entities: [__dirname + '/../**/*.entity{.ts,.js}',],
         synchronize: true, 
         // synchronize: false, production
