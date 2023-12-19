@@ -14,10 +14,10 @@ export class Driver {
     @Column({ length: 1, default:'0' })
     cadastralStatus: string;
 
-    @Column({type: "timestamp", default:null})
+    @CreateDateColumn({type: "timestamp"})
     create_at: Date;
 
-    @Column({type: "timestamp", default:null, })
+    @UpdateDateColumn({type: "timestamp", default:null, })
     update_at: Date;
 
     @Column({ type: "timestamp", default:null, })
