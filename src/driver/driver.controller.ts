@@ -9,6 +9,7 @@ export class DriverController {
 
   @Post()
   async create(@Body() createDriverDto: CreateDriverDto) {
+    console.log(createDriverDto)
     return this.driverService.create(createDriverDto);
   }
 
