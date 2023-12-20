@@ -9,5 +9,6 @@ import { AddressModule } from 'src/address/address.module';
   imports:[DatabaseModule, AddressModule],
   controllers: [DriverController],
   providers: [...driverProviders,DriverService],
+  exports:[DriverService]
 })
 export class DriverModule {}

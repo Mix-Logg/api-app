@@ -1,12 +1,14 @@
 import { HttpCode, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from 'src/admin/admin.service';
+import { DriverService } from 'src/driver/driver.service';
 
 @Injectable()
 export class AuthService {
     constructor(
       private jwtService: JwtService,
-      private admService: AdminService
+      private admService: AdminService,
+      private driverService: DriverService
     ) {}
 
     @HttpCode(HttpStatus.OK)
@@ -28,7 +30,6 @@ export class AuthService {
     async verify(token){
       try{
         const tokenResult = await this.jwtService.verifyAsync(token);
-        console.log(tokenResult)
         if( tokenResult.status === 200 ){
           return tokenResult.status
         }
@@ -37,4 +38,22 @@ export class AuthService {
       }
     }
 
+    async verifyUser(am:string ,email:string ,phone:string){
+      if(am === 'driver'){
+        const driverEmail = await this.driverService.findDriverEmail(email)
+        const driverPhone = await this.driverService.findDriverPhone(phone)
+        if(driverPhone.phone === 'notExist' && driverEmail.email === 'notExist'){
+          return {"driver" : "notExist"}
+        }
+        else if(driverEmail.email === 'notExist'){
+          return {"driver" : "erroEmail"}
+        }
+        else if(driverPhone.phone === 'notExist'){
+          return {"driver" : "erroPhone"}
+        }
+        else{
+          return driverEmail
+        }
+      }
+    }
 }

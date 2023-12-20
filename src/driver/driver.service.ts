@@ -26,6 +26,30 @@ export class DriverService {
     return this.driverRepository.findOne({where:{id}});
   }
 
+  async findDriverEmail(email: string) {
+    const response = await this.driverRepository.findOne({where:{email}});
+      if(response === null)
+      {
+        return {
+          "email":"notExist"
+        }
+      }else{
+        return response
+      }
+  }
+
+  async findDriverPhone(phone: string) {
+    const response = await this.driverRepository.findOne({where:{phone}});
+      if(response === null)
+      {
+        return {
+          "phone":"notExist"
+        }
+      }else{
+        return response
+      }
+  }
+
   update(id: number, updateDriverDto: UpdateDriverDto) {
     return `This action updates a #${id} driver`;
   }
