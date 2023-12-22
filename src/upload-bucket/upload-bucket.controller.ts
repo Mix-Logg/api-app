@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { UploadBucketService } from './upload-bucket.service';
 import { CreatePhysicalDto } from './dto/create-physical.dto'
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -49,4 +49,71 @@ export class UploadBucketController {
       }
     }
   }
+
+  @Get(':id/:am/:file')
+  async getFile(
+      @Param('id') id: string,
+      @Param('am') am: string,
+      @Param('file') file: string
+    ){
+    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
+    const bucket = new AWS.S3({
+      endpoint: spacesEndpoint,
+      accessKeyId: 'DO0036EUWG2DKLNMYVT6',
+      secretAccessKey: 'TWXtI00AUnHVkgpZuYAjEYyKiWkv/mMH1KAvUIN5qeY'
+    });
+    const bucketName = 'miximg';
+    const paramsFile = {
+      Bucket: bucketName,
+      Key: am+'/'+id+'/'+file
+    };
+    const paramsPaste = {
+      Bucket: bucketName,
+      Prefix : am+'/'+id+'/',
+    };
+    const getPathImage = (): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        bucket.listObjectsV2(paramsPaste, (err, data) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            const objetos = data.Contents;
+            const arquivo = objetos.find(obj => obj.Key.includes(file));
+            if (arquivo) {
+              resolve(arquivo.Key);
+            } else {
+              resolve('false');
+            }
+          }
+        });
+      });
+    };
+    const getImage = (params): Promise<Object> => {
+      return new Promise(async (resolve, reject) => {
+        const dataImage = {
+          file:file,
+          type:'',
+          buffer:''
+        }
+        const data = await bucket.getObject(params).promise()
+        dataImage.type = data.ContentType
+        dataImage.buffer = data.Body.toString('base64')
+        resolve(dataImage)
+      })
+    }
+    
+    try {
+      const imageData = await getPathImage();
+      paramsFile.Key = imageData;
+      const dataImg = await getImage(paramsFile)
+      return dataImg
+    } catch (err) {
+      
+      console.error('Erro ao buscar imagem:', err);
+    }
+  }
+  
 }
+
+
