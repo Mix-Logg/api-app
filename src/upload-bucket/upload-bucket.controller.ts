@@ -71,7 +71,7 @@ export class UploadBucketController {
       Bucket: bucketName,
       Prefix : am+'/'+id+'/',
     };
-    const getPathImage = (): Promise<string> => {
+    const getPathFile = (): Promise<string> => {
       return new Promise((resolve, reject) => {
         bucket.listObjectsV2(paramsPaste, (err, data) => {
           if (err) {
@@ -89,24 +89,29 @@ export class UploadBucketController {
         });
       });
     };
-    const getImage = (params): Promise<Object> => {
+    const getFile = (params): Promise<Object> => {
       return new Promise(async (resolve, reject) => {
         const dataImage = {
           file:file,
           type:'',
-          buffer:''
+          buffer:null
         }
         const data = await bucket.getObject(params).promise()
         dataImage.type = data.ContentType
-        dataImage.buffer = data.Body.toString('base64')
+        if(dataImage.type.includes('pdf')){
+          dataImage.buffer = data.Body.toString('base64')
+        }else{
+          dataImage.buffer = data.Body.toString('base64')
+        }
         resolve(dataImage)
       })
     }
     
     try {
-      const imageData = await getPathImage();
+      const imageData = await getPathFile();
       paramsFile.Key = imageData;
-      const dataImg = await getImage(paramsFile)
+      const dataImg = await getFile(paramsFile)
+      // console.log(dataImg)
       return dataImg
     } catch (err) {
       

@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
+import { UpdateCnh } from './dto/update-cnh-driver.dto';
+import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 
 @Controller('driver')
@@ -10,6 +12,16 @@ export class DriverController {
   @Post()
   async create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
+  }
+
+  @Post('cnh')
+  updateCnh(@Body() updateCnh: UpdateCnh) {
+    return this.driverService.updateCnh(updateCnh);
+  }
+
+  @Post('cpf')
+  updateCpf(@Body() updateCpf: UpdateCpf) {
+    return this.driverService.updateCpf(updateCpf);
   }
 
   @Get()

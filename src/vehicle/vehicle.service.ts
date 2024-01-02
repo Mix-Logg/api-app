@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
+import { UpdateAntt } from './dto/update-antt-vehicle.dto';
+import { UpdateClv } from './dto/update-clv-vehicle.dto';
+import { UpdateOwner, UpdateCnpjOwner, UpdateLegalOwner  } from './dto/update-owner-vehicle.dto'
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { Vehicle } from './entities/vehicle.entity';
 import { Repository } from 'typeorm';
@@ -8,23 +11,96 @@ import { Repository } from 'typeorm';
 export class VehicleService {
   constructor(
     @Inject('VEHICLE_REPOSITORY') 
-    private driverRepository: Repository<Vehicle>,
+    private vehicleRepository: Repository<Vehicle>,
   ){}
   
   create(createVehicleDto: CreateVehicleDto) {
-    return this.driverRepository.save(createVehicleDto);
+    return this.vehicleRepository.save(createVehicleDto);
   }
 
   findAll() {
     return `This action returns all vehicle`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vehicle`;
+  async findOne (uuid: number, ) {
+    const response = await this.vehicleRepository.findOne({where:{uuid}});
+    return response
   }
 
-  update(id: number, updateVehicleDto: UpdateVehicleDto) {
-    return `This action updates a #${id} vehicle`;
+  async updateAntt(updateAntt: UpdateAntt) {
+    const uuid = updateAntt.uuid
+    // const res = await this.vehicleRepository.update(updateAntt.uuid, updateAntt);
+    const res = await this.vehicleRepository
+      .createQueryBuilder()
+      .update(Vehicle)
+      .set(updateAntt)
+      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+
+  async updateClv(updateClv: UpdateClv) {
+    const uuid = updateClv.uuid
+    const res = await this.vehicleRepository
+      .createQueryBuilder()
+      .update(Vehicle)
+      .set(updateClv)
+      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+
+  async updateOwner(updateOwner: UpdateOwner) {
+    const uuid = updateOwner.uuid
+    const res = await this.vehicleRepository
+      .createQueryBuilder()
+      .update(Vehicle)
+      .set(updateOwner)
+      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+
+  async updateLegal(updateOwner: UpdateLegalOwner) {
+    const uuid = updateOwner.uuid
+    const res = await this.vehicleRepository
+      .createQueryBuilder()
+      .update(Vehicle)
+      .set(updateOwner)
+      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+
+  async updateCnpj(updateOwner: UpdateCnpjOwner) {
+    const uuid = updateOwner.uuid
+    const res = await this.vehicleRepository
+      .createQueryBuilder()
+      .update(Vehicle)
+      .set(updateOwner)
+      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
   }
 
   remove(id: number) {

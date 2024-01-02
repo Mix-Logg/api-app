@@ -12,19 +12,23 @@ export class AddressController {
     return this.addressService.create(createAddressDto);
   }
 
+
   @Get()
   findAll() {
     return this.addressService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.addressService.findOne(+id);
+  @Get(':id/:am')
+  findOne(
+    @Param('id') id: number,
+    @Param('am') am: string
+    ) {
+    return this.addressService.findOne(+id,am);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return this.addressService.update(+id, updateAddressDto);
+  @Patch()
+  update(@Body() updateAddressDto: UpdateAddressDto) {
+    return this.addressService.update(updateAddressDto);
   }
 
   @Delete(':id')

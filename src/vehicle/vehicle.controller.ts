@@ -2,6 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import {  UpdateAntt } from './dto/update-antt-vehicle.dto';
+import { UpdateClv } from './dto/update-clv-vehicle.dto'
+import { UpdateOwner,UpdateCnpjOwner, UpdateLegalOwner } from './dto/update-owner-vehicle.dto'
 
 @Controller('vehicle')
 export class VehicleController {
@@ -22,10 +25,31 @@ export class VehicleController {
     return this.vehicleService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
-    return this.vehicleService.update(+id, updateVehicleDto);
+  @Patch('antt')
+  updateAntt(@Body() updateAntt: UpdateAntt) {
+    return this.vehicleService.updateAntt(updateAntt);
   }
+
+  @Patch('clv')
+  updateClv(@Body() updateClv: UpdateClv) {
+    return this.vehicleService.updateClv(updateClv);
+  }
+
+  @Patch('owner')
+  updateOwner(@Body() updateOwner: UpdateOwner) {
+    return this.vehicleService.updateOwner(updateOwner);
+  }
+
+  @Patch('legal')
+  updateOwnerLegal(@Body() updateLegalOwner: UpdateLegalOwner) {
+    return this.vehicleService.updateLegal(updateLegalOwner);
+  }
+
+  @Patch('cnpj')
+  updateOwnerCnpj(@Body() updateCnpjOwner: UpdateCnpjOwner) {
+    return this.vehicleService.updateCnpj(updateCnpjOwner);
+  }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
