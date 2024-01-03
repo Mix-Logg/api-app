@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateAvalidPhotoDto } from './create-avalid_photo.dto';
-
-export class UpdateAvalidPhotoDto extends PartialType(CreateAvalidPhotoDto) {}
+export class UpdateAvalidPhotoDto {
+    id: number
+    uuid: number
+    am:string
+    id_admin:number
+    photo:string
+    valid:string
+}

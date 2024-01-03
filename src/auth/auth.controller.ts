@@ -18,10 +18,10 @@ export class AuthController {
     return this.authService.verify(verifyAuthDto.token);
   }
 
-  // @Get(':email')
-  // async verifyUser(@Param('email') verifyUserAuthDto : VerifyUserAuthDto){
-  //   return this.authService.verifyUser(verifyUserAuthDto.am ,verifyUserAuthDto.email , verifyUserAuthDto.phone);
-  // }
+  @Get(':token')
+  async getDataAdmin(@Param('token') token: string,){
+    return this.authService.getDataAdmin(token);
+  }
 
   @Get(':phone/:email/:am')
   async verifyUser(  

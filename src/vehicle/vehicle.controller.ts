@@ -3,6 +3,7 @@ import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import {  UpdateAntt } from './dto/update-antt-vehicle.dto';
+import { UpdateAddressDto } from './dto/update-address-dto'
 import { UpdateClv } from './dto/update-clv-vehicle.dto'
 import { UpdateOwner,UpdateCnpjOwner, UpdateLegalOwner } from './dto/update-owner-vehicle.dto'
 
@@ -50,6 +51,10 @@ export class VehicleController {
     return this.vehicleService.updateCnpj(updateCnpjOwner);
   }
 
+  @Patch('addressOwner')
+  updateOwnerAddress(@Body() updateAddressDto: UpdateAddressDto) {
+    return this.vehicleService.updateAddress(updateAddressDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

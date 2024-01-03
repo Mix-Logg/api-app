@@ -19,15 +19,25 @@ export class AuthService {
       }
       const payload = {
         'status': 200,
-        'id':'user.id',
-        'user':'username',
+        'id':user.id,
+        'user':username,
       }
       const  token =  await this.jwtService.signAsync(payload);
       return token
     }
 
     @HttpCode(HttpStatus.OK)
-    async verify(token){
+    async getDataAdmin(token:string){
+      try{
+        const tokenResult = await this.jwtService.verifyAsync(token);
+        return tokenResult
+      }catch(err){
+        throw new HttpException('Token inválido', HttpStatus.BAD_REQUEST); 
+      }
+    }
+
+    @HttpCode(HttpStatus.OK)
+    async verify(token:string){
       try{
         const tokenResult = await this.jwtService.verifyAsync(token);
         if( tokenResult.status === 200 ){
@@ -57,3 +67,8 @@ export class AuthService {
       }
     }
 }
+
+
+
+
+

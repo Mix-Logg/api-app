@@ -8,8 +8,8 @@ export class AvalidPhoto {
     @Column()
     uuid: number;
 
-    @Column({ type:'date' })
-    id_admin: Date;
+    @Column()
+    id_admin: number;
 
     @Column({ length: 20 })
     am: string;

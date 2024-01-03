@@ -6,6 +6,7 @@ import { UpdateOwner, UpdateCnpjOwner, UpdateLegalOwner  } from './dto/update-ow
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { Vehicle } from './entities/vehicle.entity';
 import { Repository } from 'typeorm';
+import { UpdateAddressDto } from './dto/update-address-dto';
 
 @Injectable()
 export class VehicleService {
@@ -94,6 +95,21 @@ export class VehicleService {
       .createQueryBuilder()
       .update(Vehicle)
       .set(updateOwner)
+      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+
+  async updateAddress(updateAddressDto: UpdateAddressDto) {
+    const uuid = updateAddressDto.uuid
+    const res = await this.vehicleRepository
+      .createQueryBuilder()
+      .update(Vehicle)
+      .set(updateAddressDto)
       .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
       .execute();
     if(res.affected){

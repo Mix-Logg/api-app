@@ -83,4 +83,25 @@ export class Vehicle {
 
     @Column({ length: 50 })
     companynameOwner: string;
+
+    @Column({ length: 8 })
+    zipCode: string;
+
+    @Column({ length: 150 })
+    street: string;
+
+    @Column()
+    number: number;
+
+    @Column({ length: 80, default:null })
+    complement: string;
+
+    @Column({ length: 60 })
+    district: string;
+
+    @Column({ length: 40, default: null })
+    cityOwner: string;
+
+    @Column({ length: 2 })
+    ufOwner: string;
 }

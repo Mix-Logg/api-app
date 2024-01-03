@@ -14,7 +14,7 @@ export class AvalidPhotoService {
 
   async create(createAvalidPhotoDto: CreateAvalidPhotoDto) {
      const res = await this.avalidPhotoRepository.save(createAvalidPhotoDto);
-     console.log(res)
+     return res
   }
 
   findAll() {
@@ -25,15 +25,13 @@ export class AvalidPhotoService {
     return this.avalidPhotoRepository.find({ where: { uuid, am } }); 
   }
 
-  async update( updateAvalidPhotoDto: CreateAvalidPhotoDto) {
-    const uuid = updateAvalidPhotoDto.uuid
-    const am = updateAvalidPhotoDto.am
+  async update( updateAvalidPhotoDto: UpdateAvalidPhotoDto) {
+    const id = updateAvalidPhotoDto.id
     const res = await this.avalidPhotoRepository
       .createQueryBuilder()
       .update(AvalidPhoto)
       .set(updateAvalidPhotoDto)
-      .where('uuid = :uuid', { uuid }) // Critério de busca usando 'uuid'
-      .andWhere('am = :am', { am })
+      .where('id = :id', { id }) // Critério de busca usando 'uuid'
       .execute();
     if(res.affected){
       return 200

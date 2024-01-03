@@ -19,14 +19,14 @@ export class AvalidPhotoController {
 
   @Get(':id/:am')
   findOne(
-    @Param('uuid') uuid: number,
+    @Param('id') id: number,
     @Param('am') am: string,
     ) {
-    return this.avalidPhotoService.findOne(uuid,am);
+    return this.avalidPhotoService.findOne(id, am);
   }
 
   @Patch()
-  update(@Body() updateAvalidPhotoDto: CreateAvalidPhotoDto) {
+  update(@Body() updateAvalidPhotoDto: UpdateAvalidPhotoDto) {
     return this.avalidPhotoService.update(updateAvalidPhotoDto);
   }
 
