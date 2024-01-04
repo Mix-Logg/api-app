@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateDriverDto } from './dto/create-driver.dto';
-import { UpdateDriverDto } from './dto/update-driver.dto';
+import { UpdateStatus } from './dto/update-status-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-driver.dto';
 import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { Driver } from './entities/driver.entity'
@@ -52,8 +52,12 @@ export class DriverService {
       }
   }
 
-  update(id: number, updateDriverDto: UpdateDriverDto) {
-    return `This action updates a #${id} driver`;
+  async update(id: number, updateStatus: UpdateStatus) {
+    const res = await this.driverRepository.save({
+      id: id,
+      cadastralStatus: updateStatus.cadastralStatus,
+    });
+    return 200
   }
 
   async updateCnh(updateCnh: UpdateCnh) {

@@ -3,7 +3,7 @@ import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-driver.dto';
 import { UpdateCpf } from './dto/update-cpf-driver.dto';
-import { UpdateDriverDto } from './dto/update-driver.dto';
+import { UpdateStatus } from './dto/update-status-driver.dto';
 
 @Controller('driver')
 export class DriverController {
@@ -35,7 +35,7 @@ export class DriverController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDriverDto: UpdateDriverDto) {
+  update(@Param('id') id: string, @Body() updateDriverDto: UpdateStatus) {
     return this.driverService.update(+id, updateDriverDto);
   }
 
