@@ -5,6 +5,8 @@ export class UpdateClv {
     yearManufacture:string
     brand:string
     model:string
+    typeFull:string
+    profile:string
     color:string
     renavam:string
     uf:string

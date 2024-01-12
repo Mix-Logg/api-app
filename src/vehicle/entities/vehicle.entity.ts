@@ -18,11 +18,20 @@ export class Vehicle {
     @Column({ length: 25 })
     type: string;
 
+    @Column({ length: 20 })
+    typeFull: string;
+
+    @Column({ length: 20 })
+    profile: string;
+
     @Column({ length: 25 })
     weight: string;
 
     @Column({ length: 50 })
     antt: string;
+
+    @Column({ length: 50 })
+    nameAntt: string;
 
     @Column({ length: 7 })
     plate: string;

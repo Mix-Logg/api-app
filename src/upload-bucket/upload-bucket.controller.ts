@@ -13,13 +13,13 @@ export class UploadBucketController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() CreatePhysicalDto : CreatePhysicalDto) {
-    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
+    const spacesEndpoint = new AWS.Endpoint('mix-files.nyc3.digitaloceanspaces.com');
     const bucket = new AWS.S3({
       endpoint: spacesEndpoint,
-      accessKeyId: 'DO0036EUWG2DKLNMYVT6',
-      secretAccessKey: 'TWXtI00AUnHVkgpZuYAjEYyKiWkv/mMH1KAvUIN5qeY'
+      accessKeyId: process.env.BUCKET_ACCESS_KEY,
+      secretAccessKey: process.env.BUCKET_SECRET_KEY
     });
-    const bucketName = 'miximg';
+    const bucketName = process.env.BUCKET_NAME;
     if(CreatePhysicalDto.function === 'physical' && CreatePhysicalDto.am === 'driver' ){
       const driverPhysical = {
         Bucket: bucketName,
@@ -56,13 +56,14 @@ export class UploadBucketController {
       @Param('am') am: string,
       @Param('file') file: string
     ){
-    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
+    const spacesEndpoint = new AWS.Endpoint('mix-files.nyc3.digitaloceanspaces.com');
     const bucket = new AWS.S3({
       endpoint: spacesEndpoint,
-      accessKeyId: 'DO0036EUWG2DKLNMYVT6',
-      secretAccessKey: 'TWXtI00AUnHVkgpZuYAjEYyKiWkv/mMH1KAvUIN5qeY'
+      accessKeyId: process.env.BUCKET_ACCESS_KEY,
+      secretAccessKey: process.env.BUCKET_SECRET_KEY
     });
-    const bucketName = 'miximg';
+    const bucketName = process.env.BUCKET_NAME;
+    
     const paramsFile = {
       Bucket: bucketName,
       Key: am+'/'+id+'/'+file

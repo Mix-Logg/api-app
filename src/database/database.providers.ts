@@ -4,19 +4,20 @@ export const databaseProviders = [
   {
     provide: 'DATA_SOURCE',
     useFactory: async () => {
+      
       const dataSource = new DataSource({
         type: 'mysql',
-        host: 'db-test-do-user-15124696-0.c.db.ondigitalocean.com',
-        port: 25060,
-        username: 'doadmin',
-        password: 'AVNS_qetteE6jvV3iQswf6hQ',
-        database: 'mix',
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DBNAME,
         entities: [__dirname + '/../**/*.entity{.ts,.js}',],
         synchronize: false, 
-        // synchronize: false, production
       });
       
       return dataSource.initialize();
     },
+
   },
 ];

@@ -12,7 +12,6 @@ export class AddressController {
     return this.addressService.create(createAddressDto);
   }
 
-
   @Get()
   findAll() {
     return this.addressService.findAll();

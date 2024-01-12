@@ -1,3 +1,4 @@
+import {ConfigModule} from "@nestjs/config";
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,8 +10,10 @@ import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { AvalidPhotoModule } from './avalid_photo/avalid_photo.module';
 
+
+
 @Module({
-  imports: [ DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule],
   controllers: [AppController],
   providers: [AppService],
 })
