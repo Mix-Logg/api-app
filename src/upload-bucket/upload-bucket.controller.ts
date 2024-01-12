@@ -13,7 +13,7 @@ export class UploadBucketController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() CreatePhysicalDto : CreatePhysicalDto) {
-    const spacesEndpoint = new AWS.Endpoint('mix-files.nyc3.digitaloceanspaces.com');
+    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
     const bucket = new AWS.S3({
       endpoint: spacesEndpoint,
       accessKeyId: process.env.BUCKET_ACCESS_KEY,
@@ -56,7 +56,7 @@ export class UploadBucketController {
       @Param('am') am: string,
       @Param('file') file: string
     ){
-    const spacesEndpoint = new AWS.Endpoint('mix-files.nyc3.digitaloceanspaces.com');
+    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
     const bucket = new AWS.S3({
       endpoint: spacesEndpoint,
       accessKeyId: process.env.BUCKET_ACCESS_KEY,
