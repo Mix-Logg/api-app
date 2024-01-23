@@ -5,4 +5,9 @@ export class CreateVehicleDto {
     owner : string
     type : string
     weight :  string
+    plate : string
+    phoneOwner: string
+    trackerStatus: boolean
+    trackerBrand : string
+    trackerNumber : string
 }
