@@ -20,6 +20,9 @@ export class Driver {
     @Column({ length: 200 })
     email: string;
 
+    @Column({ length: 50, default:null })
+    pix: string;
+
     @Column({ length: 11 })
     phone: string;
 
@@ -49,7 +52,6 @@ export class Driver {
 
     @Column({ length: 2, default:null })
     ufCnh: string;
-
 
     @Column({ length: 1, default:'0' })
     cadastralStatus: string;

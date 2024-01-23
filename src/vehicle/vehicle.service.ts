@@ -20,7 +20,7 @@ export class VehicleService {
   }
 
   findAll() {
-    return `This action returns all vehicle`;
+    return this.vehicleRepository.find();
   }
 
   async findOne (uuid: number, ) {
