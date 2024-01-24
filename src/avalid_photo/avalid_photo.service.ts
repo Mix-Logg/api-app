@@ -18,7 +18,7 @@ export class AvalidPhotoService {
   }
 
   findAll() {
-    return `This action returns all avalidPhoto`;
+    return this.avalidPhotoRepository.find();
   }
 
   async findOne(uuid: number, am:string) {

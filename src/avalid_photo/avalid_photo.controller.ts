@@ -14,6 +14,7 @@ export class AvalidPhotoController {
 
   @Get()
   findAll() {
+    // 
     return this.avalidPhotoService.findAll();
   }
 
