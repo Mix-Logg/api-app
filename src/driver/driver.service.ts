@@ -12,7 +12,6 @@ export class DriverService {
   constructor(
     @Inject('DRIVER_REPOSITORY') 
     private driverRepository: Repository<Driver>,
-    // private addressService: AddressService
   ){}
  
   async create(createDriverDto: CreateDriverDto) {

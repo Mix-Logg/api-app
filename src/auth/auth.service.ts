@@ -1,6 +1,7 @@
 import { HttpCode, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from 'src/admin/admin.service';
+import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 import { DriverService } from 'src/driver/driver.service';
 
 @Injectable()
@@ -8,7 +9,8 @@ export class AuthService {
     constructor(
       private jwtService: JwtService,
       private admService: AdminService,
-      private driverService: DriverService
+      private driverService: DriverService,
+      private auxiliaryService: AuxiliaryService
     ) {}
 
     @HttpCode(HttpStatus.OK)
@@ -63,6 +65,22 @@ export class AuthService {
         }
         else{
           return driverEmail
+        }
+      }
+      if(am === 'auxiliary'){
+        const auxiliaryEmail = await this.auxiliaryService.findEmail(email)
+        const auxiliaryPhone = await this.auxiliaryService.findPhone(phone)
+        if(auxiliaryPhone.phone === 'notExist' && auxiliaryEmail.email === 'notExist'){
+          return {"auxiliary" : "notExist"}
+        }
+        else if(auxiliaryEmail.email === 'notExist'){
+          return {"auxiliary" : "erroEmail"}
+        }
+        else if(auxiliaryPhone.phone === 'notExist'){
+          return {"auxiliary" : "erroPhone"}
+        }
+        else{
+          return auxiliaryEmail
         }
       }
     }

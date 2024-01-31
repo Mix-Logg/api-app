@@ -9,11 +9,12 @@ import { VehicleModule } from './vehicle/vehicle.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { AvalidPhotoModule } from './avalid_photo/avalid_photo.module';
+import { AuxiliaryModule } from './auxiliary/auxiliary.module';
 
 
 
 @Module({
-  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule],
   controllers: [AppController],
   providers: [AppService],
 })

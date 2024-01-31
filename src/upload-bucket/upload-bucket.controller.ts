@@ -48,6 +48,20 @@ export class UploadBucketController {
         console.error('Erro ao enviar arquivo para o Ocean:', error);
       }
     }
+    if(CreatePhysicalDto.function === 'physical' && CreatePhysicalDto.am === 'auxiliary' ){
+      const auxiliaryPhysical = {
+        Bucket: bucketName,
+        Key: `auxiliary/${CreatePhysicalDto.id}/${file.originalname}`,
+        Body: file.buffer, 
+        ContentType: file.mimetype,
+      };
+      try {
+        await bucket.upload(auxiliaryPhysical).promise();
+        return {'msg':'success'}
+      } catch (error) {
+        console.error('Erro ao enviar arquivo para o Ocean:', error);
+      }
+    }
   }
 
   @Get(':id/:am/:file')
