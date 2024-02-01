@@ -88,6 +88,9 @@ export class Vehicle {
     cnpjOwner: string;
 
     @Column({ length: 50 })
+    noStop: string;
+ 
+    @Column({ length: 50 })
     stateRegistrationOwner: string;
 
     @Column({ length: 50 })
