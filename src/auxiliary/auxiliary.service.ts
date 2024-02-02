@@ -19,6 +19,7 @@ export class AuxiliaryService {
 
   findAll() {
     return this.auxiliaryRepository.find();
+    
   }
 
   async findOne(id: number) {
