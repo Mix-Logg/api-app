@@ -18,11 +18,13 @@ export class AuxiliaryService {
   }
 
   findAll() {
-    return `This action returns all auxiliary`;
+    return this.auxiliaryRepository.find();
+    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auxiliary`;
+  async findOne(id: number) {
+    const response = await this.auxiliaryRepository.findOne({where:{id}});
+    return response
   }
 
   async findEmail(email: string) {
