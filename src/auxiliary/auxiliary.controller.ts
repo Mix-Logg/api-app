@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuxiliaryService } from './auxiliary.service';
 import { CreateAuxiliaryDto } from './dto/create-auxiliary.dto';
-import { UpdateAuxiliaryDto } from './dto/update-auxiliary.dto';
+import { UpdateStatus } from './dto/update-status-driver.dto';
 
 @Controller('auxiliary')
 export class AuxiliaryController {
@@ -23,8 +23,8 @@ export class AuxiliaryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuxiliaryDto: UpdateAuxiliaryDto) {
-    return this.auxiliaryService.update(+id, updateAuxiliaryDto);
+  update(@Param('id') id: string, @Body() UpdateStatus: UpdateStatus) {
+    return this.auxiliaryService.update(+id, UpdateStatus);
   }
 
   @Delete(':id')

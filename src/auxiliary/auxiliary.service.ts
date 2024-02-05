@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateAuxiliaryDto } from './dto/create-auxiliary.dto';
-import { UpdateAuxiliaryDto } from './dto/update-auxiliary.dto';
 import { Repository } from 'typeorm';
+import { UpdateStatus } from './dto/update-status-driver.dto';
 import { Auxiliary } from './entities/auxiliary.entity';
 
 
@@ -50,8 +50,12 @@ export class AuxiliaryService {
       }
   }
 
-  update(id: number, updateAuxiliaryDto: UpdateAuxiliaryDto) {
-    return `This action updates a #${id} auxiliary`;
+  async update(id: number, UpdateStatus: UpdateStatus) {
+    const res = await this.auxiliaryRepository.save({
+      id: id,
+      cadastralStatus: UpdateStatus.cadastralStatus,
+    });
+    return 200
   }
 
   remove(id: number) {
