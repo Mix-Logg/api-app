@@ -16,7 +16,7 @@ export class AuthService {
     @HttpCode(HttpStatus.OK)
     async login(username:string, password:string){
       const user = await this.admService.findUser(username)
-      if (user.password !== password || user === null) {
+      if (user === null || user.password !== password ) {
         throw new UnauthorizedException();
       }
       const payload = {
