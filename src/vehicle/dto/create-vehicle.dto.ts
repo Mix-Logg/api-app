@@ -10,6 +10,6 @@ export class CreateVehicleDto {
     trackerStatus: boolean
     trackerBrand : string
     trackerNumber : string
-    relationOwner : string
-    noStop : string
+    // relationOwner : null
+    // noStop : null
 }
