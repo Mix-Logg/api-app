@@ -10,11 +10,12 @@ import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { AvalidPhotoModule } from './avalid_photo/avalid_photo.module';
 import { AuxiliaryModule } from './auxiliary/auxiliary.module';
+import { UserModule } from './user/user.module';
 
 
 
 @Module({
-  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
