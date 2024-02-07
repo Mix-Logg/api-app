@@ -11,11 +11,12 @@ import { AuthModule } from './auth/auth.module';
 import { AvalidPhotoModule } from './avalid_photo/avalid_photo.module';
 import { AuxiliaryModule } from './auxiliary/auxiliary.module';
 import { UserModule } from './user/user.module';
+import { RecordPlugModule } from './record_plug/record_plug.module';
 
 
 
 @Module({
-  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule],
   controllers: [AppController],
   providers: [AppService],
 })
