@@ -3,6 +3,8 @@ import { CreateAuxiliaryDto } from './dto/create-auxiliary.dto';
 import { Repository } from 'typeorm';
 import { UpdateStatus } from './dto/update-status-driver.dto';
 import { Auxiliary } from './entities/auxiliary.entity';
+import { UpdateCpf } from './dto/update-cpf-auxiliary.dto';
+import { UpdateCnh } from './dto/update-cnh-auxiliary.dto';
 
 
 @Injectable()
@@ -57,6 +59,27 @@ export class AuxiliaryService {
       cadastralStatus: UpdateStatus.cadastralStatus,
     });
     return 200
+  }
+
+  async updateCnh(updateCnh: UpdateCnh) {
+    const uuid = updateCnh.id
+    const { id, ...updatedData } = updateCnh;
+    const res = await this.auxiliaryRepository.update(uuid, updatedData);
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+
+  async updateCpf(updateCpf: UpdateCpf) {
+    const uuid = updateCpf.id
+    const res = await this.auxiliaryRepository.update(uuid, updateCpf);
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
   }
 
   remove(id: number) {

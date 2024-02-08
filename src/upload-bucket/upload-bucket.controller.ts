@@ -129,7 +129,6 @@ export class UploadBucketController {
       // console.log(dataImg)
       return dataImg
     } catch (err) {
-      
       console.error('Erro ao buscar imagem:', err);
     }
   }
@@ -139,19 +138,53 @@ export class UploadBucketController {
       @Param('id') id: string,
       @Param('am') am: string,
     ){
-
     const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
     const bucket = new AWS.S3({
       endpoint: spacesEndpoint,
       accessKeyId: process.env.BUCKET_ACCESS_KEY,
       secretAccessKey: process.env.BUCKET_SECRET_KEY
     });
-
     const bucketName = process.env.BUCKET_NAME;
-    
     const paramsPaste = {
       Bucket: bucketName,
       Prefix : `${am}/${id}/`
+    };
+    const getPathFile = (): Promise<any[]> => {
+      return new Promise((resolve, reject) => {
+        bucket.listObjectsV2(paramsPaste, (err, data) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(data.Contents); // Resolvendo a Promise com os dados obtidos
+          }
+        });
+      });
+    };
+    try {
+      let res = await getPathFile();
+      return res;
+    } catch (error) {
+      console.error('Erro ao obter dados:', error);
+      throw error;
+    }
+  }
+
+  @Get(':am')
+  async verifyAllPaste(
+    @Param('am') am: string,
+  ){
+    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
+    const bucket = new AWS.S3({
+      endpoint: spacesEndpoint,
+      accessKeyId: process.env.BUCKET_ACCESS_KEY,
+      secretAccessKey: process.env.BUCKET_SECRET_KEY
+    });
+    const bucketName = process.env.BUCKET_NAME;
+
+    const paramsPaste = {
+      Bucket: bucketName,
+      Prefix : `${am}/`
     };
 
     const getPathFile = (): Promise<any[]> => {
@@ -166,7 +199,6 @@ export class UploadBucketController {
         });
       });
     };
-    
     try {
       let res = await getPathFile();
       return res;
@@ -174,8 +206,8 @@ export class UploadBucketController {
       console.error('Erro ao obter dados:', error);
       throw error;
     }
+    
   }
-  
 }
 
 
