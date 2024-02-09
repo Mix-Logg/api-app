@@ -34,6 +34,11 @@ export class AuxiliaryController {
     return this.auxiliaryService.updateCpf(updateCpf);
   }
 
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateDriverDto: UpdateStatus) {
+    return this.auxiliaryService.update(+id, updateDriverDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.auxiliaryService.remove(+id);

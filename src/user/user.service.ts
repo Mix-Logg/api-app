@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity'
 import { FindUser } from './dto/find-user.dto';
+import { AuthUserApp } from './dto/auth-user.dto';
 
 @Injectable()
 export class UserService {
@@ -42,7 +43,6 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    console.log(id)
     console.log(updateUserDto)
     const res = await this.userRepository.update(id, updateUserDto);
     if(res.affected){
@@ -50,6 +50,15 @@ export class UserService {
     }else{
       return 500
     }
+  }
+
+  async auth(authUserApp: AuthUserApp){
+    const user = await this.userRepository.findOne({
+      where: {
+        cpf: authUserApp.cpf
+      }
+    });
+    console.log(user)
   }
 
   remove(id: number) {

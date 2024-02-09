@@ -82,6 +82,8 @@ export class AuxiliaryService {
     }
   }
 
+  
+
   remove(id: number) {
     return `This action removes a #${id} auxiliary`;
   }

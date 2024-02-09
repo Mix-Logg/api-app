@@ -3,17 +3,26 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Admin } from './entities/admin.entity'
 import { Repository } from 'typeorm';
+import { EmailService } from 'src/email/email.service';
+import { SendEmail } from './dto/sendEmail-admin.dto';
+
 
 @Injectable()
 export class AdminService {
   constructor(
     @Inject('ADMIN_REPOSITORY') 
     private adminRepository: Repository<Admin>,
+    private readonly emailService: EmailService
     // private addressService: AddressService
   ){}
 
   create(createAdminDto: CreateAdminDto) {
     return 'This action adds a new admin';
+  }
+
+  async sendEmail(sendEmailDTO: SendEmail){
+    // let res = await this.emailService.sendEmail(sendEmailDTO.to,sendEmailDTO.subject,sendEmailDTO.text)
+    // return res
   }
 
   findAll() {

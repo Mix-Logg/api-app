@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { SendEmail } from './dto/sendEmail-admin.dto';
 
 @Controller('admin')
 export class AdminController {
@@ -12,6 +13,11 @@ export class AdminController {
   @Post()
   create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
+  }
+
+  @Post('sendEmail')
+  send(@Body() sendEmail:SendEmail){
+    return this.adminService.sendEmail(sendEmail);
   }
 
   @Get()
