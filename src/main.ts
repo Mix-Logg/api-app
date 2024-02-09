@@ -1,12 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-
+import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule,{
     cors: true,
   });
+  app.use(express.json({ limit: '500mb' }));
+  app.use(express.urlencoded({ limit: '500mb', extended: true }));
   const config = new DocumentBuilder()
     .setTitle('mix-api')
     .setDescription('default mix-api')

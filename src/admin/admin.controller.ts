@@ -17,6 +17,7 @@ export class AdminController {
 
   @Post('sendEmail')
   send(@Body() sendEmail:SendEmail){
+    console.log(sendEmail)
     return this.adminService.sendEmail(sendEmail);
   }
 

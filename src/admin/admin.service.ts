@@ -21,8 +21,8 @@ export class AdminService {
   }
 
   async sendEmail(sendEmailDTO: SendEmail){
-    // let res = await this.emailService.sendEmail(sendEmailDTO.to,sendEmailDTO.subject,sendEmailDTO.text)
-    // return res
+    let res = await this.emailService.sendEmail(sendEmailDTO.to,sendEmailDTO.subject,sendEmailDTO.text, sendEmailDTO.oneFile, sendEmailDTO?.content ,sendEmailDTO?.contentBlob)
+    return res
   }
 
   findAll() {
