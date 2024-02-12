@@ -41,6 +41,7 @@ export class EmailService {
         attachments
       };
       try {
+        console.log('Enviado 1x')
         const info = await this.transporter.sendMail(mailOptions);
         return 200
       } catch (error) {

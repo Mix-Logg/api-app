@@ -29,11 +29,6 @@ export class AdminController {
     }
   
 
-  // @Post('sendEmail')
-  // send(@Body() sendEmail:SendEmail){
-  //   return this.adminService.sendEmail(sendEmail);
-  // }
-
   @Get()
   findAll() {
     return this.adminService.findAll();
