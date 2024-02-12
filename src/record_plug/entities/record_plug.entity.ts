@@ -17,19 +17,17 @@ export class RecordPlug {
   @Column()
   uuid: number;
 
-
   @Column({ length: 20 })
   am: string;
 
-  @Column({ default: null })
-  timeline_fastshop: number;
+  @Column()
+  timeline: number;
 
+  @Column({ length: 50})
+  operation: string;
 
-  // @Column({ length: 1, default: null })
-  // approved: string;
-
-  @CreateDateColumn({ type: 'timestamp', default: null })
-  lastGenerator: Date;
+  @Column({ length: 150 })
+  email: string;
 
   @CreateDateColumn({ type: 'timestamp'})
   create_at: Date;
