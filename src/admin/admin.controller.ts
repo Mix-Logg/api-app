@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { SendEmail } from './dto/sendEmail-admin.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('admin')
 export class AdminController {
@@ -15,10 +16,23 @@ export class AdminController {
     return this.adminService.create(createAdminDto);
   }
 
-  @Post('sendEmail')
-  send(@Body() sendEmail:SendEmail){
-    return this.adminService.sendEmail(sendEmail);
-  }
+
+
+    @Post('sendEmail')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
+      const sendEmailDTO = {
+        body: body.additionalData,
+        file: file
+      };
+      return this.adminService.sendEmail(sendEmailDTO);
+    }
+  
+
+  // @Post('sendEmail')
+  // send(@Body() sendEmail:SendEmail){
+  //   return this.adminService.sendEmail(sendEmail);
+  // }
 
   @Get()
   findAll() {

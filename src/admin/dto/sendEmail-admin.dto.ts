@@ -1,5 +1,4 @@
 export class SendEmail {
-    to: string
-    subject: string 
-    text: string
+    body: object;
+    file: Express.Multer.File;
 }

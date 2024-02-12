@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { SendEmail } from 'src/admin/dto/sendEmail-admin.dto'; 
+import * as fs from 'fs';
 
 @Injectable()
 export class EmailService {
@@ -14,23 +16,36 @@ export class EmailService {
           },
         });
     }
-
-    async sendEmail(to: string, subject: string, text: string, fileBlob:Blob, fileName:string) {
-        const mailOptions = {
-          to: to,
-          subject: subject,
-          text: text,
-          filename: fileName,
-          content: fileBlob
-        };
-        
-        try {
-          const info = await this.transporter.sendMail(mailOptions);
-          console.log('E-mail enviado:', info.response);
-        } catch (error) {
-          console.error('Erro ao enviar e-mail:', error);
-          throw error;
-        }
+    async sendEmail(sendEmailDTO) {
+      const fileDates = JSON.parse(sendEmailDTO.body);
+      let attachments;
+      if(fileDates.oneFile){
+          attachments = [
+            {
+                filename: `${fileDates.filename}.pdf`,
+                content: sendEmailDTO.file.buffer,
+              }
+          ];
+      }else{
+        attachments = [
+            {
+              filename: `${fileDates.filename}.zip`,
+              content: sendEmailDTO.file.buffer,
+            }
+        ];
+      }
+      const mailOptions = {
+        to: fileDates.to,
+        subject: fileDates.subject,
+        text: fileDates.text,
+        attachments
+      };
+      try {
+        const info = await this.transporter.sendMail(mailOptions);
+        return 200
+      } catch (error) {
+        return 500
+      }
     }
 }
 
