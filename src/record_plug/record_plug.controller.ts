@@ -33,14 +33,9 @@ export class RecordPlugController {
   @Patch(':id')
   update(
     @Param('id') id: number,
-
     @Body() updateRecordPlugDto: UpdateRecordPlugDto,
   ) {
-    return this.recordPlugService.update(
-      +id,
-
-      updateRecordPlugDto,
-    );
+    return this.recordPlugService.update(+id,updateRecordPlugDto,);
   }
 
   @Delete(':id')

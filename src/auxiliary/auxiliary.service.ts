@@ -29,6 +29,19 @@ export class AuxiliaryService {
     return response
   }
 
+  async findOneAuxiliary(cpf:string ,rg:string){
+    const res = await this.auxiliaryRepository
+      .createQueryBuilder("auxiliary")
+      .where('cpf = :cpf',  { cpf} ) 
+      .andWhere('rg = :rg', { rg } ) 
+      .getOne();
+    if(res != null){
+      return res
+    }else{
+      return 500
+    }
+  }
+
   async findEmail(email: string) {
     const response = await this.auxiliaryRepository.findOne({where:{email}});
       if(response === null)

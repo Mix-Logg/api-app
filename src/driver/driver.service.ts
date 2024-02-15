@@ -80,6 +80,18 @@ export class DriverService {
     }
   }
 
+  async findOneDriver(cpf:string ,rg:string){
+    const res = await this.driverRepository
+      .createQueryBuilder("driver")
+      .where('cpf = :cpf',  { cpf} ) 
+      .andWhere('rg = :rg', { rg } ) 
+      .getOne();
+    if(res != null){
+      return res
+    }else{
+      return 500
+    }
+  }
 
   remove(id: number) {
     return `This action removes a #${id} driver`;

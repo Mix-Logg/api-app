@@ -16,8 +16,6 @@ export class AdminController {
     return this.adminService.create(createAdminDto);
   }
 
-
-
     @Post('sendEmail')
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body: any) {

@@ -22,7 +22,12 @@ export class RecordPlugService {
   }
 
   async findOne(uuid: number, am: string) {
-    return this.recordPlugRepository.findOne({ where: { uuid, am } });
+    const res = await this.recordPlugRepository.findOne({ where: { uuid, am } });
+    if(res != null){
+      return res
+    }else{
+      return 500
+    }
   }
 
   async update(
@@ -30,6 +35,11 @@ export class RecordPlugService {
     updateRecordPlugDto: UpdateRecordPlugDto,
   ) {
     const res = await this.recordPlugRepository.update(id, updateRecordPlugDto);
+    if(res.affected === 1){
+      return 200
+    }else{
+      return 500
+    }
   }
 
   remove(id: number) {

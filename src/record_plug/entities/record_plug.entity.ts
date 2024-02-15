@@ -26,6 +26,12 @@ export class RecordPlug {
   @Column({ length: 50})
   operation: string;
 
+  @Column({ length: 1, default: null})
+  aproved: string;
+
+  @Column({ length: 50, default: null})
+  motion: string;
+
   @Column({ length: 150 })
   email: string;
 

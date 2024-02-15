@@ -19,6 +19,14 @@ export class AuxiliaryController {
     return this.auxiliaryService.findAll();
   }
 
+  @Get(':cpf/:rg')
+  findOneAuxiliary(
+    @Param('cpf') cpf: string,
+    @Param('rg')  rg: string,
+    ){
+    return this.auxiliaryService.findOneAuxiliary(cpf,rg);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.auxiliaryService.findOne(+id);

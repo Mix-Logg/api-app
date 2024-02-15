@@ -34,6 +34,14 @@ export class DriverController {
     return this.driverService.findOne(+id);
   }
 
+  @Get(':cpf/:rg')
+  findOneDriver(
+    @Param('cpf') cpf: string,
+    @Param('rg')  rg: string,
+    ){
+    return this.driverService.findOneDriver(cpf,rg);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDriverDto: UpdateStatus) {
     return this.driverService.update(+id, updateDriverDto);
