@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity'
 import { FindUser } from './dto/find-user.dto';
 import { AuthUserApp } from './dto/auth-user.dto';
+import * as bcrypt from 'bcryptjs-react';
 
 @Injectable()
 export class UserService {
@@ -58,7 +59,16 @@ export class UserService {
         cpf: authUserApp.cpf
       }
     });
-    console.log(user)
+    if(user != null){
+      const passConfirm = bcrypt.compareSync(authUserApp.password, user.password);
+      if(passConfirm){
+        return user
+      }else{
+        return 500
+      }
+    }else{
+      return 500
+    }
   }
 
   remove(id: number) {

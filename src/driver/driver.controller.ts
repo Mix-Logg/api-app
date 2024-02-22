@@ -4,6 +4,7 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-driver.dto';
 import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { UpdateStatus } from './dto/update-status-driver.dto';
+import { GetUser } from './dto/get-driver.dto';
 
 @Controller('driver')
 export class DriverController {
@@ -12,6 +13,11 @@ export class DriverController {
   @Post()
   async create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
+  }
+
+  @Post('getUser')
+  async getUser(@Body() getUser: GetUser) {
+    return this.driverService.getUser(getUser.cpf);
   }
 
   @Post('cnh')

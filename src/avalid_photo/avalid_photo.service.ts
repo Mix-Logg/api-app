@@ -40,7 +40,12 @@ export class AvalidPhotoService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} avalidPhoto`;
+  async remove(uuid: number, am:string, photo: string) {
+    const avalidPhoto = await this.avalidPhotoRepository.findOne({ where: { uuid, am, photo } });
+    if (!avalidPhoto) {
+      return 500
+    }
+    const remove = await this.avalidPhotoRepository.remove(avalidPhoto);
+    return 200
   }
 }

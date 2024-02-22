@@ -93,6 +93,18 @@ export class DriverService {
     }
   }
 
+  async getUser(cpf:String){
+    const user = await this.driverRepository
+      .createQueryBuilder("driver")
+      .where('cpf = :cpf',  { cpf } ) 
+      .getOne();
+    if(user != null){
+      return user;
+    }else{
+      return 500
+    }
+  }
+
   remove(id: number) {
     return `This action removes a #${id} driver`;
   }

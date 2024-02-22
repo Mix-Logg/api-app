@@ -1,7 +1,8 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { UploadBucketService } from './upload-bucket.service';
 import { CreatePhysicalDto } from './dto/create-physical.dto'
 import { FileInterceptor } from '@nestjs/platform-express';
+import { DeleteDto } from './dto/delete.dto';
 import * as AWS from 'aws-sdk';
 
 @Controller('upload-bucket')
@@ -27,6 +28,7 @@ export class UploadBucketController {
         Body: file.buffer, 
         ContentType: file.mimetype,
       };
+      
       try {
         await bucket.upload(driverPhysical).promise();
         return {'msg':'success'}
@@ -121,7 +123,6 @@ export class UploadBucketController {
         resolve(dataImage)
       })
     }
-    
     try {
       const imageData = await getPathFile();
       paramsFile.Key = imageData;
@@ -131,6 +132,49 @@ export class UploadBucketController {
     } catch (err) {
       console.error('Erro ao buscar imagem:', err);
     }
+  }
+
+  @Post('delete')
+  async deleteFile(@Body() deleteDto:DeleteDto){
+    const am = deleteDto.am
+    const id = deleteDto.id
+    const file = deleteDto.file
+    const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
+    const bucket = new AWS.S3({
+      endpoint: spacesEndpoint,
+      accessKeyId: process.env.BUCKET_ACCESS_KEY,
+      secretAccessKey: process.env.BUCKET_SECRET_KEY
+    });
+    const bucketName = process.env.BUCKET_NAME;
+    const paramsPaste = {
+        Bucket: bucketName,
+        Prefix: am+'/'+id+'/'
+    };
+    const gettPathFile = (): Promise<any[]> => {
+      return new Promise((resolve, reject) => {
+        bucket.listObjectsV2(paramsPaste, (err, data) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(data.Contents); // Resolvendo a Promise com os dados obtidos
+          }
+        });
+      });
+    };
+    const documents = await gettPathFile()
+    const fileObject = documents.find(object => object.Key.includes(file));
+    const paramsDelete = {
+      Bucket: bucketName,
+      Key: fileObject.Key
+    };
+    try {
+      const data = await bucket.deleteObject(paramsDelete).promise();
+      return 200;
+    } catch (err) {
+      return 500; 
+    }
+    
   }
 
   @Get(':id/:am/')

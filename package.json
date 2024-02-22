@@ -27,6 +27,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.1.17",
     "aws-sdk": "^2.1521.0",
+    "bcryptjs": "^2.4.3",
+    "bcryptjs-react": "^2.4.6",
     "class-validator": "^0.14.0",
     "file-system": "^2.2.2",
     "jsonwebtoken": "^9.0.2",

@@ -30,7 +30,7 @@ export class AuxiliaryController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.auxiliaryService.findOne(+id);
-  }
+  } 
 
   @Post('cnh')
   updateCnh(@Body() updateCnh: UpdateCnh) {

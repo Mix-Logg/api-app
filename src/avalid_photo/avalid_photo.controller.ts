@@ -32,8 +32,12 @@ export class AvalidPhotoController {
   }
 
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.avalidPhotoService.remove(+id);
+  @Delete(':id/:am/:picture')
+  remove(
+    @Param('id') id: number,
+    @Param('am') am: string,
+    @Param('picture') picture: string)
+    {
+    return this.avalidPhotoService.remove(id, am, picture);
   }
 }
