@@ -13,10 +13,11 @@ import { AuxiliaryModule } from './auxiliary/auxiliary.module';
 import { UserModule } from './user/user.module';
 import { RecordPlugModule } from './record_plug/record_plug.module';
 import { EmailService } from './email/email.service';
+import { CadasterCompanyModule } from './cadaster_company/cadaster_company.module';
 
 
 @Module({
-  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CadasterCompanyModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })
