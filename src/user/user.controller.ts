@@ -31,6 +31,12 @@ export class UserController {
     return this.userService.findOne(id, am, cpf);
   }
 
+  @Get(':cpf')
+  VerifyOne(
+    @Param('cpf') cpf: string ){
+    return this.userService.verifyOne(cpf);
+  }
+
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
