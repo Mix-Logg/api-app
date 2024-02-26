@@ -22,8 +22,15 @@ export class CompanyService {
     return this.companyRepository.find();
   }
 
-  findOne(id: number) {
-    return this.companyRepository.findOne({ where: { id } });
+  async findOne(companyTelephone: string) {
+    const res = await this.companyRepository.findOne({
+      where: { companyTelephone },
+    });
+
+    if (res != null) {
+      return 200;
+    }
+    return 500;
   }
 
   update(id: number, updateCompanyDto: UpdateCompanyDto) {
