@@ -71,6 +71,19 @@ export class UserService {
     }
   }
 
+  async verifyOne(cpf:string){
+    const user = await this.userRepository.findOne({
+      where: {
+        cpf: cpf
+      }
+    });
+    if(user != null){
+      return 500
+    }else{
+      return 200
+    }
+  }
+
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
