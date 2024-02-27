@@ -23,14 +23,19 @@ export class CompanyService {
   }
 
   async findOne(companyTelephone: string, email: string) {
-    const res = await this.companyRepository.findOne({
-      where: { companyTelephone, email },
+    const existingRecordByEmail = await this.companyRepository.findOne({
+      where: { email },
     });
 
-    if (res != null) {
-      return 200;
+    const existingRecordByTelephone = await this.companyRepository.findOne({
+      where: { companyTelephone },
+    });
+
+    if (existingRecordByEmail !== null || existingRecordByTelephone !== null) {
+      return 409;
     }
-    return 500;
+
+    return 200;
   }
 
   update(id: number, updateCompanyDto: UpdateCompanyDto) {
