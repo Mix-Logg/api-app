@@ -22,9 +22,9 @@ export class CompanyService {
     return this.companyRepository.find();
   }
 
-  async findOne(companyTelephone: string) {
+  async findOne(companyTelephone: string, email: string) {
     const res = await this.companyRepository.findOne({
-      where: { companyTelephone },
+      where: { companyTelephone, email },
     });
 
     if (res != null) {
