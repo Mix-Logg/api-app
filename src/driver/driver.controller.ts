@@ -4,7 +4,7 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-driver.dto';
 import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { UpdateStatus } from './dto/update-status-driver.dto';
-import { GetUser } from './dto/get-driver.dto';
+import { getCpf } from './dto/get-driver.dto';
 
 @Controller('driver')
 export class DriverController {
@@ -16,7 +16,7 @@ export class DriverController {
   }
 
   @Post('getUser')
-  async getUser(@Body() getUser: GetUser) {
+  async getUser(@Body() getUser: getCpf) {
     return this.driverService.getUser(getUser.cpf);
   }
 
@@ -46,6 +46,11 @@ export class DriverController {
     @Param('rg')  rg: string,
     ){
     return this.driverService.findOneDriver(cpf,rg);
+  }
+
+  @Post('verifyCpf')
+  verifyCpf(@Body() params: getCpf) {
+    return this.driverService.verifyCpf(params.cpf);
   }
 
   @Patch(':id')

@@ -93,6 +93,17 @@ export class DriverService {
     }
   }
 
+  async verifyCpf(cpf: String){
+    const res = await this.driverRepository
+      .createQueryBuilder("driver")
+      .where('cpf = :cpf',  { cpf} )
+      .getOne();
+    if(res != null){
+      return 200
+    }
+    return 500;
+  }
+
   async getUser(cpf:String){
     const user = await this.driverRepository
       .createQueryBuilder("driver")

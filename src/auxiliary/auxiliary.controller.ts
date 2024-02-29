@@ -4,6 +4,7 @@ import { CreateAuxiliaryDto } from './dto/create-auxiliary.dto';
 import { UpdateStatus } from './dto/update-status-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-auxiliary.dto';
 import { UpdateCpf } from './dto/update-cpf-auxiliary.dto';
+import { getCpf } from './dto/get-auxiliary.dto';
 
 @Controller('auxiliary')
 export class AuxiliaryController {
@@ -40,6 +41,11 @@ export class AuxiliaryController {
   @Post('cpf')
   updateCpf(@Body() updateCpf: UpdateCpf) {
     return this.auxiliaryService.updateCpf(updateCpf);
+  }
+
+  @Post('verifyCpf')
+  verifyCpf(@Body() params: getCpf) {
+    return this.auxiliaryService.verifyCpf(params.cpf);
   }
 
   @Patch(':id')
