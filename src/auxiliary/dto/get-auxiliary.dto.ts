@@ -1,3 +1,3 @@
 export class getCpf {
-    cpf:String
+    cpf:   string
 }

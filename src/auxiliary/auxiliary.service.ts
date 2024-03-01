@@ -29,6 +29,14 @@ export class AuxiliaryService {
     return response
   }
 
+  async verifyCpf(cpf:string){
+    const response = await this.auxiliaryRepository.findOne({where:{cpf}});
+    if(response != null){
+      return 200
+    }
+    return 500;
+  }
+
   async findOneAuxiliary(cpf:string ,rg:string){
     const res = await this.auxiliaryRepository
       .createQueryBuilder("auxiliary")

@@ -14,9 +14,11 @@ import { UserModule } from './user/user.module';
 import { RecordPlugModule } from './record_plug/record_plug.module';
 import { EmailService } from './email/email.service';
 import { CompanyModule } from './company/company.module';
+import { MotorcycleModule } from './motorcycle/motorcycle.module';
+import { TourModule } from './tour/tour.module';
 
 @Module({
-  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })
