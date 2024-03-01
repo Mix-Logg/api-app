@@ -32,16 +32,34 @@ export class CompanyService {
     });
 
     if (existingRecordByEmail !== null || existingRecordByTelephone !== null) {
-      return 409;
+      const obj = {
+        status: 409,
+        company: existingRecordByEmail
+      }
+      return obj;
     }
 
     return 200;
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
-  }
 
+  async update(updateCompanyDto: UpdateCompanyDto) {
+    const id = updateCompanyDto.id
+    const companyTelephone = updateCompanyDto.companyTelephone
+    const res = await this.companyRepository
+      .createQueryBuilder()
+      .update(Company)
+      .set(updateCompanyDto)
+      .where('id = :id', { id }) // Critério de busca usando 'uuid'
+      .andWhere('companyTelephone = :companyTelephone', { companyTelephone }) // Critério de busca usando 'am'
+      .execute();
+    if(res.affected){
+      return 200
+    }else{
+      return 500
+    }
+  }
+  
   remove(id: number) {
     return `This action removes a #${id} company`;
   }

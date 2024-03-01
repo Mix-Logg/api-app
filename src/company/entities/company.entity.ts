@@ -14,11 +14,17 @@ export class Company {
   @Column({ length: 50 })
   corporateName: string;
 
-  @Column({ length: 150 })
+  @Column({ length: 50 })
   email: string;
 
   @Column({ length: 11 })
   companyTelephone: string;
+
+  @Column({ length: 14 })
+  cnpj: string;
+
+  @Column({ length: 50 })
+  branchActivity: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   create_at: Date;
