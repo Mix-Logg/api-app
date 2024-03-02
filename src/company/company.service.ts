@@ -36,7 +36,6 @@ export class CompanyService {
         status: 409,
         company: existingRecordByEmail
       }
-      console.log(obj);
       return obj;
     }
 
