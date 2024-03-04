@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { MotorcycleService } from './motorcycle.service';
 import { CreateMotorcycleDto } from './dto/create-motorcycle.dto';
 import { UpdateMotorcycleDto } from './dto/update-motorcycle.dto';
+import { getCpf } from './dto/get-motorcycle.dto';
 
 @Controller('motorcycle')
 export class MotorcycleController {
@@ -10,6 +11,11 @@ export class MotorcycleController {
   @Post()
   create(@Body() createMotorcycleDto: CreateMotorcycleDto) {
     return this.motorcycleService.create(createMotorcycleDto);
+  }
+
+  @Post('verifyCpf')
+  verifyCpf(@Body() params: getCpf) {
+    return this.motorcycleService.verifyCpf(params.cpf);
   }
 
   @Get()

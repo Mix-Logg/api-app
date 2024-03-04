@@ -21,25 +21,10 @@ export class UploadBucketController {
       secretAccessKey: process.env.BUCKET_SECRET_KEY
     });
     const bucketName = process.env.BUCKET_NAME;
-    if(CreatePhysicalDto.function === 'physical' && CreatePhysicalDto.am === 'driver' ){
+    if(CreatePhysicalDto.function === 'physical'){
       const driverPhysical = {
         Bucket: bucketName,
-        Key: `driver/${CreatePhysicalDto.id}/${file.originalname}`,
-        Body: file.buffer, 
-        ContentType: file.mimetype,
-      };
-      
-      try {
-        await bucket.upload(driverPhysical).promise();
-        return {'msg':'success'}
-      } catch (error) {
-        console.error('Erro ao enviar arquivo para o Ocean:', error);
-      }
-    }
-    if(CreatePhysicalDto.function === 'vehicle' && CreatePhysicalDto.am === 'driver' ){
-      const driverPhysical = {
-        Bucket: bucketName,
-        Key: `driver/${CreatePhysicalDto.id}/vehicle/${file.originalname}`,
+        Key: `${CreatePhysicalDto.am}/${CreatePhysicalDto.id}/${file.originalname}`,
         Body: file.buffer, 
         ContentType: file.mimetype,
       };
@@ -50,20 +35,21 @@ export class UploadBucketController {
         console.error('Erro ao enviar arquivo para o Ocean:', error);
       }
     }
-    if(CreatePhysicalDto.function === 'physical' && CreatePhysicalDto.am === 'auxiliary' ){
-      const auxiliaryPhysical = {
+    if(CreatePhysicalDto.function === 'vehicle'){
+      const driverPhysical = {
         Bucket: bucketName,
-        Key: `auxiliary/${CreatePhysicalDto.id}/${file.originalname}`,
+        Key: `${CreatePhysicalDto.am}/${CreatePhysicalDto.id}/vehicle/${file.originalname}`,
         Body: file.buffer, 
         ContentType: file.mimetype,
       };
       try {
-        await bucket.upload(auxiliaryPhysical).promise();
+        await bucket.upload(driverPhysical).promise();
         return {'msg':'success'}
       } catch (error) {
         console.error('Erro ao enviar arquivo para o Ocean:', error);
       }
     }
+
   }
 
   @Get(':id/:am/:file')

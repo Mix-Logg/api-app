@@ -12,6 +12,9 @@ export class Vehicle {
     @Column({ length: 25 })
     cadastre: string;
 
+    @Column({ length: 20 })
+    am: string;
+
     @Column({ length: 25 })
     owner: string;
 
@@ -89,6 +92,9 @@ export class Vehicle {
 
     @Column({ length: 50 })
     noStop: string;
+    
+    @Column({ length: 20 })
+    noStopStatus: string;
  
     @Column({ length: 50 })
     stateRegistrationOwner: string;

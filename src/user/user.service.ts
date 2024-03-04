@@ -17,12 +17,12 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     try {
       await this.userRepository.save(createUserDto);
-      return 200
+      return 200;
     } catch (error) {
-      console.log(error)
-      return 500
+        console.log(error);
+        return 500;
     }
-  }
+}
 
   findAll() {
     return `This action returns all user`;
@@ -59,8 +59,9 @@ export class UserService {
         cpf: authUserApp.cpf
       }
     });
+    console.log(user)
     if(user != null){
-      const passConfirm = bcrypt.compareSync(authUserApp.password, user.password);
+      const passConfirm = authUserApp.password === user.password;
       if(passConfirm){
         return user
       }else{

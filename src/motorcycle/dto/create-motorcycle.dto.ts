@@ -1,1 +1,11 @@
-export class CreateMotorcycleDto {}
+export class CreateMotorcycleDto {
+    email:   string
+    phone:   string
+    name:    string
+    cpf:    string
+    create_at: Date
+}
+  
+  
+  
+  

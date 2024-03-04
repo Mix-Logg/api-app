@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TourService } from './tour.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
+import { getCpf } from './dto/get-tour.dto';
 
 @Controller('tour')
 export class TourController {
@@ -10,6 +11,11 @@ export class TourController {
   @Post()
   create(@Body() createTourDto: CreateTourDto) {
     return this.tourService.create(createTourDto);
+  }
+
+  @Post('verifyCpf')
+  verifyCpf(@Body() params: getCpf) {
+    return this.tourService.verifyCpf(params.cpf);
   }
 
   @Get()
