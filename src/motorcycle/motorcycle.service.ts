@@ -22,7 +22,7 @@ export class MotorcycleService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} motorcycle`;
+    return this.motorcycleRepository.findOne({where:{id}});
   }
 
   update(id: number, updateMotorcycleDto: UpdateMotorcycleDto) {

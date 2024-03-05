@@ -21,7 +21,7 @@ export class TourService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tour`;
+    return this.tourRepository.findOne({where:{id}});
   }
 
   update(id: number, updateTourDto: UpdateTourDto) {

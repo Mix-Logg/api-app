@@ -59,7 +59,6 @@ export class UserService {
         cpf: authUserApp.cpf
       }
     });
-    console.log(user)
     if(user != null){
       const passConfirm = authUserApp.password === user.password;
       if(passConfirm){
