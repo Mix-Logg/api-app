@@ -23,8 +23,8 @@ export class VehicleService {
     return this.vehicleRepository.find();
   }
 
-  async findOne (uuid: number, ) {
-    const response = await this.vehicleRepository.findOne({where:{uuid}});
+  async findOne (uuid: number, am:string ) {
+    const response = await this.vehicleRepository.findOne({where:{uuid, am}});
     return response
   }
 

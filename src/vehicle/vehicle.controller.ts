@@ -21,9 +21,13 @@ export class VehicleController {
     return this.vehicleService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vehicleService.findOne(+id);
+  @Get(':id/:am')
+  findOne(
+    @Param('id') id: number,
+    @Param('am') am: string
+    ) 
+  {
+    return this.vehicleService.findOne(id, am);
   }
 
   @Patch('antt')
