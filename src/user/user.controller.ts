@@ -23,12 +23,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id/:am/:cpf')
+  @Get(':id/:am/')
   findOne(
     @Param('id') id: number,
-    @Param('am') am: string,
-    @Param('cpf') cpf: string ){
-    return this.userService.findOne(id, am, cpf);
+    @Param('am') am: string, ){
+    return this.userService.findOne(id, am);
   }
 
   @Get(':cpf')
@@ -39,7 +38,8 @@ export class UserController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+      console.log('id:', id);
+      return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
