@@ -12,8 +12,30 @@ export class ClientService {
   ){}
  
 
-  create(createClientDto: CreateClientDto) {
-    return 'This action adds a new client';
+  async create(createClientDto: CreateClientDto) {
+    try{
+      const email = createClientDto.email
+      const existingEmail = await this.clientRepository.findOne({
+        where: { email },
+      });
+      if(existingEmail){
+        return {
+            status: 409,
+            msg: 'Email Error Already Exists'
+        }
+      }
+      await this.clientRepository.save(createClientDto);
+      return {
+        status: 201,
+        msg: 'Successful registration user'
+      }
+    }catch(e){
+      console.log(e)
+      return {
+        status: 500,
+        msg: 'Error internal'
+      }
+    } 
   }
 
   findAll() {

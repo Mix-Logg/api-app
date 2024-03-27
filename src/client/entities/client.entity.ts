@@ -16,6 +16,15 @@ export class Client {
 
     @Column({ length: 200 })
     password: string;
+
+    @Column({ length: 50 })
+    create_at: string;
+
+    @Column({ length: 50 })
+    update_at: string;
+
+    @Column({ length: 50 })
+    delete_at: string;
 }
 
 
