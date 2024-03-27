@@ -3,6 +3,7 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
+import Time from '../../hooks/time'
 
 @Injectable()
 export class ClientService {
@@ -13,6 +14,8 @@ export class ClientService {
  
 
   async create(createClientDto: CreateClientDto) {
+    const time = Time()
+    createClientDto.create_at = time;
     try{
       const email = createClientDto.email
       const existingEmail = await this.clientRepository.findOne({
