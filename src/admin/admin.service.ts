@@ -13,7 +13,7 @@ export class AdminService {
     @Inject('ADMIN_REPOSITORY') 
     private adminRepository: Repository<Admin>,
     private readonly emailService: EmailService
-    // private addressService: AddressService
+    // private raceService: RaceService
   ){}
 
   create(createAdminDto: CreateAdminDto) {

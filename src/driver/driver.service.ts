@@ -14,7 +14,7 @@ export class DriverService {
     private driverRepository: Repository<Driver>,
   ){}
  
-  async create(createDriverDto: CreateDriverDto) {
+  async create(createDriverDto: CreateDriverDto) {  
     const response = await this.driverRepository.save(createDriverDto);
     return response.id
   }
