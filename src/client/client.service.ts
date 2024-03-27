@@ -4,7 +4,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
 import Time from '../../hooks/time'
-import bcrypt from "bcryptjs-react";
+import { Sign } from './dto/sign-client.dto';
 
 @Injectable()
 export class ClientService {
@@ -12,7 +12,37 @@ export class ClientService {
     @Inject('CLIENT_REPOSITORY') 
     private clientRepository: Repository<Client>,
   ){}
- 
+
+  async sign(sign: Sign){
+    const email = sign.email
+    try{
+      const user = await this.clientRepository.findOne({
+        where: { email },
+      });
+      if(!user){
+        return {
+          status: 401,
+          msg: 'Unauthorized'
+        }
+      }
+      if(user.password === sign.password){
+        return {
+          status: 200,
+          msg: 'Authorized'
+        }
+      }
+      return {
+        status: 401,
+        msg: 'Unauthorized'
+      }
+    }catch(e){
+      console.log(e)
+      return {
+        status: 500,
+        msg: 'Error internal'
+      }
+    } 
+  }
 
   async create(createClientDto: CreateClientDto) {
     const time = Time()
@@ -71,8 +101,8 @@ export class ClientService {
     return `This action returns all client`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} client`;
+  findOne(email: string) {
+    return this.clientRepository.findOne({where:{email}});
   }
 
   update(id: number, updateClientDto: UpdateClientDto) {
