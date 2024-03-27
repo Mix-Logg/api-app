@@ -4,6 +4,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
 import Time from '../../hooks/time'
+import bcrypt from "bcryptjs-react";
 
 @Injectable()
 export class ClientService {
@@ -15,6 +16,7 @@ export class ClientService {
 
   async create(createClientDto: CreateClientDto) {
     const time = Time()
+    const verifyEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     createClientDto.create_at = time;
     try{
       const email = createClientDto.email
@@ -23,8 +25,32 @@ export class ClientService {
       });
       if(existingEmail){
         return {
-            status: 409,
-            msg: 'Email Error Already Exists'
+          status: 409,
+          msg: 'Email Error Already Exists'
+        }
+      }
+      if(!verifyEmail.test(email)){
+        return {
+          status: 409,
+          msg: 'Email Invalid'
+        }
+      }
+      if(createClientDto.phone.length < 11 || createClientDto.phone.length > 12){
+        return {
+          status: 409,
+          msg: 'Phone Invalid'
+        }
+      }
+      if(createClientDto.password.length != 10){
+        return {
+          status: 409,
+          msg: 'Password invalid'
+        }
+      }
+      if(createClientDto.name.length < 4){
+        return {
+          status: 409,
+          msg: 'Name invalid'
         }
       }
       await this.clientRepository.save(createClientDto);
