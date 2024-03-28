@@ -1,5 +1,6 @@
 export class UpdateStatus {
-    cadastralStatus:string
+    cadastralStatus?:string
+    pix?:string
 }
   
     

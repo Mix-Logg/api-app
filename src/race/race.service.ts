@@ -20,8 +20,12 @@ export class RaceService {
     return this.raceRepository.find();
   }
 
+  findAllOpen(){
+    return this.raceRepository.find({ where: { isVisible: '1' } });
+  }
+
   findOne(id: number) {
-    return `This action returns a #${id} race`;
+    return this.raceRepository.findOne({where:{id}});
   }
 
   async update(id: number, updateRaceDto: UpdateRaceDto) {

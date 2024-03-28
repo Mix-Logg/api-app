@@ -17,6 +17,11 @@ export class RaceController {
     return this.raceService.findAll();
   }
 
+  @Get('open')
+  findAllOpen() {
+    return this.raceService.findAllOpen();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.raceService.findOne(+id);

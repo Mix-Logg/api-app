@@ -52,11 +52,19 @@ export class DriverService {
   }
 
   async update(id: number, updateStatus: UpdateStatus) {
-    const res = await this.driverRepository.save({
-      id: id,
-      cadastralStatus: updateStatus.cadastralStatus,
-    });
-    return 200
+    try{
+      await this.driverRepository.update(id,updateStatus);
+      return {
+        status: 201,
+        msg:'Successful Data Updated'
+      }
+    }catch(e){
+      console.log(e)
+      return {
+        status:500,
+        msg:'Error server internal'
+      }
+    }
   }
 
   async updateCnh(updateCnh: UpdateCnh) {

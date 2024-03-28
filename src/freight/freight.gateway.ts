@@ -29,7 +29,7 @@ export class FreightGateway {
   @SubscribeMessage('updateStatus')
   async update(@MessageBody() updateFreightDto: UpdateFreightDto) {
     this.server.emit('updateStatus', updateFreightDto.id); 
-    // const response = await this.freightService.update(updateFreightDto.id, updateFreightDto);
+    const response = await this.freightService.update(updateFreightDto.id, updateFreightDto);
   }
 
   @SubscribeMessage('removeFreight')
