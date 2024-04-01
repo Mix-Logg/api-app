@@ -19,10 +19,12 @@ import { TourModule } from './tour/tour.module';
 import { FreightModule } from './freight/freight.module';
 import { RaceModule } from './race/race.module';
 import { ClientModule } from './client/client.module';
+import { PaymentModule } from './payment/payment.module';
+
 
 
 @Module({
-  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule],
+  imports: [ConfigModule.forRoot() , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, PaymentModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })

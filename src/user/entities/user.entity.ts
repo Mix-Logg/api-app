@@ -17,6 +17,9 @@ export class User {
     @Column()
     uuid: number;
 
+    @Column({ length: 50, default: null })
+    striper: string;
+
     @CreateDateColumn({type: "timestamp"})
     create_at: Date;
 
