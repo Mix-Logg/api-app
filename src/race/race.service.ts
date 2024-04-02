@@ -3,6 +3,7 @@ import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
 import { Repository } from 'typeorm';
 import { Race } from './entities/race.entity';
+import Time from '../../hooks/time'
 
 @Injectable()
 export class RaceService {
@@ -12,6 +13,8 @@ export class RaceService {
   ){}
 
   async create(createRaceDto: CreateRaceDto) {
+    const time = Time()
+    createRaceDto.create_at = time;
     const response = await this.raceRepository.save(createRaceDto);
     return response.id
   }
