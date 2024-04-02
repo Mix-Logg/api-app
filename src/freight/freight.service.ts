@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CreateFreightDto } from './dto/create-freight.dto';
 import { UpdateFreightDto } from './dto/update-freight.dto';
 import { RaceService } from 'src/race/race.service';
+import { CreateRaceDto } from 'src/race/dto/create-race.dto';
 @Injectable()
 export class FreightService {
   constructor(
     private raceService: RaceService
   ){}
 
-  async create() {
-    // console.log(response)
-    return 'This action adds a new freight';
+  async create(createFreightDto: CreateFreightDto) {
+    return await this.raceService.create(createFreightDto)
   }
 
   findAll() {

@@ -13,7 +13,6 @@ export class FreightGateway {
 
   @SubscribeMessage('message')
   handleEvent(@MessageBody() message : string ) {
-    return this.freightService.create();
   }
 
   @SubscribeMessage('findAllFreight')
@@ -30,6 +29,12 @@ export class FreightGateway {
   async update(@MessageBody() updateFreightDto: UpdateFreightDto) {
     this.server.emit('updateStatus', updateFreightDto.id); 
     const response = await this.freightService.update(updateFreightDto.id, updateFreightDto);
+  }
+
+  @SubscribeMessage('createRace')
+  async createRace(@MessageBody() createFreightDto: CreateFreightDto) {
+    this.server.emit('NewRace', createFreightDto); 
+    return await this.freightService.create(createFreightDto);
   }
 
   @SubscribeMessage('removeFreight')
