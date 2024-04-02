@@ -30,14 +30,24 @@ export class PaymentController {
 
   @Post('donate')
   async donate(@Body() createDonateDto: CreateDonateDto){
+    const customer = await stripe.customers.create();
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+      {customer: customer.id},
+      {apiVersion: '2023-10-16'}
+    );
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: createDonateDto.amount,
-      currency: 'brl',
-      automatic_payment_methods: {
-        enabled: true,
-      },
+        amount: createDonateDto.amount,
+        currency: 'brl',
+        automatic_payment_methods: {
+          enabled: true,
+        },
     });
-    return paymentIntent.client_secret
+    return {
+        paymentIntent: paymentIntent.client_secret,
+        ephemeralKey: ephemeralKey.secret,
+        customer: customer.id,
+        publishableKey: 'pk_test_51OwOuTP7k6khtfqBhu0z1FFhietGHGtYvA9PT12g6hxszbTMWzpqkaaSEk8HXEm2n1Cgeju9Qz4czWPghjb4nsn300AkNorR4D'
+      }
   }
 
   @Get()
