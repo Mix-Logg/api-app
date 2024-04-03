@@ -27,6 +27,11 @@ export class ClientController {
     return this.clientService.findOne(email);
   }
 
+  @Get('id/:id')
+  findOneById(@Param('id') id: number) {
+    return this.clientService.findOneById(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.clientService.update(+id, updateClientDto);
@@ -34,6 +39,6 @@ export class ClientController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.clientService.remove(+id);
+    return this.clientService.remove(+id,);
   }
 }

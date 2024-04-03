@@ -2,6 +2,7 @@ import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, OnGat
 import { FreightService } from './freight.service';
 import { CreateFreightDto } from './dto/create-freight.dto';
 import { UpdateFreightDto } from './dto/update-freight.dto';
+import { CreateRaceDto } from 'src/race/dto/create-race.dto';
 import { Server } from 'socket.io';
 
 @WebSocketGateway()
@@ -13,6 +14,7 @@ export class FreightGateway {
 
   @SubscribeMessage('message')
   handleEvent(@MessageBody() message : string ) {
+
   }
 
   @SubscribeMessage('findAllFreight')
@@ -32,9 +34,9 @@ export class FreightGateway {
   }
 
   @SubscribeMessage('createRace')
-  async createRace(@MessageBody() createFreightDto: CreateFreightDto) {
-    this.server.emit('NewRace', createFreightDto); 
-    return await this.freightService.create(createFreightDto);
+  async createRace(@MessageBody() createRaceDto: CreateRaceDto) {
+    this.server.emit('NewRace', createRaceDto); 
+    return await this.freightService.create(createRaceDto);
   }
 
   @SubscribeMessage('removeFreight')

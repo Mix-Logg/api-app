@@ -20,6 +20,9 @@ export class Race {
   @Column()
   km: number;
 
+  @Column({ length: 50 })
+  vehicleType: string;
+
   @Column({ length: 150 })
   initial: string;
 

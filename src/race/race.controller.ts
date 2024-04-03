@@ -33,7 +33,7 @@ export class RaceController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number ) {
     return this.raceService.remove(+id);
   }
 }

@@ -9,8 +9,8 @@ export class FreightService {
     private raceService: RaceService
   ){}
 
-  async create(createFreightDto: CreateFreightDto) {
-    return await this.raceService.create(createFreightDto)
+  async create(createRaceDto: CreateRaceDto) {
+    return await this.raceService.create(createRaceDto)
   }
 
   findAll() {
