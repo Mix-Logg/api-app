@@ -5,5 +5,6 @@ export class CreateFreightDto {
     finish: string;
     value: string;
     create_at?:string;
+    vehicleType: string;
     isVisible: string;
 }

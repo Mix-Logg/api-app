@@ -34,7 +34,10 @@ export class Race {
 
   @Column({ length: 50 })
   delete_at: string;
-  
+
+  @Column({ length: 50 })
+  vehicleType: string;
+
   @Column({ length: 50, default: '1' })
   isVisible: string;
 }
