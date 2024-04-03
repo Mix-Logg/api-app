@@ -41,7 +41,19 @@ export class RaceService {
     return 500
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} race`;
+  async remove(id: number) {
+    try {
+      const updateRaceDto: UpdateRaceDto = { delete_at: Time() }
+      await this.raceRepository.update(id, updateRaceDto);
+      return {
+        msg: 'successful',
+        status : 200
+      }
+    }catch(e){
+      return{
+        msg : ' Error servidor internal ',
+        status: 500
+      }
+    }
   }
 }

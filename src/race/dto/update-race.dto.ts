@@ -1,6 +1,6 @@
 export class UpdateRaceDto {
     isVisible? : string
     idDriver?: number;
-    dalete_at?:string;
+    delete_at?:string;
     value?: string;
 }

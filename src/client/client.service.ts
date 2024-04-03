@@ -105,11 +105,15 @@ export class ClientService {
     return this.clientRepository.findOne({where:{email}});
   }
 
+  findOneById(id: number) {
+    return this.clientRepository.findOne({where:{id}});
+  }
+
   update(id: number, updateClientDto: UpdateClientDto) {
     return `This action updates a #${id} client`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} client`;
+  async remove(id: number) {
+    return id
   }
 }
