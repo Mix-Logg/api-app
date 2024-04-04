@@ -5,6 +5,7 @@ export class CreateRaceDto {
     initial: string;
     finish: string;
     value: string;
+    vehicleType: string;
     create_at?:string;
     isVisible: string;
 }
