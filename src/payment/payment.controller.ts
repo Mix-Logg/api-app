@@ -3,6 +3,7 @@ import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { CreateDonateDto } from './dto/create-donate-dto';
+import { CreateCalculateDto } from './dto/create-calculate.dto';
 const stripe = require("stripe")('sk_test_51OwOuTP7k6khtfqBRRhYSD7KTmf45WjdPz18D5bzm9EOptSg3qotsXgWg8iQAdG2ciihOcxvAQkeLcZyFT4D0pp4001UYwGQfT');
 @Controller('payment')
 export class PaymentController {
@@ -48,6 +49,11 @@ export class PaymentController {
         customer: customer.id,
         publishableKey: 'pk_test_51OwOuTP7k6khtfqBhu0z1FFhietGHGtYvA9PT12g6hxszbTMWzpqkaaSEk8HXEm2n1Cgeju9Qz4czWPghjb4nsn300AkNorR4D'
       }
+  }
+
+  @Post('calculate')
+  async calculate(@Body() createCalculateDto: CreateCalculateDto){
+    return this.paymentService.calculate(createCalculateDto);
   }
 
   @Get()
