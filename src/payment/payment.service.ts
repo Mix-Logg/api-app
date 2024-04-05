@@ -33,7 +33,7 @@ export class PaymentService {
     let time = formatTime(createCalculateDto.time);
     let km   = formatDistance(createCalculateDto.km)
     let valueKm;
-    switch (createCalculateDto.typeVihicle) {
+    switch (createCalculateDto.typeVehicle) {
       case 'motorcycle':
         valueKm = 0.50
         break;
