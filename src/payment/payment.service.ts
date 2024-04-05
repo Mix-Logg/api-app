@@ -53,10 +53,11 @@ export class PaymentService {
         break;
     }
     const pay = calculateMoney(km, valueKm).toFixed(2);
-    console.log(`Tempo: ${time}`);
-    console.log(`Distância: ${km} km`);
-    console.log(`valor total: ${pay} R$`)
-    return 'This action adds a new payment';
+    return {
+      time: time,
+      km : km,
+      pay:pay
+    }
   }
 
   findAll() {
