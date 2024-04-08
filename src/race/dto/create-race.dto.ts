@@ -8,6 +8,6 @@ export class CreateRaceDto {
     origin: string;
     destination: string;
     create_at?:string;
-    isVisible: string;
+    isVisible?: string;
 }
   
