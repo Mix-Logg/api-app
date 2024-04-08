@@ -52,12 +52,13 @@ export class PaymentService {
       default:
         break;
     }
-    let pay = calculateMoney(km, valueKm).toFixed(2);
-    pay = pay.replace(/\./g, '');
+    let payFormat = calculateMoney(km, valueKm).toFixed(2);
+    let pay = payFormat.replace(/\./g, '').toString();
     return {
       time: time,
       km : km,
-      pay:pay.toString()
+      pay: pay,
+      payFormat: payFormat
     }
   }
 
