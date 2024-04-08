@@ -25,9 +25,15 @@ export class Race {
 
   @Column({ length: 150 })
   initial: string;
-
+  
   @Column({ length: 150 })
   finish: string;
+
+  @Column({ length: 100 })
+  destination: string;
+
+  @Column({ length: 100 })
+  origin: string;
 
   @Column({ length: 100 })
   value: string;
