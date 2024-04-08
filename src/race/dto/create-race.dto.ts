@@ -5,6 +5,8 @@ export class CreateRaceDto {
     initial: string;
     finish: string;
     value: string;
+    origin: string;
+    destination: string;
     create_at?:string;
     isVisible: string;
 }
