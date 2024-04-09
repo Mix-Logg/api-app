@@ -15,19 +15,20 @@ export class RaceService {
   async create(createRaceDto: CreateRaceDto) {
     var codesInitial = [];
     for (var i = 0; i < 4; i++) {
-        codesInitial.push(Math.floor(Math.random() * 10));
+      codesInitial.push(Math.floor(Math.random() * 10));
     }
     var codesFinish = [];
     for (var i = 0; i < 4; i++) {
-        codesFinish.push(Math.floor(Math.random() * 10));
+      codesFinish.push(Math.floor(Math.random() * 10));
     }
 
     const time = Time();
-    createRaceDto.codeInitial = codesInitial.join(''); 
-    createRaceDto.codeFinish = codesFinish.join(''); 
+    createRaceDto.codeInitial = codesInitial.join('');
+    createRaceDto.codeFinish = codesFinish.join('');
+    createRaceDto.create_at = time;
     const response = await this.raceRepository.save(createRaceDto);
-}
-
+    return response;
+  }
 
   findAll() {
     return this.raceRepository.find();
