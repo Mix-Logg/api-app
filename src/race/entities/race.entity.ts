@@ -18,7 +18,7 @@ export class Race {
   idDriver: number;
 
   @Column()
-  km: number;
+  km: string;
 
   @Column({ length: 50 })
   vehicleType: string;

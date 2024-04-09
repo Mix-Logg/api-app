@@ -1,6 +1,6 @@
 export class CreateRaceDto {
     idClient: number;
-    km: number;
+    km: string;
     vehicleType: string;
     initial: string;
     finish: string;
