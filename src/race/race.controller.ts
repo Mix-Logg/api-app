@@ -27,6 +27,11 @@ export class RaceController {
     return this.raceService.findOne(+id);
   }
 
+  @Get('history/:id')
+  findHistory(@Param('id') id: string) {
+    return this.raceService.findHistory(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRaceDto: UpdateRaceDto) {
     return this.raceService.update(+id, updateRaceDto);

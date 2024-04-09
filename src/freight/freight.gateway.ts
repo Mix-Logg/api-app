@@ -35,8 +35,9 @@ export class FreightGateway {
 
   @SubscribeMessage('createRace')
   async createRace(@MessageBody() CreateRaceDto: CreateRaceDto) {
-    this.server.emit('NewRace', CreateRaceDto); 
-    return await this.freightService.create(CreateRaceDto);
+    const newRace = await this.freightService.create(CreateRaceDto);
+    console.log(newRace)
+    this.server.emit('NewRace', newRace); 
   }
 
   @SubscribeMessage('removeFreight')

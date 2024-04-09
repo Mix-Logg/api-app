@@ -16,7 +16,7 @@ export class RaceService {
     const time = Time()
     createRaceDto.create_at = time;
     const response = await this.raceRepository.save(createRaceDto);
-    return response.id
+    return response
   }
 
   findAll() {
@@ -25,6 +25,10 @@ export class RaceService {
 
   findAllOpen(){
     return this.raceRepository.find({ where: { isVisible: '1' } });
+  }
+
+  async findHistory(id: number) {
+    return await this.raceRepository.find({ where: { idClient: id } });
   }
 
   findOne(id: number) {
