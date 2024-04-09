@@ -25,7 +25,7 @@ export class Race {
 
   @Column({ length: 150 })
   initial: string;
-  
+
   @Column({ length: 150 })
   finish: string;
 
@@ -37,6 +37,12 @@ export class Race {
 
   @Column({ length: 100 })
   value: string;
+
+  @Column({ length: 4 })
+  codeInitial: string;
+
+  @Column({ length: 4 })
+  codeFinish: string;
 
   @Column({ length: 50 })
   create_at: string;
