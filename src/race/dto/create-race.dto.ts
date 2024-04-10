@@ -1,5 +1,6 @@
 export class CreateRaceDto {
   idClient: number;
+  idClientIo: string;
   km: string;
   vehicleType: string;
   initial: string;
@@ -7,8 +8,8 @@ export class CreateRaceDto {
   value: string;
   origin: string;
   destination: string;
-  create_at?: string;
   codeInitial?: string;
   codeFinish?: string;
+  create_at?: string;
   isVisible?: string;
 }

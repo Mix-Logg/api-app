@@ -14,6 +14,9 @@ export class Race {
   @Column()
   idClient: number;
 
+  @Column({ length: 50 })
+  idClientIo: string;
+
   @Column()
   idDriver: number;
 
