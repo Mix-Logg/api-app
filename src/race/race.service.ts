@@ -3,27 +3,38 @@ import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
 import { Repository } from 'typeorm';
 import { Race } from './entities/race.entity';
-import Time from '../../hooks/time'
+import Time from '../../hooks/time';
 
 @Injectable()
 export class RaceService {
   constructor(
-    @Inject('RACE_REPOSITORY') 
+    @Inject('RACE_REPOSITORY')
     private raceRepository: Repository<Race>,
-  ){}
+  ) {}
 
   async create(createRaceDto: CreateRaceDto) {
-    const time = Time()
+    var codesInitial = [];
+    for (var i = 0; i < 4; i++) {
+      codesInitial.push(Math.floor(Math.random() * 10));
+    }
+    var codesFinish = [];
+    for (var i = 0; i < 4; i++) {
+      codesFinish.push(Math.floor(Math.random() * 10));
+    }
+
+    const time = Time();
+    createRaceDto.codeInitial = codesInitial.join('');
+    createRaceDto.codeFinish = codesFinish.join('');
     createRaceDto.create_at = time;
     const response = await this.raceRepository.save(createRaceDto);
-    return response
+    return response;
   }
 
   findAll() {
     return this.raceRepository.find();
   }
 
-  findAllOpen(){
+  findAllOpen() {
     return this.raceRepository.find({ where: { isVisible: '1' } });
   }
 
@@ -32,32 +43,32 @@ export class RaceService {
   }
 
   findOne(id: number) {
-    return this.raceRepository.findOne({where:{id}});
+    return this.raceRepository.findOne({ where: { id } });
   }
 
   async update(id: number, updateRaceDto: UpdateRaceDto) {
     const response = await this.raceRepository.update(id, updateRaceDto);
-    if(response.affected){
+    if (response.affected) {
       return {
         id: id,
-      }
+      };
     }
-    return 500
+    return 500;
   }
 
   async remove(id: number) {
     try {
-      const updateRaceDto: UpdateRaceDto = { delete_at: Time() }
+      const updateRaceDto: UpdateRaceDto = { delete_at: Time() };
       await this.raceRepository.update(id, updateRaceDto);
       return {
         msg: 'successful',
-        status : 200
-      }
-    }catch(e){
-      return{
-        msg : ' Error servidor internal ',
-        status: 500
-      }
+        status: 200,
+      };
+    } catch (e) {
+      return {
+        msg: ' Error servidor internal ',
+        status: 500,
+      };
     }
   }
 }

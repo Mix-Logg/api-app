@@ -13,17 +13,17 @@ export class PaymentService {
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = Math.floor(minutes % 60);
       if (hours > 0) {
-          return `${hours} horas ${remainingMinutes} minutos`;
+        return `${hours} horas ${remainingMinutes} minutos`;
       } else {
-          return `${remainingMinutes} minutos`;
+        return `${remainingMinutes} minutos`;
       }
     }
     function formatDistance(km: any): number {
       const distance = Number(km); // Convertendo para número
       if (isNaN(distance)) {
-          throw new Error('Distância inválida'); // Lançar um erro se não for um número válido
+        throw new Error('Distância inválida'); // Lançar um erro se não for um número válido
       } else {
-          return parseFloat(distance.toFixed(2)); // Retornar a distância formatada com duas casas decimais como um número
+        return parseFloat(distance.toFixed(2)); // Retornar a distância formatada com duas casas decimais como um número
       }
     }
     function calculateMoney(distancia: number, valorPorKm: number): number {
@@ -31,23 +31,23 @@ export class PaymentService {
     }
 
     let time = formatTime(createCalculateDto.time);
-    let km   = formatDistance(createCalculateDto.km)
+    let km = formatDistance(createCalculateDto.km);
     let valueKm;
     switch (createCalculateDto.typeVehicle) {
       case 'motorcycle':
-        valueKm = 0.50
+        valueKm = 0.5;
         break;
       case 'tour':
-        valueKm = 0.75
+        valueKm = 0.75;
         break;
       case 'util':
-        valueKm = 1
+        valueKm = 1;
         break;
       case 'van':
-        valueKm = 1.50
+        valueKm = 1.5;
         break;
       case 'vuc':
-        valueKm = 1.90
+        valueKm = 1.9;
         break;
       default:
         break;
@@ -56,10 +56,10 @@ export class PaymentService {
     let pay = payFormat.replace(/\./g, '').toString();
     return {
       time: time,
-      km : km,
+      km: km,
       pay: pay,
-      payFormat: payFormat
-    }
+      payFormat: payFormat,
+    };
   }
 
   findAll() {
