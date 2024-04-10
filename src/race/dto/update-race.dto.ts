@@ -4,4 +4,5 @@ export class UpdateRaceDto {
     delete_at?:string;
     value?: string;
     idClientIo?: string;
+    plate?:string;
 }

@@ -23,6 +23,9 @@ export class Race {
   @Column()
   km: string;
 
+  @Column({ length: 10 })
+  plate: string;
+
   @Column({ length: 50 })
   vehicleType: string;
 
