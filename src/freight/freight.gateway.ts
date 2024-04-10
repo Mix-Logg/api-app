@@ -21,8 +21,8 @@ export class FreightGateway {
   // }
 
   @SubscribeMessage('talk')
-  handleEvent(@MessageBody() id : string,  message: any ): void {
-    this.server.to(id).emit('message', message);
+  handleEvent(@MessageBody() privateInfo : string ): void {
+    this.server.to(privateInfo[0]).emit('message', privateInfo[1]);
   }
 
   @SubscribeMessage('findAllFreight')
