@@ -3,4 +3,5 @@ export class UpdateRaceDto {
     idDriver?: number;
     delete_at?:string;
     value?: string;
+    idClientIo?: string;
 }
