@@ -8,13 +8,21 @@ import { Server } from 'socket.io';
 @WebSocketGateway()
 export class FreightGateway {
   @WebSocketServer() server:Server;
+
   constructor(
     private readonly freightService: FreightService,
   ){}
 
-  @SubscribeMessage('message')
-  handleEvent(@MessageBody() message : string ) {
+  // afterInit() {
+  //   this.server.on("connection", (socket) => {
+  //     console.log(socket.id); 
+  //     console.log(socket.rooms)
+  //   });
+  // }
 
+  @SubscribeMessage('talk')
+  handleEvent(@MessageBody() id : string,  message: any ): void {
+    this.server.to(id).emit('message', message);
   }
 
   @SubscribeMessage('findAllFreight')
@@ -44,5 +52,8 @@ export class FreightGateway {
   remove(@MessageBody() id: number) {
     return this.freightService.remove(id);
   }
+
   
 }
+
+
