@@ -50,7 +50,8 @@ export class RaceService {
     const response = await this.raceRepository.update(id, updateRaceDto);
     if (response.affected) {
       return {
-        id: id,
+        status: 200,
+        msg: 'Successful update'
       };
     }
     return 500;
