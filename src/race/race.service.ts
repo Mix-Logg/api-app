@@ -34,8 +34,8 @@ export class RaceService {
     return this.raceRepository.find();
   }
 
-  findAllOpen() {
-    return this.raceRepository.find({ where: { isVisible: '1' } });
+  findAllOpen( type: string) {
+    return this.raceRepository.find({ where: { isVisible: '1', vehicleType: type } });
   }
 
   async findHistory(id: number) {

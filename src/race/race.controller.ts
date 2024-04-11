@@ -17,9 +17,9 @@ export class RaceController {
     return this.raceService.findAll();
   }
 
-  @Get('open')
-  findAllOpen() {
-    return this.raceService.findAllOpen();
+  @Get('open/:type')
+  findAllOpen( @Param('type') type: string ) {
+    return this.raceService.findAllOpen(type);
   }
 
   @Get(':id')
