@@ -34,8 +34,10 @@ export class RaceService {
     return this.raceRepository.find();
   }
 
-  findAllOpen( type: string) {
-    return this.raceRepository.find({ where: { isVisible: '1', vehicleType: type } });
+  findAllOpen(type: string) {
+    return this.raceRepository.find({
+      where: { isVisible: '1', vehicleType: type },
+    });
   }
 
   async findHistory(id: number) {
@@ -47,14 +49,55 @@ export class RaceService {
   }
 
   async update(id: number, updateRaceDto: UpdateRaceDto) {
+    const res = await this.findOne(id);
+
+    if (!res) {
+      return {
+        status: 500,
+        msg: 'Race not found',
+      };
+    }
+
+    if (
+      updateRaceDto.confirmCodeInitial !== undefined &&
+      res.codeInitial !== updateRaceDto.confirmCodeInitial
+    ) {
+      return {
+        status: 500,
+        msg: 'Code Initial not the same',
+      };
+    }
+
+    if (
+      updateRaceDto.confirmCodeFinish !== undefined &&
+      res.codeFinish !== updateRaceDto.confirmCodeFinish
+    ) {
+      return {
+        status: 500,
+        msg: 'Code Finish not the same',
+      };
+    }
+
+    if (updateRaceDto.confirmCodeInitial !== undefined) {
+      updateRaceDto.confirmCodeInitial = Time();
+    }
+
+    if (updateRaceDto.confirmCodeFinish !== undefined) {
+      updateRaceDto.confirmCodeFinish = Time();
+    }
+
     const response = await this.raceRepository.update(id, updateRaceDto);
+
     if (response.affected) {
       return {
         status: 200,
-        msg: 'Successful update'
+        msg: 'Successful update',
       };
     }
-    return 500;
+    return {
+      status: 500,
+      msg: 'Failed to update',
+    };
   }
 
   async remove(id: number) {

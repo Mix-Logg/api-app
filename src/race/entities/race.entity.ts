@@ -54,6 +54,12 @@ export class Race {
   create_at: string;
 
   @Column({ length: 50 })
+  confirmCodeInitial: string;
+
+  @Column({ length: 50 })
+  confirmCodeFinish: string;
+
+  @Column({ length: 50 })
   delete_at: string;
 
   @Column({ length: 50, default: '1' })

@@ -5,4 +5,6 @@ export class UpdateRaceDto {
     value?: string;
     idClientIo?: string;
     plate?:string;
+    confirmCodeInitial?: string;
+    confirmCodeFinish?: string;
 }

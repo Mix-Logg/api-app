@@ -12,4 +12,5 @@ export class CreateRaceDto {
   codeFinish?: string;
   create_at?: string;
   isVisible?: string;
+  static codeInitial: any;
 }
