@@ -37,8 +37,10 @@ export class FreightGateway {
 
   @SubscribeMessage('updateStatus')
   async update(@MessageBody() updateFreightDto: UpdateFreightDto) {
-    this.server.emit('updateStatus', updateFreightDto.id); 
-    const response = await this.freightService.update(updateFreightDto.id, updateFreightDto);
+    setTimeout(async () => {
+      this.server.emit('updateStatus', updateFreightDto.id); 
+      await this.freightService.update(updateFreightDto.id, updateFreightDto);
+    }, 3000);
   }
 
   @SubscribeMessage('createRace')
