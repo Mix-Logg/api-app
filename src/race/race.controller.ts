@@ -22,6 +22,11 @@ export class RaceController {
     return this.raceService.findAllOpen(type);
   }
 
+  @Get('history/delivery/:id')
+  findAllHistory( @Param('id') id: number ) {
+    return this.raceService.findAllHistoryDriver(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.raceService.findOne(+id);

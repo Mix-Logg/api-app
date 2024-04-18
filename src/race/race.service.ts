@@ -44,6 +44,10 @@ export class RaceService {
     return await this.raceRepository.find({ where: { idClient: id } });
   }
 
+  async findAllHistoryDriver(id: number) {
+    return await this.raceRepository.find({ where: { idDriver: id } });
+  }
+
   findOne(id: number) {
     return this.raceRepository.findOne({ where: { id } });
   }
