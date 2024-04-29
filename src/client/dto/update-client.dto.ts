@@ -1,3 +1,6 @@
 export class UpdateClientDto {
-    delete_at?:string;
+  name?: string;
+  phone?: string;
+  email?: string;
+  password?: string;
 }
