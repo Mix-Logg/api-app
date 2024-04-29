@@ -1,4 +1,4 @@
-import { Inject, Injectable, ConflictException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
@@ -114,12 +114,21 @@ export class ClientService {
 
   async update(id: number, updateClientDto: UpdateClientDto) {
     try {
-      const allClients = await this.findAll();
+      // Verificar se o cliente com o ID fornecido existe
+      const clientToUpdate = await this.clientRepository.findOne({ where: { id: id } });
       
-      const isEmailExists = allClients.some(client => client.email === updateClientDto.email);
-      
-      if (isEmailExists) {
-        throw new ConflictException('Email already exists');
+      if (!clientToUpdate) {
+        throw new NotFoundException('Client not found');
+      }
+  
+      // Verificar se o email fornecido é diferente do email atual do cliente
+      if (updateClientDto.email !== clientToUpdate.email) {
+        // Verificar se o novo email já está sendo usado por outro cliente
+        const isEmailExists = await this.clientRepository.findOne({ where: { email: updateClientDto.email } });
+        
+        if (isEmailExists) {
+          throw new ConflictException('Email already exists');
+        }
       }
       
       await this.clientRepository.update(id, updateClientDto);
@@ -128,6 +137,7 @@ export class ClientService {
         msg: 'Successful Data Updated',
       };
     } catch (e) {
+      console.error(e);
       return {
         status: 500,
         msg: 'Error server internal',
