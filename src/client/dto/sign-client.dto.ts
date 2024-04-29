@@ -1,4 +1,4 @@
 export class Sign {
-    email:string;
-    password:string;
+  email: string;
+  password: string;
 }
