@@ -139,6 +139,7 @@ export class ClientService {
           return {
             status: 401,
             msg: 'Email already exists',
+            email: isEmailExists.email,
           };
         }
       }
