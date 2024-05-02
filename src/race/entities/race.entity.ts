@@ -29,6 +29,9 @@ export class Race {
   @Column({ length: 50 })
   vehicleType: string;
 
+  @Column({ length: 50 })
+  idPayment: string;
+
   @Column({ length: 150 })
   initial: string;
 

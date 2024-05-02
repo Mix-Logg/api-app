@@ -59,6 +59,10 @@ export class PaymentController {
     return this.paymentService.linkLoginWallet(id);
   }
 
+  @Get('register/:id')
+  linkRegisterWallet(@Param('id') id: string) {
+    return this.paymentService.linkRegisterWallet(id);
+  }
 
   @Patch('wallet/:id')
   @UseGuards(ThrottlerBehindProxyGuard)
@@ -78,4 +82,5 @@ export class PaymentController {
   remove(@Param('id') id: string) {
     return this.paymentService.remove(+id);
   }
+
 }
