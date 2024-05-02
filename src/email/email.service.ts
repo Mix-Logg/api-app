@@ -66,7 +66,7 @@ export class EmailService {
     `;
     const mailOptions = {
       to: email,
-      subject: 'Código de verificação Mixservlog!',
+      subject: 'Código de verificação Mixservlog! (não responda este e-mail)',
       html: htmlBody,
     };
     try {
