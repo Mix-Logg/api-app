@@ -29,14 +29,21 @@ export class PaymentService {
 
   async createPerson(createPersonDto: CreatePersonDto) {
     const person = await stripe.accounts.createPerson(
-      createPersonDto.stripID,
+      createPersonDto.striperID,
       {
         first_name: createPersonDto.first_name,
         last_name: createPersonDto.last_name,
+        email: createPersonDto.email,
         relationship: {
           representative: true,
-          title: createPersonDto.title,
+          title: 'agregado mix',
         },
+        dob: {
+          day  : createPersonDto.day,
+          month: createPersonDto.month,
+          year : createPersonDto.year,
+        },
+        
       }
     );
     return person.id
@@ -131,6 +138,16 @@ export class PaymentService {
     return loginLink.url
   }
 
+  async linkRegisterWallet(id: string){
+    const accountLink = await stripe.accountLinks.create({
+      refresh_url: 'https://example.com/reauth',
+      return_url: 'https://example.com/return',
+      account: id,
+      type: 'account_onboarding',
+    });
+    return accountLink;
+  }
+
   async updateWallet(id: string, updateWalletDto: UpdateWalletDto) {
     const date = new Date(); // Cria um novo objeto Date com a data e hora atuais
     const timestamp = Math.floor(date.getTime() / 1000); 
@@ -164,18 +181,7 @@ export class PaymentService {
           postal_code: updatePerson.postal_code,
           state: updatePerson.state,
         },
-        dob: {
-          day: updatePerson.day,
-          month: updatePerson.month,
-          year: updatePerson.year,
-        },
-        ssn_last_4: updatePerson.ssn_last_4,
-        phone: updatePerson.phone,
-        email: updatePerson.email,
         id_number: updatePerson.id_number,
-        relationship: {
-          executive: true,
-        },
       }
     );
     return person
