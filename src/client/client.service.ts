@@ -10,13 +10,22 @@ import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
 import Time from '../../hooks/time';
 import { Sign } from './dto/sign-client.dto';
+import { sendCodeEmail } from './dto/sendCodeEmail-client.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class ClientService {
+
   constructor(
     @Inject('CLIENT_REPOSITORY')
     private clientRepository: Repository<Client>,
+    private readonly emailService: EmailService
   ) {}
+
+  async sendCode(sendEmailDTO: sendCodeEmail) {
+    let res = await this.emailService.sendCode(sendEmailDTO.email); 
+    return res
+  }
 
   async sign(sign: Sign) {
     const email = sign.email;

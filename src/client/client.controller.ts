@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Sign } from './dto/sign-client.dto';
+import { sendCodeEmail } from './dto/sendCodeEmail-client.dto';
 @Controller('client')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
@@ -16,7 +25,11 @@ export class ClientController {
   sign(@Body() sign: Sign) {
     return this.clientService.sign(sign);
   }
-
+  @Post('sendCode')
+  async sendCode(@Body() sendEmailDTO: sendCodeEmail) {
+    return this.clientService.sendCode(sendEmailDTO);
+  }
+  
   @Get()
   findAll() {
     return this.clientService.findAll();
@@ -39,6 +52,6 @@ export class ClientController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.clientService.remove(+id,);
+    return this.clientService.remove(+id);
   }
 }
