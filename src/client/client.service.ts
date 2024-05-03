@@ -23,9 +23,31 @@ export class ClientService {
   ) {}
 
   async sendCode(sendEmailDTO: sendCodeEmail) {
-    let res = await this.emailService.sendCode(sendEmailDTO.email); 
-    return res
+    const email = sendEmailDTO.email;
+    try {
+      // Verificar se o e-mail já existe no banco de dados
+      const existingEmail = await this.clientRepository.findOne({
+        where: { email },
+      });
+      if (!existingEmail) {
+        return {
+          status: 404,
+          msg: 'Email not found',
+        };
+      }
+  
+      // Se o e-mail existir, enviar o código de verificação
+      const res = await this.emailService.sendCode(email);
+      return res;
+    } catch (e) {
+      console.log(e);
+      return {
+        status: 500,
+        msg: 'Error internal',
+      };
+    }
   }
+  
 
   async sign(sign: Sign) {
     const email = sign.email;

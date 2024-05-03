@@ -52,17 +52,17 @@ export class EmailService {
     const code = generateSecurityCode();
     const htmlBody = `
     <body style="margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div style="background-color: #FF5F00; font-weight: bold; padding: 24px; text-align: center;">
-        
-        <p style="font-size: 32px; color: #F4F4F4;">Olá!</p>
-        <div style="justify-items: center; align-items: center;">
-            <p style="font-size: 14px; color: #F4F4F4; width: 400px; text-align: justify;">Por favor, retorne à tela de login e insira o código abaixo para confirmar sua identidade.</p>
+      <div style="background-color: #FF5F00; font-weight: bold; padding: 24px; text-align: center;">
+          
+          <p style="font-size: 32px; color: #F4F4F4;">Olá!</p>
+          <div style="justify-items: center; align-items: center;">
+              <p style="font-size: 14px; color: #F4F4F4; width: 400px; text-align: justify;">Por favor, retorne à tela de login e insira o código abaixo para confirmar sua identidade.</p>
 
-            <p style="font-size: 28px; color: #FF5F00; font-weight: bold; background-color: #F4F4F4; padding: 10px; border-radius: 10px;">${code}</p>
-        </div>
-        <p style="font-size: 10px; color: #E4E4E4; font-weight: light;">Este código é válido por 120 segundos, contados a partir do recebimento deste e-mail.</p>
-    </div>
-</body>
+              <p style="font-size: 28px; color: #FF5F00; font-weight: bold; background-color: #F4F4F4; padding: 10px; border-radius: 10px;">${code}</p>
+          </div>
+          <p style="font-size: 10px; color: #E4E4E4; font-weight: light;">Este código é válido por 120 segundos, contados a partir do recebimento deste e-mail.</p>
+      </div>
+    </body>
     `;
     const mailOptions = {
       to: email,
