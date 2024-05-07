@@ -32,12 +32,11 @@ export class RecordPlugController {
 
   @Get('auxiliary')
   findStatusAuxiliary() {
-    console.log('time-line Auxiliary')
+    return this.recordPlugService.findTimelineAuxiliary();
   }
 
   @Get('driver')
   findStatusDriver() {
-    console.log('time-line Driver')
     return this.recordPlugService.findTimelineDriver();
   }
 

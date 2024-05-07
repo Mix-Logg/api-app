@@ -4,14 +4,15 @@ import { UpdateRecordPlugDto } from './dto/update-record_plug.dto';
 import { Repository } from 'typeorm';
 import { RecordPlug } from './entities/record_plug.entity';
 import { DriverService } from 'src/driver/driver.service';
-
+import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 
 @Injectable()
 export class RecordPlugService {
   constructor(
     @Inject('RECORDPLUG_REPOSITORY')
     private recordPlugRepository: Repository<RecordPlug>,
-    private readonly driverService: DriverService
+    private readonly driverService: DriverService,
+    private readonly auxiliaryService: AuxiliaryService
   ) {}
 
   async create(recordPlugRepository: CreateRecordPlugDto) {
@@ -48,8 +49,34 @@ export class RecordPlugService {
       })
     );
     return plugPeoples;
-}
+  }
 
+  async findTimelineAuxiliary() {
+    let plugPeoples = []; 
+    const auxiliarys = await this.auxiliaryService.findAll();
+    await Promise.all(
+      auxiliarys.map(async (auxiliary) => {
+        let plug = await this.findOne(auxiliary.id, 'auxiliary');
+        if (plug != 500 && plug && typeof plug !== 'number') {
+          const params = {
+                aproved: plug.aproved,
+                step: plug.timeline
+          };
+          const plugPeople = {
+            id: auxiliary.id,
+            plug: params
+          };
+          return plugPeoples.push(plugPeople);
+        } 
+        const plugPeople = {
+          id: auxiliary.id,
+          plug: auxiliary.cadastralStatus
+        };
+        plugPeoples.push(plugPeople);
+      })
+    );
+    return plugPeoples;
+  }
 
   async findOne(uuid: number, am: string) {
     const res = await this.recordPlugRepository.findOne({ where: { uuid, am } });
