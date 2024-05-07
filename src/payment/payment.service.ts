@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { UpdatePersonDto } from './dto/update-person.dto';
+import { UpdateDonateDto } from './dto/update-donate.dto';
+import { CreateWalletDto } from './dto/create-wallet.dto';
 import { CreateCalculateDto } from './dto/create-calculate.dto';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { UpdatePersonDto } from './dto/update-person.dto';
 import { CreateDonateDto } from './dto/create-donate-dto';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 const stripe = require("stripe")('sk_test_51OwOuTP7k6khtfqBRRhYSD7KTmf45WjdPz18D5bzm9EOptSg3qotsXgWg8iQAdG2ciihOcxvAQkeLcZyFT4D0pp4001UYwGQfT');
@@ -58,6 +59,7 @@ export class PaymentService {
     const paymentIntent = await stripe.paymentIntents.create({
         amount: createDonateDto.amount,
         currency: 'brl',
+        customer: customer.id,
         automatic_payment_methods: {
           enabled: true,
         },
@@ -91,6 +93,13 @@ export class PaymentService {
     function calculateMoney(distancia: number, valorPorKm: number): number {
       return distancia * valorPorKm;
     }
+    const maskMoneyBRL = (value) => {
+      const amount = (value / 100).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+      return amount
+    }
 
     let time = formatTime(createCalculateDto.time);
     let km = formatDistance(createCalculateDto.km);
@@ -114,8 +123,9 @@ export class PaymentService {
       default:
         break;
     }
-    let payFormat = calculateMoney(km, valueKm).toFixed(2);
-    let pay = payFormat.replace(/\./g, '').toString();
+    let amount = calculateMoney(km, valueKm).toFixed(2);
+    let pay = amount.replace(/\./g, '').toString();
+    let payFormat = maskMoneyBRL(pay)
     return {
       time: time,
       km: km,
@@ -155,16 +165,25 @@ export class PaymentService {
     const account = await stripe.accounts.update(
       id,
       {
-        business_profile: {
-          mcc: updateWalletDto.mcc,
-          url: updateWalletDto.url,
-        },
-        capabilities: {
-          transfers: {
-            requested: true,
-          },
-        },
-        business_type: 'individual',
+        // business_profile: {
+        //   mcc: updateWalletDto.mcc,
+        //   url: updateWalletDto.url,
+        // },
+        // capabilities: {
+        //   transfers: {
+        //     requested: true,
+        //   },
+        // },
+        // business_type: 'individual',
+        // settings: {
+        //   payouts: {
+        //     debit_negative_balances: false,
+        //     schedule: {
+        //       delay_days: 7,
+        //       interval: 'daily'
+        //     }
+        //   }
+        // }
       }
     );
     return account
@@ -187,6 +206,18 @@ export class PaymentService {
     return person
   }
 
+  async updateDonate(id: string, updateDonate: UpdateDonateDto){
+    const paymentIntent = await stripe.paymentIntents.update(
+      id,
+      {
+        transfer_data: {
+          destination: updateDonate.destination,
+        },
+      }
+    );
+    return paymentIntent
+  }
+
   async transferer(createTransferDto:CreateTransferDto){
     const charge = await stripe.charges.create({
       amount: createTransferDto.amount,
@@ -202,11 +233,61 @@ export class PaymentService {
     return transfer
   }
 
-  async findBalance(id:string){
-    const balance = await stripe.balance.retrieve({
-      stripeAccount: id,
+  async payment(createTransferDto:CreateTransferDto){
+    const customer = await stripe.customers.create();
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: createTransferDto.amount,
+      currency: 'brl',
+      customer: customer.id,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+      application_fee_amount: 123,
+      transfer_data: {
+        destination: createTransferDto.destination,
+      },
     });
+    return paymentIntent
+  }
+
+  async updateTransferer(id: string){
+    const transfer = await stripe.transfers.update(id, {
+      date: Math.floor(Date.now() / 1000) 
+    });
+  }
+
+  async paymentInstant(id: string){
+    const payout = await stripe.payouts.create(
+      {
+        amount: 490,
+        currency: 'brl',
+        method: 'instant',
+        destination: '{{BANK_ACCOUNT_TOKEN_ID}}',
+      },
+      {
+        stripeAccount: id,
+      }
+    );
+    return payout
+  }
+
+  async findBalance(id:string){
+    const balance = await stripe.balance.retrieve(
+      {
+        expand: ['instant_available.net_available'],
+      },
+      {
+        stripeAccount: id,
+      }
+    );
     return balance
+  }
+
+  async findBalanceTransaction(id:string){
+    const balanceTransactions = await stripe.balanceTransactions.list({
+      limit: 3,
+    });
+    return balanceTransactions
   }
 
   async remove(id: number) {

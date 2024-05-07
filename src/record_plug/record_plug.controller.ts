@@ -30,6 +30,17 @@ export class RecordPlugController {
     return this.recordPlugService.findOne(uuid, am);
   }
 
+  @Get('auxiliary')
+  findStatusAuxiliary() {
+    console.log('time-line Auxiliary')
+  }
+
+  @Get('driver')
+  findStatusDriver() {
+    console.log('time-line Driver')
+    return this.recordPlugService.findTimelineDriver();
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: number,
