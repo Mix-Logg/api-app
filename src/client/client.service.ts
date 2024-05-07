@@ -10,13 +10,44 @@ import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
 import Time from '../../hooks/time';
 import { Sign } from './dto/sign-client.dto';
+import { sendCodeEmail } from './dto/sendCodeEmail-client.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class ClientService {
+
   constructor(
     @Inject('CLIENT_REPOSITORY')
     private clientRepository: Repository<Client>,
+    private readonly emailService: EmailService
   ) {}
+
+  async sendCode(sendEmailDTO: sendCodeEmail) {
+    const email = sendEmailDTO.email;
+    try {
+      // Verificar se o e-mail já existe no banco de dados
+      const existingEmail = await this.clientRepository.findOne({
+        where: { email },
+      });
+      if (!existingEmail) {
+        return {
+          status: 404,
+          msg: 'Email not found',
+        };
+      }
+  
+      // Se o e-mail existir, enviar o código de verificação
+      const res = await this.emailService.sendCode(email);
+      return res;
+    } catch (e) {
+      console.log(e);
+      return {
+        status: 500,
+        msg: 'Error internal',
+      };
+    }
+  }
+  
 
   async sign(sign: Sign) {
     const email = sign.email;
