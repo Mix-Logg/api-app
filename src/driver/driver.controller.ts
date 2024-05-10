@@ -5,6 +5,7 @@ import { UpdateCnh } from './dto/update-cnh-driver.dto';
 import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { UpdateStatus } from './dto/update-status-driver.dto';
 import { getCpf } from './dto/get-driver.dto';
+import { ValidateDates } from './dto/validate-driver.dto';
 
 @Controller('driver')
 export class DriverController {
@@ -18,6 +19,11 @@ export class DriverController {
   @Post('getUser')
   async getUser(@Body() getUser: getCpf) {
     return this.driverService.getUser(getUser.cpf);
+  }
+
+  @Post('validate')
+  async validate(@Body() validateDates:ValidateDates){
+    return this.driverService.validateDates(validateDates);
   }
 
   @Post('cnh')

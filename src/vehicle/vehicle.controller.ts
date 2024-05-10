@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, StreamableFile, } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
@@ -6,7 +6,8 @@ import {  UpdateAntt } from './dto/update-antt-vehicle.dto';
 import { UpdateAddressDto } from './dto/update-address-dto'
 import { UpdateClv } from './dto/update-clv-vehicle.dto'
 import { UpdateOwner,UpdateCnpjOwner, UpdateLegalOwner } from './dto/update-owner-vehicle.dto'
-
+import { createReadStream } from 'fs';
+import { join } from 'path';
 @Controller('vehicle')
 export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
@@ -29,6 +30,12 @@ export class VehicleController {
   {
     return this.vehicleService.findOne(id, am);
   }
+
+  @Get('report')
+  report(){
+    return this.vehicleService.report()
+  }
+
 
   @Patch('antt')
   updateAntt(@Body() updateAntt: UpdateAntt) {

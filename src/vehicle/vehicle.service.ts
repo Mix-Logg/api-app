@@ -7,12 +7,13 @@ import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { Vehicle } from './entities/vehicle.entity';
 import { Repository } from 'typeorm';
 import { UpdateAddressDto } from './dto/update-address-dto';
-
+import { DriverService } from 'src/driver/driver.service';
 @Injectable()
 export class VehicleService {
   constructor(
     @Inject('VEHICLE_REPOSITORY') 
     private vehicleRepository: Repository<Vehicle>,
+    private readonly driverService : DriverService
   ){}
   
   create(createVehicleDto: CreateVehicleDto) {
@@ -117,6 +118,43 @@ export class VehicleService {
     }else{
       return 500
     }
+  }
+
+  async report(){
+    let reportDate = [];
+    const vehicles = await this.findAll();
+
+    for (const vehicle of vehicles) {
+        if (vehicle.am !== 'driver') {
+            continue;
+        }
+        
+        let driver = await this.driverService.findOne(vehicle.uuid);
+        
+        if (driver == null) {
+            continue;
+        }
+        
+        let owner = {
+            plate: vehicle.plate,
+            type: vehicle.type,
+            yearManufacture: vehicle.yearManufacture,
+            brand: vehicle.brand,
+            color: vehicle.color,
+            driver: driver.name,
+            cadaster: vehicle.cadastre,
+            nameOwner: vehicle.nameOwner,
+            cpfOwner: vehicle.cpfOwner,
+            phoneOwner: vehicle.phoneOwner,
+            cnpj: vehicle.cnpjOwner,
+            stateRegistrationOwner: vehicle.stateRegistrationOwner,
+            companyName: vehicle.companynameOwner
+        };
+        
+        reportDate.push(owner);
+    }
+    
+    return reportDate;
   }
 
   remove(id: number) {

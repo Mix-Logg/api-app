@@ -6,7 +6,7 @@ import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { Driver } from './entities/driver.entity'
 import { DeepPartial, Repository } from 'typeorm';
 import { AddressService } from 'src/address/address.service';
-
+import { ValidateDates } from './dto/validate-driver.dto';
 @Injectable()
 export class DriverService {
   constructor(
@@ -25,6 +25,52 @@ export class DriverService {
 
   findOne(id: number) {
     return this.driverRepository.findOne({where:{id}});
+  }
+
+  validateDates(validateDates:ValidateDates){
+    switch (validateDates.validate) {
+      case 'cnh':
+          try {
+              const CurrentDate = new Date();
+              const dateCNH = new Date(validateDates.value);
+              dateCNH.setDate(dateCNH.getDate() + 30);
+              if (dateCNH < CurrentDate) {
+                return {
+                  status: 205,
+                  msg: "Expired driver's license"
+                };
+              }
+              return {
+                status: 200,
+                msg: "Valid driver's license"
+              };
+          } catch (error) {
+            return {
+              status: 500,
+              msg: "Internal Server Error"
+            };
+      }
+      case 'age':
+        const dobDate = new Date(validateDates.value);
+        const today = new Date();
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const monthDiff = today.getMonth() - dobDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+          age--;
+        }
+        if(age >= 18){
+          return {
+            status: 200,
+            msg: "Driver is of legal age"
+          };
+        }
+        return {
+          status: 205,
+          msg: "Driver is not of legal age"
+        }; 
+      default:
+        break;
+    }
   }
 
   async findDriverEmail(email: string) {
