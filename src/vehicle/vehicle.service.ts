@@ -121,7 +121,8 @@ export class VehicleService {
   }
 
   async report(){
-    let reportDate = [];
+    let reportDate = []; 
+    
     const vehicles = await this.findAll();
 
     for (const vehicle of vehicles) {
