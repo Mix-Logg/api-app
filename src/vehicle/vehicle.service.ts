@@ -122,9 +122,7 @@ export class VehicleService {
 
   async report(){
     let reportDate = []; 
-    
     const vehicles = await this.findAll();
-
     for (const vehicle of vehicles) {
         if (vehicle.am !== 'driver') {
             continue;
