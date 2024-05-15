@@ -1,8 +1,8 @@
 export class CreateRecordPlugDto {
   am: string
-  email: string
+  email?: string
   id_admin: number
-  operation: string
+  operation?: string
   timeline: number
   uuid: number
 }

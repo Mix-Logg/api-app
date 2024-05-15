@@ -25,7 +25,11 @@ export class AuthService {
         'user':username,
       }
       const  token =  await this.jwtService.signAsync(payload);
-      return token
+      return {
+        status:201,
+        token:token,
+        access:user.access
+      }
     }
 
     @HttpCode(HttpStatus.OK)

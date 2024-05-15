@@ -15,11 +15,11 @@ export class Admin {
     @Column({ length: 150 })
     email: string;
 
-    @Column({ length: 200, default:null })
-    img: string;
+    @Column({ length: 1 })
+    access: string;
     
-    @Column({type: "timestamp", default:null})
-    log_at: Date;
+    // @Column({type: "timestamp", default:null})
+    // log_at: Date;
 
     @CreateDateColumn({type: "timestamp"})
     create_at: Date;

@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { RecordPlug } from './entities/record_plug.entity';
 import { DriverService } from 'src/driver/driver.service';
 import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
-
+import findTimeSP from 'hooks/time';
 @Injectable()
 export class RecordPlugService {
   constructor(
@@ -91,6 +91,8 @@ export class RecordPlugService {
     id: number,
     updateRecordPlugDto: UpdateRecordPlugDto,
   ) {
+    const date = await findTimeSP();
+    updateRecordPlugDto.update_at = date;
     const res = await this.recordPlugRepository.update(id, updateRecordPlugDto);
     if(res.affected === 1){
       return 200

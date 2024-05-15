@@ -39,8 +39,8 @@ export class RecordPlug {
   create_at: Date;
 
   @CreateDateColumn({ type: 'timestamp', default: null })
-  update_at: Date;
+  update_at: string;
 
   @DeleteDateColumn({ type: 'timestamp', default: null })
-  delete_at: Date;
+  delete_at: string;
 }

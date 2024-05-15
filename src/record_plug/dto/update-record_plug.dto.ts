@@ -9,5 +9,6 @@ export class UpdateRecordPlugDto extends PartialType(CreateRecordPlugDto) {
   aproved?:string;
   operation?: string;
   motion?: string;
-  delete_at?:Date;
+  update_at?: string;
+  delete_at?: string;
 }
