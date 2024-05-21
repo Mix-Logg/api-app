@@ -24,6 +24,19 @@ export class AuxiliaryService {
     
   }
 
+  async findByIds(Ids: number[]){
+    if(Ids.length == 0){
+      return {
+        status: 500,
+        message:'No have id'
+      }
+    }
+    const auxiliary = await this.auxiliaryRepository.createQueryBuilder('auxiliary')
+    .where('auxiliary.id IN (:...ids)', { ids: Ids })
+    .getMany();
+    return auxiliary
+  }
+
   async findOne(id: number) {
     const response = await this.auxiliaryRepository.findOne({where:{id}});
     return response

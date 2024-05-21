@@ -49,6 +49,52 @@ export class OperationService {
     }
   }
 
+  async findActive(){
+    const active = await this.operationRepository.find({
+      where: {
+        status:'1',
+        delete_at: IsNull()
+      }
+    });
+    let driverData = active
+    .filter(item => item.am === "driver")
+    .map(item => ({ id: item.uuid, }));
+    let auxiliaryData = active
+    .filter(item => item.am === "auxiliary")
+    .map(item => ({ id: item.uuid, }));
+    const driverIds = [...new Set(driverData.map(objeto => objeto.id))];
+    const auxiliaryIds = [...new Set(auxiliaryData.map(objeto => objeto.id))];
+    return {
+      driver:driverIds,
+      auxiliary:auxiliaryIds
+    }
+  }
+
+  async findInactive() {
+    const active = await this.findActive()
+    const inactive = await this.operationRepository.find({
+      where: {
+        status: '0',
+      }
+    });
+    const inactiveDriverIds = inactive
+      .filter(item => item.am === "driver")
+      .map(item => item.uuid);
+  
+    const inactiveAuxiliaryIds = inactive
+      .filter(item => item.am === "auxiliary")
+      .map(item => item.uuid);
+  
+    // Filtrar os IDs inativos que não estão presentes em active
+    const filteredInactiveDriverIds = inactiveDriverIds.filter(id => !active.driver.includes(id));
+    const filteredInactiveAuxiliaryIds = inactiveAuxiliaryIds.filter(id => !active.auxiliary.includes(id));
+  
+    return {
+      driver: filteredInactiveDriverIds,
+      auxiliary: filteredInactiveAuxiliaryIds
+    };
+  }
+  
   async update(id: number, updateOperationDto: UpdateOperationDto) {
     const time = findTimeSP()
     updateOperationDto.update_at = time;

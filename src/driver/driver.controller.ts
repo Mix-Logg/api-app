@@ -6,14 +6,19 @@ import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { UpdateStatus } from './dto/update-status-driver.dto';
 import { getCpf } from './dto/get-driver.dto';
 import { ValidateDates } from './dto/validate-driver.dto';
-
+import { FindIds  } from './dto/findIds-driver-dto';
 @Controller('driver')
 export class DriverController {
   constructor(private readonly driverService: DriverService) {}
-
+  
   @Post()
   async create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
+  }
+  
+  @Post('findByIds')
+  findByIds(@Body() findIds: FindIds ){
+    return this.driverService.findByIds(findIds.Ids);
   }
 
   @Post('getUser')
@@ -45,6 +50,7 @@ export class DriverController {
   findOne(@Param('id') id: string) {
     return this.driverService.findOne(+id);
   }
+
 
   @Get(':cpf/:rg')
   findOneDriver(

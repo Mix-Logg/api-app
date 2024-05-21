@@ -25,6 +25,28 @@ export class AvalidPhotoService {
     return this.avalidPhotoRepository.find({ where: { uuid, am } }); 
   }
 
+  async findRejected(){
+    const rejected = await this.avalidPhotoRepository.find({ where: { 
+      valid:'0',
+    }
+    }); 
+
+    let driverData = rejected
+    .filter(item => item.am === "driver")
+    .map(item => ({ id: item.uuid, }));
+
+    let auxiliaryData = rejected
+    .filter(item => item.am === "auxiliary")
+    .map(item => ({ id: item.uuid, }));
+    
+    const driverIds = [...new Set(driverData.map(objeto => objeto.id))];
+    const auxiliaryIds = [...new Set(auxiliaryData.map(objeto => objeto.id))];
+    return {
+      driver:driverIds,
+      auxiliary:auxiliaryIds
+    }
+  }
+
   async update( updateAvalidPhotoDto: UpdateAvalidPhotoDto) {
     const id = updateAvalidPhotoDto.id
     const res = await this.avalidPhotoRepository

@@ -24,6 +24,25 @@ export class RecordPlugService {
     return this.recordPlugRepository.find();
   }
 
+  async findWhere(where: string,  value: string, where2?: string,  value2?: string){
+    const res = await this.recordPlugRepository.find({ where: { 
+      [where]:value,
+      [where2]:value2
+    } });
+    let driverData = res
+    .filter(item => item.am === "driver")
+    .map(item => ({ id: item.uuid, }));
+    let auxiliaryData = res
+    .filter(item => item.am === "auxiliary")
+    .map(item => ({ id: item.uuid, }));
+    const driverIds = await driverData.map(objeto => objeto.id);
+    const auxiliaryIds = await auxiliaryData.map(objeto => objeto.id);
+    return {
+      driver:driverIds,
+      auxiliary:auxiliaryIds
+    }
+  }
+
   async findTimelineDriver() {
     let plugPeoples = []; 
     const drivers = await this.driverService.findAll();

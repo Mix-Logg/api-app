@@ -17,6 +17,16 @@ export class OperationController {
     return this.operationService.findAll();
   }
 
+  @Get('inactive')
+  findInactive() {
+    return this.operationService.findInactive();
+  }
+
+  @Get('active')
+  findActive() {
+    return this.operationService.findActive();
+  }
+
   @Get(':id/:am')
   findOne(@Param('id') id: number, @Param('am') am: string) {
     return this.operationService.findOne(+id, am);

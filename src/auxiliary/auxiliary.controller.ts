@@ -5,7 +5,7 @@ import { UpdateStatus } from './dto/update-status-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-auxiliary.dto';
 import { UpdateCpf } from './dto/update-cpf-auxiliary.dto';
 import { getCpf } from './dto/get-auxiliary.dto';
-
+import { FindIds } from './dto/findIds-auxiliary-dto';
 @Controller('auxiliary')
 export class AuxiliaryController {
   constructor(private readonly auxiliaryService: AuxiliaryService) {}
@@ -13,6 +13,11 @@ export class AuxiliaryController {
   @Post()
   create(@Body() createAuxiliaryDto: CreateAuxiliaryDto) {
     return this.auxiliaryService.create(createAuxiliaryDto);
+  }
+
+  @Post('findByIds')
+  findByIds(@Body() findIds: FindIds ){
+    return this.auxiliaryService.findByIds(findIds.Ids);
   }
 
   @Get()

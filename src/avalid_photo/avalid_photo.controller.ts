@@ -26,6 +26,11 @@ export class AvalidPhotoController {
     return this.avalidPhotoService.findOne(id, am);
   }
 
+  @Get('Rejected')
+  findRejected() {
+    return this.avalidPhotoService.findRejected();
+  }
+
   @Patch()
   update(@Body() updateAvalidPhotoDto: UpdateAvalidPhotoDto) {
     return this.avalidPhotoService.update(updateAvalidPhotoDto);

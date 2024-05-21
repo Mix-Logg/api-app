@@ -2,6 +2,9 @@ import { Entity, Column, PrimaryGeneratedColumn , UpdateDateColumn, CreateDateCo
 
 @Entity()
 export class Operation {
+    filter(arg0: (item: any) => boolean) {
+      throw new Error('Method not implemented.');
+    }
     @PrimaryGeneratedColumn()
     id: number;
 

@@ -40,6 +40,14 @@ export class RecordPlugController {
     return this.recordPlugService.findTimelineDriver();
   }
 
+  @Get(':where/:value/:where2/:value2')
+  findWhere(@Param('where') where: string, @Param('value') value: string, @Param('where2') where2: string, @Param('value2') value2: string) {
+    if (where2 !== undefined && value2 !== undefined) {
+      return this.recordPlugService.findWhere(where, value, where2, value2);
+    } 
+    return this.recordPlugService.findWhere(where, value);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: number,
