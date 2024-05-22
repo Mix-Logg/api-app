@@ -7,6 +7,7 @@ export class UpdateRecordPlugDto extends PartialType(CreateRecordPlugDto) {
   timeline?: number;
   am?: string;
   aproved?:string;
+  occurrence?:string;
   operation?: string;
   motion?: string;
   update_at?: string;

@@ -32,6 +32,9 @@ export class RecordPlug {
   @Column({ length: 50, default: null})
   motion: string;
 
+  @Column({ length: 50, default: null})
+  occurrence: string;
+
   @Column({ length: 150 })
   email: string;
 

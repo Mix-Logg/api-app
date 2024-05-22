@@ -21,11 +21,12 @@ import { RaceModule } from './race/race.module';
 import { ClientModule } from './client/client.module';
 import { PaymentModule } from './payment/payment.module';
 import { OperationModule } from './operation/operation.module';
+import { LeadModule } from './lead/lead.module';
 
 
 
 @Module({
-  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, PaymentModule, OperationModule],
+  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, PaymentModule, OperationModule, LeadModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })
