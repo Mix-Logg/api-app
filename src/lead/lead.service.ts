@@ -63,8 +63,26 @@ export class LeadService {
     }
   }
 
-  update(id: number, updateLeadDto: UpdateLeadDto) {
-    return `This action updates a #${id} lead`;
+  async update(id: number, updateLeadDto: UpdateLeadDto) {
+    const lead = await this.findOne(id);
+    if(lead.status == 500){
+      return {
+        status:404,
+        message:'Lead does not exist'
+      }
+    }
+    const res = await this.leadRepository.update(id, updateLeadDto);
+    if(res.affected){
+      return {
+        status:200,
+         message:'Lead updated successfully'
+      }
+    }
+    return {
+      status:500,
+      message:'Server error'
+    }
+
   }
 
   async upload(leads: string[] , uploadLeadDto: UploadLeadDto) {

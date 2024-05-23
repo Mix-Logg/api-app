@@ -13,18 +13,21 @@ export class Lead {
     
     @Column({ length: 50, default:null })
     phone: string;
+    
+    @Column({ length: 200, default:null })
+    observation: string;
 
     @Column({ length: 50, default:null })
     typeVehicle: string;
-
-    @Column({ length: 200, default:null })
-    occurrence: string;
 
     @Column({ length: 1, default:'0' })
     status: string;
 
     @Column({length: 50})
     create_at: string;
+
+    @Column({ default:null })
+    update_at_occurrence: string;
 
     @Column({ default:null })
     update_at: string;

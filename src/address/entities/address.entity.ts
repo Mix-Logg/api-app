@@ -11,36 +11,33 @@ export class Address {
     @Column()
     uuid: number;
 
-    @Column({ length: 8 })
+    @Column({ length: 8, default: null })
     zipCode: string;
 
-    @Column({ length: 150 })
+    @Column({ length: 150, default: null })
     street: string;
 
-    @Column()
+    @Column({default: null})
     number: number;
 
     @Column({ length: 80, default:null })
     complement: string;
 
-    @Column({ length: 60 })
+    @Column({ length: 60, default: null })
     district: string;
 
     @Column({ length: 40, default: null })
     city: string;
 
-    @Column({ length: 2 })
+    @Column({ length: 2, default: null })
     uf: string;
 
+    @Column({ length: 50, default: null })
+    create_at: string;
 
-    // ######TIMESTAMP###### \\
+    @Column({ length: 50, default: null })
+    update_at: string;
 
-    @CreateDateColumn({type: "timestamp"})
-    create_at: Date;
-
-    @UpdateDateColumn({type: "timestamp", default:null, })
-    update_at: Date;
-
-    @Column({ type: "timestamp", default:null, })
-    delete_at: Date;
+    @Column({ length: 50, default: null })
+    delete_at: string;
 }

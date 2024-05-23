@@ -30,8 +30,15 @@ export class AdminService {
     return `This action returns all admin`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
+  async findOne(id: number) {
+    const admin = await this.adminRepository.findOne({where:{id}});
+    if(admin != null){
+      return admin
+    }
+    return {
+      status:500,
+      message:'Admin does not exist'
+    }
   }
 
   findUser(user: string) {
