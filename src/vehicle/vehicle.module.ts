@@ -9,5 +9,6 @@ import { DriverModule } from 'src/driver/driver.module';
   imports:[DatabaseModule, DriverModule],
   controllers: [VehicleController],
   providers: [...vehicleProviders,VehicleService],
+  exports:[VehicleService]
 })
 export class VehicleModule {}

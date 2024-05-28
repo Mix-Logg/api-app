@@ -62,6 +62,6 @@ export class Auxiliary {
     @UpdateDateColumn({type: "timestamp", default:null, })
     update_at: Date;
 
-    @Column({ type: "timestamp", default:null, })
-    delete_at: Date;
+    @Column({ default:null, })
+    delete_at: string;
 }

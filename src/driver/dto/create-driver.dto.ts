@@ -3,8 +3,8 @@ export class CreateDriverDto {
   phone:   string
   name:    string
   create_at : Date
-  update_at : null
-  delete_at :  null
+  update_at ?: null
+  delete_at ?:  string
 }
 
 

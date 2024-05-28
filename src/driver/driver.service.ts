@@ -4,9 +4,11 @@ import { UpdateStatus } from './dto/update-status-driver.dto';
 import { UpdateCnh } from './dto/update-cnh-driver.dto';
 import { UpdateCpf } from './dto/update-cpf-driver.dto';
 import { Driver } from './entities/driver.entity'
-import { DeepPartial, In, Repository, getRepository } from 'typeorm';
+import { DeepPartial, In, Repository, } from 'typeorm';
+import { UpdateDriver } from './dto/update-driver.dto';
 import { AddressService } from 'src/address/address.service';
 import { ValidateDates } from './dto/validate-driver.dto';
+import FindTimeSP from 'hooks/time';
 @Injectable()
 export class DriverService {
   constructor(
@@ -19,8 +21,10 @@ export class DriverService {
     return response.id
   }
 
-  findAll() {
-    return this.driverRepository.find();
+  async findAll() {
+    return await this.driverRepository.createQueryBuilder('driver')
+    .where('driver.delete_at IS NULL')
+    .getMany();
   }
 
   findOne(id: number) {
@@ -187,8 +191,22 @@ export class DriverService {
     }
   }
   
-  remove(id: number) {
-    return `This action removes a #${id} driver`;
+  async remove(id: number) {
+    const time = FindTimeSP();
+    const DeleteDto = {
+      delete_at:time
+    }
+    const response = await this.driverRepository.update(id, DeleteDto);
+    if(response.affected){
+      return {
+        message: 'Successfully deleted',
+        status: 200
+      }
+    }
+    return {
+      message: 'Error in deleting',
+      status: 500
+    }
   }
   
 }

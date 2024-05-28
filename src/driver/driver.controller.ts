@@ -70,7 +70,7 @@ export class DriverController {
     return this.driverService.update(+id, updateDriverDto);
   }
 
-  @Delete(':id')
+  @Patch('delete/:id')
   remove(@Param('id') id: string) {
     return this.driverService.remove(+id);
   }

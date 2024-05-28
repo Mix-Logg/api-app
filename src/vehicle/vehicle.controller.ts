@@ -30,6 +30,12 @@ export class VehicleController {
   {
     return this.vehicleService.findOne(id, am);
   }
+  
+  @Get(':plate')
+  findPlate(@Param('plate') plate: string)
+  {
+    return this.vehicleService.findOnePlate(plate);
+  }
 
   @Get('report')
   report(){

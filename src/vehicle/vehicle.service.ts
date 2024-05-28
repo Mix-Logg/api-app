@@ -24,6 +24,22 @@ export class VehicleService {
     return this.vehicleRepository.find();
   }
 
+  async findOnePlate( plate: string){
+    const response = await this.vehicleRepository.findOne({where:{plate}});
+    if(response != null){
+      return response
+    }
+    return {
+      status:500,
+      message:'Plate does not exist'
+    }
+  }
+
+  async findOneId (id: number) {
+    const response = await this.vehicleRepository.findOne({where:{id}});
+    return response
+  }
+
   async findOne (uuid: number, am:string ) {
     const response = await this.vehicleRepository.findOne({where:{uuid, am}});
     return response

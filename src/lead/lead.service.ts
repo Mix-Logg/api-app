@@ -129,7 +129,7 @@ export class LeadService {
     return report;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} lead`;
   }
 }

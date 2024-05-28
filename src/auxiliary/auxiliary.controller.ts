@@ -58,7 +58,7 @@ export class AuxiliaryController {
     return this.auxiliaryService.update(+id, updateDriverDto);
   }
 
-  @Delete(':id')
+  @Patch('delete/:id')
   remove(@Param('id') id: string) {
     return this.auxiliaryService.remove(+id);
   }

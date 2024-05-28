@@ -5,7 +5,7 @@ import { UpdateStatus } from './dto/update-status-driver.dto';
 import { Auxiliary } from './entities/auxiliary.entity';
 import { UpdateCpf } from './dto/update-cpf-auxiliary.dto';
 import { UpdateCnh } from './dto/update-cnh-auxiliary.dto';
-
+import FindTimeSP from 'hooks/time';
 
 @Injectable()
 export class AuxiliaryService {
@@ -19,9 +19,10 @@ export class AuxiliaryService {
     return response.id
   }
 
-  findAll() {
-    return this.auxiliaryRepository.find();
-    
+  async findAll() {
+    return await this.auxiliaryRepository.createQueryBuilder('auxiliary')
+    .where('auxiliary.delete_at IS NULL')
+    .getMany();
   }
 
   async findByIds(Ids: number[]){
@@ -38,8 +39,7 @@ export class AuxiliaryService {
   }
 
   async findOne(id: number) {
-    const response = await this.auxiliaryRepository.findOne({where:{id}});
-    return response
+    return await this.auxiliaryRepository.findOne({where:{id}});
   }
 
   async verifyCpf(cpf:string){
@@ -116,9 +116,21 @@ export class AuxiliaryService {
     }
   }
 
-  
-
-  remove(id: number) {
-    return `This action removes a #${id} auxiliary`;
+  async remove(id: number) {
+    const time = FindTimeSP();
+    const DeleteDto = {
+      delete_at:time
+    }
+    const response = await this.auxiliaryRepository.update(id, DeleteDto);
+    if(response.affected){
+      return {
+        message: 'Successfully deleted',
+        status: 200
+      }
+    }
+    return {
+      message: 'Error in deleting',
+      status: 500
+    }
   }
 }
