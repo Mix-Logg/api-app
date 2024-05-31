@@ -10,6 +10,7 @@ import FindTimeSP from 'hooks/time';
 
 @Injectable()
 export class TeamService {
+  
   constructor(
     @Inject('TEAM_REPOSITORY')
     private teamRepository: Repository<Team>,
