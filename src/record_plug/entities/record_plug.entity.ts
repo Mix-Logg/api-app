@@ -29,10 +29,10 @@ export class RecordPlug {
   @Column({ length: 1, default: null})
   aproved: string;
 
-  @Column({ length: 50, default: null})
+  @Column({ length: 200, default: null})
   motion: string;
 
-  @Column({ length: 50, default: null})
+  @Column({ length: 200, type:'varchar', default: null})
   occurrence: string;
 
   @Column({ length: 150 })
