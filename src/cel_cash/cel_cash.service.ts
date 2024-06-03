@@ -4,6 +4,7 @@ import { UpdateCelCashDto } from './dto/update-cel_cash.dto';
 import { DriverService } from 'src/driver/driver.service';
 import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 import { UserService } from 'src/user/user.service';
+import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import axios from 'axios';
 
 @Injectable()
@@ -36,7 +37,7 @@ export class CelCashService {
 
       this.accessToken = response.data.access_token;
       this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
-      console.log(`Access Token: ${this.accessToken}`);
+      // console.log(`Access Token: ${this.accessToken}`);
 
       // Renove o token 60 segundos antes de expirar
       setTimeout(() => this.getToken(), (response.data.expires_in - 60) * 1000);
@@ -44,6 +45,25 @@ export class CelCashService {
       console.log(base64AuthString)
       console.log('Error obtaining access token:', error.response.data);
     }
+  }
+
+  async advance(createAdvanceCashDto:CreateAdvanceCashDto){
+    const user = await this.userService.findOne(createAdvanceCashDto.uuid, createAdvanceCashDto.am);
+    switch (user) {
+      case 500:
+        return
+      default:
+        if(createAdvanceCashDto.amount > parseInt(user.amount)){
+          return 'Não pode tirar o dinheiro'
+        }
+        return 'Pode tirar o dinheiro'
+        break;
+    }
+    const amountAvailable = user
+    console.log(user)
+    // if(amount > user.amount){
+
+    // }
   }
 
   token(){

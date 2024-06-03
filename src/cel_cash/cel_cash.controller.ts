@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CelCashService } from './cel_cash.service';
 import { CreateCelCashDto } from './dto/create-cel_cash.dto';
 import { UpdateCelCashDto } from './dto/update-cel_cash.dto';
-
+import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 @Controller('cel-cash')
 export class CelCashController {
   constructor(private readonly celCashService: CelCashService) {}
@@ -12,9 +12,9 @@ export class CelCashController {
     return this.celCashService.create(createCelCashDto);
   }
 
-  @Get('token')
-  token() {
-    return this.celCashService.token();
+  @Post('advance')
+  advance(@Body() createAdvanceCashDto: CreateAdvanceCashDto) {
+    return this.celCashService.advance(createAdvanceCashDto);
   }
 
   @Get()

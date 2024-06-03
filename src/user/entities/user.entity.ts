@@ -17,9 +17,6 @@ export class User {
     @Column()
     uuid: number;
 
-    @Column({ length: 50, default: null })
-    striper: string;
-
     @Column({ length: 50, default: '0' })
     amount: string;
 
