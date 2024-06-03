@@ -3,6 +3,7 @@ import { CelCashService } from './cel_cash.service';
 import { CreateCelCashDto } from './dto/create-cel_cash.dto';
 import { UpdateCelCashDto } from './dto/update-cel_cash.dto';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 @Controller('cel-cash')
 export class CelCashController {
   constructor(private readonly celCashService: CelCashService) {}
@@ -15,6 +16,11 @@ export class CelCashController {
   @Post('advance')
   advance(@Body() createAdvanceCashDto: CreateAdvanceCashDto) {
     return this.celCashService.advance(createAdvanceCashDto);
+  }
+
+  @Post('payment')
+  createPayment(@Body() createPaymentDto: CreatePaymentDto){
+    return this.celCashService.createPayment(createPaymentDto);
   }
 
   @Get()

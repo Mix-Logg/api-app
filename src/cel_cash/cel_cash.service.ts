@@ -5,6 +5,7 @@ import { DriverService } from 'src/driver/driver.service';
 import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 import { UserService } from 'src/user/user.service';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 import axios from 'axios';
 
 @Injectable()
@@ -19,6 +20,9 @@ export class CelCashService {
     private readonly userService: UserService
   ) {
     this.getToken();
+    setTimeout(() => {
+      this.listenPayment()
+    }, 3000);
   }
 
   private async getToken() {
@@ -47,6 +51,25 @@ export class CelCashService {
     }
   }
 
+  private async listenPayment(){
+    const params_webhook = {
+      "url": "https://website.com.br/webhook-galax-pay",
+      "events": [
+        "transaction.updateStatus",
+      ]
+    }
+    try{
+      const response = await axios.put('https://api.sandbox.cel.cash/v2/webhooks', params_webhook, {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`,
+        },
+      })
+      console.log(response.data)
+    }catch(error){
+      console.log('erro Weebhook',error.response.data)
+    }
+  }
+
   async advance(createAdvanceCashDto:CreateAdvanceCashDto){
     const user = await this.userService.findOne(createAdvanceCashDto.uuid, createAdvanceCashDto.am);
     switch (user) {
@@ -56,14 +79,85 @@ export class CelCashService {
         if(createAdvanceCashDto.amount > parseInt(user.amount)){
           return 'Não pode tirar o dinheiro'
         }
-        return 'Pode tirar o dinheiro'
         break;
     }
-    const amountAvailable = user
-    console.log(user)
-    // if(amount > user.amount){
+    try{
+      const pix_params = {
+        "key": createAdvanceCashDto.key,
+        "type": createAdvanceCashDto.type,
+        "value": createAdvanceCashDto.value,
+        "desc": createAdvanceCashDto.desc
+      }
+      const response = await axios.post('https://api.sandbox.cel.cash/v2/pix/payment', pix_params, {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`,
+        },
+      })
+      console.log(response.data)
+    }catch(error){
+      console.log('erro',error.response.data)
+    }
+  }
 
-    // }
+  async createPayment(createPaymentDto:CreatePaymentDto ){
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const currence = `${year}-${month}-${day}`;
+    let payment_params = {
+      myId : createPaymentDto.myId,
+      value: createPaymentDto.value,
+      additionalInfo: createPaymentDto.additionalInfo,
+      payday:currence,
+      Customer:{
+        name:     createPaymentDto.name,
+        document: createPaymentDto.cpf,
+        emails:   [createPaymentDto.email],
+        phones:   [createPaymentDto.phone]
+      },
+      mainPaymentMethodId:createPaymentDto.type,
+      PaymentMethodPix:{},
+      PaymentMethodCreditCard:{}
+    }
+    switch (await createPaymentDto.type) {
+      case 'pix':
+        payment_params.mainPaymentMethodId = 'pix'
+        payment_params.PaymentMethodPix = {
+          Deadline:{
+            type: 'minutes',
+            value: 20
+          }
+        }
+        break;
+      case 'creditcard':
+        payment_params.mainPaymentMethodId = 'creditcard'
+        payment_params.PaymentMethodCreditCard = {
+          Card:{
+            number:    createPaymentDto.numberCard,
+            holder:    createPaymentDto.nameCard,
+            expiresAt: createPaymentDto.expiresAtCard,
+            cvv:       createPaymentDto.cvvCard
+          },
+          qtdInstallments:1
+        }
+        break;
+      default:
+        break;
+    }
+    try{
+      const response = await axios.post('https://api.sandbox.cel.cash/v2/charges', payment_params, {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`,
+        },
+      })
+      if(createPaymentDto.type == 'pix'){
+        return response.data.Charge.Transactions[0].Pix
+      }
+      return response.data;
+    }catch(error){
+      console.log('erro',error.response.data)
+    }
   }
 
   token(){
