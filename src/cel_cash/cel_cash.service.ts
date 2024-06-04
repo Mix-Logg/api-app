@@ -33,7 +33,7 @@ export class CelCashService {
       scope: 'customers.read customers.write plans.read plans.write transactions.read transactions.write webhooks.write balance.read balance.write cards.read cards.write card-brands.read subscriptions.read subscriptions.write charges.read charges.write boletos.read'
     };
     try {
-      const response = await axios.post('https://api.sandbox.cel.cash/v2/token', body, {
+      const response = await axios.post(`${process.env.GALAX_URL}/token`, body, {
         headers: {
           'Authorization': `Basic ${base64AuthString}`,
         },
@@ -56,10 +56,11 @@ export class CelCashService {
       "url": "https://website.com.br/webhook-galax-pay",
       "events": [
         "transaction.updateStatus",
+        "company.cashOut"
       ]
     }
     try{
-      const response = await axios.put('https://api.sandbox.cel.cash/v2/webhooks', params_webhook, {
+      const response = await axios.put(`${process.env.GALAX_URL}/webhooks`, params_webhook, {
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
         },
@@ -88,7 +89,7 @@ export class CelCashService {
         "value": createAdvanceCashDto.value,
         "desc": createAdvanceCashDto.desc
       }
-      const response = await axios.post('https://api.sandbox.cel.cash/v2/pix/payment', pix_params, {
+      const response = await axios.post(`${process.env.GALAX_URL}/pix/payment`, pix_params, {
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
         },
@@ -143,10 +144,13 @@ export class CelCashService {
         }
         break;
       default:
-        break;
+        return{
+          status:500,
+          message:'Type payment not defined'
+        }
     }
     try{
-      const response = await axios.post('https://api.sandbox.cel.cash/v2/charges', payment_params, {
+      const response = await axios.post(`${process.env.GALAX_URL}/charges`, payment_params, {
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
         },
@@ -157,6 +161,10 @@ export class CelCashService {
       return response.data;
     }catch(error){
       console.log('erro',error.response.data)
+      return{
+        status:500,
+        message:'Error cel_cash'
+      }
     }
   }
 
