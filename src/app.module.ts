@@ -24,11 +24,12 @@ import { OperationModule } from './operation/operation.module';
 import { LeadModule } from './lead/lead.module';
 import { TeamModule } from './team/team.module';
 import { CelCashModule } from './cel_cash/cel_cash.module';
+import { PaymentDeliveryModule } from './payment_delivery/payment_delivery.module';
 
 
 
 @Module({
-  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, PaymentModule, OperationModule, LeadModule, TeamModule, CelCashModule],
+  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, PaymentModule, OperationModule, LeadModule, TeamModule, CelCashModule, PaymentDeliveryModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })

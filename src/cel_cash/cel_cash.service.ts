@@ -77,7 +77,7 @@ export class CelCashService {
       case 500:
         return
       default:
-        if(createAdvanceCashDto.amount > parseInt(user.amount)){
+        if(createAdvanceCashDto.value > parseInt(user.amount)){
           return 'Não pode tirar o dinheiro'
         }
         break;
