@@ -31,16 +31,17 @@ export class VehicleController {
     return this.vehicleService.findOne(id, am);
   }
   
+  @Get('report')
+  report(){
+    return this.vehicleService.report()
+  }
+  
   @Get(':plate')
   findPlate(@Param('plate') plate: string)
   {
     return this.vehicleService.findOnePlate(plate);
   }
 
-  @Get('report')
-  report(){
-    return this.vehicleService.report()
-  }
 
 
   @Patch('antt')
