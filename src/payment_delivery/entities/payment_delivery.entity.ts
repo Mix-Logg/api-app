@@ -17,7 +17,7 @@ export class PaymentDelivery {
     @Column({length: 20})
     type: string;
 
-    @Column({length: 50 })
+    @Column({length: 50, default: null})
     tax: string;
 
     @Column({length: 50 })

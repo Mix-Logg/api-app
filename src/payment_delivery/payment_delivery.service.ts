@@ -19,7 +19,9 @@ export class PaymentDeliveryService {
     if(response != null){
       return {
         status:201,
-        message:'Successfully created payment delivery'
+        message:'Successfully created payment delivery',
+        id:response.id,
+        create: response.create_at
       }
     }
     return {
@@ -28,8 +30,8 @@ export class PaymentDeliveryService {
     }
   }
 
-  findAll() {
-    return `This action returns all paymentDelivery`;
+  async findAll(id_user : number) {
+    return await this.paymentDelivery.find({where:{id_user}});
   }
 
   findOne(id: number) {

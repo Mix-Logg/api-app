@@ -12,12 +12,12 @@ export class PaymentDeliveryController {
     return this.paymentDeliveryService.create(createPaymentDeliveryDto);
   }
 
-  @Get()
-  findAll() {
-    return this.paymentDeliveryService.findAll();
+  @Get(':id')
+  findAll(@Param('id') id_admin: number) {
+    return this.paymentDeliveryService.findAll(id_admin);
   }
 
-  @Get(':id')
+  @Get('one/:id')
   findOne(@Param('id') id: string) {
     return this.paymentDeliveryService.findOne(+id);
   }

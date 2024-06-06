@@ -3,7 +3,7 @@ export class CreatePaymentDeliveryDto {
     amount_out: string;
     pix       : string;
     type      : string;
-    tax       : string;
+    tax      ?: string;
     taxPix    : string;
     taxFull   : string;
     create_at?: string;
