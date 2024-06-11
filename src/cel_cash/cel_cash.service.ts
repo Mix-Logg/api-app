@@ -53,19 +53,20 @@ export class CelCashService {
 
   private async listenPayment(){
     const params_webhook = {
-      "url": "https://website.com.br/webhook-galax-pay",
+    "url": `https://seashell-app-inyzf.ondigitalocean.app/cel-cash/listen`,
       "events": [
         "transaction.updateStatus",
         "company.cashOut"
       ]
     }
     try{
-      const response = await axios.put(`${process.env.GALAX_URL}/webhooks`, params_webhook, {
+      const response = await axios.put(`${process.env.GALAX_URL}`, params_webhook, {
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
         },
       })
-      console.log(response.data)
+
+      console.log(response)
     }catch(error){
       console.log('erro Weebhook',error.response.data)
     }
@@ -100,6 +101,10 @@ export class CelCashService {
     }
   }
 
+  async listen(){
+    
+  }
+
   async createPayment(createPaymentDto:CreatePaymentDto ){
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -125,9 +130,10 @@ export class CelCashService {
       case 'pix':
         payment_params.mainPaymentMethodId = 'pix'
         payment_params.PaymentMethodPix = {
+          instructions : 'Pagamento Mix Serviços Logísticos',
           Deadline:{
             type: 'minutes',
-            value: 20
+            value: 15
           }
         }
         break;
@@ -160,7 +166,7 @@ export class CelCashService {
       }
       return response.data;
     }catch(error){
-      console.log('erro',error.response.data)
+      console.log('erro',error.response.data.error.details)
       return{
         status:500,
         message:'Error cel_cash'

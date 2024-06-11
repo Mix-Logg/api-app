@@ -23,6 +23,11 @@ export class CelCashController {
     return this.celCashService.createPayment(createPaymentDto);
   }
 
+  @Post('listen')
+  listen(@Body() createPaymentDto: {}){
+    console.log(createPaymentDto)
+  }
+
   @Get()
   findAll() {
     return this.celCashService.findAll();
