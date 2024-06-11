@@ -23,7 +23,7 @@ export class CelCashController {
     return this.celCashService.createPayment(createPaymentDto);
   }
 
-  @Post('listen')
+  @Post('webhook-galax-pay')
   listen(@Body() body: any){
     console.log(body)
   }

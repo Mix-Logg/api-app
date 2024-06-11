@@ -53,7 +53,7 @@ export class CelCashService {
 
   private async listenPayment(){
     const params_webhook = {
-    "url": `https://seashell-app-inyzf.ondigitalocean.app/cel-cash/listen`,
+    "url": `https://seashell-app-inyzf.ondigitalocean.app/cel-cash/webhook-galax-pay`,
       "events": [
         "transaction.updateStatus",
         "company.cashOut"
