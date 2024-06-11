@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { CelCashService } from './cel_cash.service';
 import { CreateCelCashDto } from './dto/create-cel_cash.dto';
 import { UpdateCelCashDto } from './dto/update-cel_cash.dto';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
+import { CreateToReverseDto } from './dto/create-toReverse.dto';
 @Controller('cel-cash')
 export class CelCashController {
   constructor(private readonly celCashService: CelCashService) {}
@@ -11,6 +12,11 @@ export class CelCashController {
   @Post()
   create(@Body() createCelCashDto: CreateCelCashDto) {
     return this.celCashService.create(createCelCashDto);
+  }
+
+  @Post('webhook-galax-pay')
+  webhook(@Body() payload: any){
+    return this.celCashService.webhook(payload);
   }
 
   @Post('advance')
@@ -23,10 +29,12 @@ export class CelCashController {
     return this.celCashService.createPayment(createPaymentDto);
   }
 
-  @Post('webhook-galax-pay')
-  payload(@Body() payload: any){
-    console.log(payload)
+
+  @Post('toReverse')
+  createReverse(@Body() createToReverseDto: CreateToReverseDto){
+    return this.celCashService.toReverse(createToReverseDto);
   }
+
 
   @Get()
   findAll() {

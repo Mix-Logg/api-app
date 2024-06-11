@@ -1,5 +1,6 @@
 export class CreatePaymentDto {
-    value:number
+    idUser:number
+    value :number
     myId :string
     name :string
     type :string

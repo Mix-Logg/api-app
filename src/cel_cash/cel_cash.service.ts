@@ -6,6 +6,8 @@ import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 import { UserService } from 'src/user/user.service';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
+import { CreateToReverseDto } from './dto/create-toReverse.dto';
+import { PaymentRaceService } from 'src/payment_race/payment_race.service';
 import axios from 'axios';
 
 @Injectable()
@@ -14,14 +16,16 @@ export class CelCashService {
   private readonly galaxHash = process.env.GALAX_HASH;
   private accessToken: string;
   private tokenExpiry: number;
+  
   constructor(
     private readonly driverService : DriverService,
     private readonly auxiliaryService: AuxiliaryService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly paymentRaceService: PaymentRaceService
   ) {
     this.getToken();
     setTimeout(() => {
-      this.listenPayment()
+      this.registerPayment()
     }, 3000);
   }
 
@@ -51,7 +55,7 @@ export class CelCashService {
     }
   }
 
-  private async listenPayment(){
+  private async registerPayment(){
     const params_webhook = {
       "url": "https://seashell-app-inyzf.ondigitalocean.app/cel-cash/webhook-galax-pay",
       "events": [
@@ -100,8 +104,15 @@ export class CelCashService {
     }
   }
 
-  async listen(){
-    
+  async webhook( payload: any){
+    switch (payload.Charge.mainPaymentMethodId) {
+      case 'pix':
+        if(payload.Transaction.status == 'payedPix'){
+          
+          return true
+        }
+        break;
+    }
   }
 
   async createPayment(createPaymentDto:CreatePaymentDto ){
@@ -110,8 +121,16 @@ export class CelCashService {
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
     const currence = `${year}-${month}-${day}`;
+    console.log(createPaymentDto)
+    const race_params = {
+      type     :createPaymentDto.type,
+      id_client:createPaymentDto.idUser,
+      amount   :createPaymentDto.value,
+      status   :'open'
+    }
+    const racePayment = await this.paymentRaceService.create(race_params)
     let payment_params = {
-      myId : createPaymentDto.myId,
+      myId : racePayment.id,
       value: createPaymentDto.value,
       additionalInfo: createPaymentDto.additionalInfo,
       payday:currence,
@@ -161,7 +180,10 @@ export class CelCashService {
         },
       })
       if(createPaymentDto.type == 'pix'){
-        return response.data.Charge.Transactions[0].Pix
+        return {
+          payment:response.data.Charge.Transactions[0].Pix,
+          idPayment:racePayment.id
+        }
       }
       return response.data;
     }catch(error){
@@ -173,11 +195,9 @@ export class CelCashService {
     }
   }
 
-  token(){
-    return {
-      token:  this.accessToken,
-      status: 200
-    }
+  async toReverse(createToReverseDto:CreateToReverseDto){
+    const response = await axios.put(`${process.env.GALAX_URL}/charges/${createToReverseDto.chargeId}/${createToReverseDto.typeId}/reverse`)
+    console.log(response)
   }
 
   create(createCelCashDto: CreateCelCashDto) {

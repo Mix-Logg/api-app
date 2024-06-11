@@ -5,9 +5,9 @@ import { DatabaseModule } from 'src/database/database.module';
 import { DriverModule } from 'src/driver/driver.module';
 import { AuxiliaryModule } from 'src/auxiliary/auxiliary.module';
 import { UserModule } from 'src/user/user.module';
-
+import { PaymentRaceModule } from 'src/payment_race/payment_race.module';
 @Module({
-  imports: [DatabaseModule, DriverModule, AuxiliaryModule, UserModule],
+  imports: [DatabaseModule, DriverModule, AuxiliaryModule, UserModule, PaymentRaceModule],
   controllers: [CelCashController],
   providers: [CelCashService],
 })

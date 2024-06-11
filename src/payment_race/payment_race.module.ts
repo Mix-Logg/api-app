@@ -8,5 +8,6 @@ import { paymentRaceProviders } from './payment_race.provider';
   imports:[DatabaseModule],
   controllers: [PaymentRaceController],
   providers: [...paymentRaceProviders,PaymentRaceService],
+  exports:[PaymentRaceService]
 })
 export class PaymentRaceModule {}

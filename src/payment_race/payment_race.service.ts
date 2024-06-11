@@ -100,8 +100,8 @@ export class PaymentRaceService {
     return `This action returns all paymentRace`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paymentRace`;
+  async findOne(id: string) {
+    return await this.paymentRace.findOne({where:{id}});
   }
 
   update(id: number, updatePaymentRaceDto: UpdatePaymentRaceDto) {
