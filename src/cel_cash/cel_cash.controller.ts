@@ -24,8 +24,8 @@ export class CelCashController {
   }
 
   @Post('webhook-galax-pay')
-  listen(@Body() body: any){
-    console.log(body)
+  payload(@Body() payload: any){
+    console.log(payload)
   }
 
   @Get()
