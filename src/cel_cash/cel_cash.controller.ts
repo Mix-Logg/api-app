@@ -24,8 +24,8 @@ export class CelCashController {
   }
 
   @Post('listen')
-  listen(@Body() createPaymentDto: {}){
-    console.log(createPaymentDto)
+  listen(@Body() body: any){
+    console.log(body)
   }
 
   @Get()
