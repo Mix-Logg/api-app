@@ -53,20 +53,19 @@ export class CelCashService {
 
   private async listenPayment(){
     const params_webhook = {
-    "url": `https://seashell-app-inyzf.ondigitalocean.app/cel-cash/webhook-galax-pay`,
+      "url": "https://seashell-app-inyzf.ondigitalocean.app/cel-cash/webhook-galax-pay",
       "events": [
         "transaction.updateStatus",
         "company.cashOut"
       ]
     }
     try{
-      const response = await axios.put(`${process.env.GALAX_URL}`, params_webhook, {
+      const response = await axios.put(`${process.env.GALAX_URL}/webhooks`,params_webhook, {
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
         },
       })
-
-      console.log(response)
+      console.log(response.data)
     }catch(error){
       console.log('erro Weebhook',error.response.data)
     }
