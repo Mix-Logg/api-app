@@ -19,7 +19,6 @@ import { TourModule } from './tour/tour.module';
 import { FreightModule } from './freight/freight.module';
 import { RaceModule } from './race/race.module';
 import { ClientModule } from './client/client.module';
-import { PaymentModule } from './payment/payment.module';
 import { OperationModule } from './operation/operation.module';
 import { LeadModule } from './lead/lead.module';
 import { TeamModule } from './team/team.module';
@@ -30,7 +29,7 @@ import { PaymentRaceModule } from './payment_race/payment_race.module';
 
 
 @Module({
-  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, PaymentModule, OperationModule, LeadModule, TeamModule, CelCashModule, PaymentDeliveryModule, PaymentRaceModule],
+  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, OperationModule, LeadModule, TeamModule, CelCashModule, PaymentDeliveryModule, PaymentRaceModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })
