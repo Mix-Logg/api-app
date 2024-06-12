@@ -4,7 +4,7 @@ import { CreateCelCashDto } from './dto/create-cel_cash.dto';
 import { UpdateCelCashDto } from './dto/update-cel_cash.dto';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { CreateToReverseDto } from './dto/create-toReverse.dto';
+import { CreateRetrieveRacePixDto } from './dto/create-retrieveRacePix.dto';
 @Controller('cel-cash')
 export class CelCashController {
   constructor(private readonly celCashService: CelCashService) {}
@@ -29,10 +29,9 @@ export class CelCashController {
     return this.celCashService.createPayment(createPaymentDto);
   }
 
-
-  @Post('toReverse')
-  createReverse(@Body() createToReverseDto: CreateToReverseDto){
-    return this.celCashService.toReverse(createToReverseDto);
+  @Post('retrieveRace')
+  createReverse(@Body() createRetrieveRacePixDto: CreateRetrieveRacePixDto){
+    return this.celCashService.retrieveRace(createRetrieveRacePixDto);
   }
 
 

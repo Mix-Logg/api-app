@@ -1,5 +1,6 @@
 export class CreateRaceDto {
   idClient: number;
+  idPayment:string;
   idClientIo: string;
   km: string;
   vehicleType: string;

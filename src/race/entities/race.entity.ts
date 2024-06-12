@@ -29,7 +29,7 @@ export class Race {
   @Column({ length: 50 })
   vehicleType: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 100 })
   idPayment: string;
 
   @Column({ length: 150 })

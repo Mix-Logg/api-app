@@ -6,8 +6,9 @@ import { DriverModule } from 'src/driver/driver.module';
 import { AuxiliaryModule } from 'src/auxiliary/auxiliary.module';
 import { UserModule } from 'src/user/user.module';
 import { PaymentRaceModule } from 'src/payment_race/payment_race.module';
+import { PaymentRaceRetrieveModule } from 'src/payment_race-retrieve/payment_race-retrieve.module';
 @Module({
-  imports: [DatabaseModule, DriverModule, AuxiliaryModule, UserModule, PaymentRaceModule],
+  imports: [DatabaseModule, DriverModule, AuxiliaryModule, UserModule, PaymentRaceModule, PaymentRaceRetrieveModule],
   controllers: [CelCashController],
   providers: [CelCashService],
 })

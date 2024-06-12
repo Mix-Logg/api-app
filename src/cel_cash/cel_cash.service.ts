@@ -6,7 +6,7 @@ import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 import { UserService } from 'src/user/user.service';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { CreateToReverseDto } from './dto/create-toReverse.dto';
+import { CreateRetrieveRacePixDto } from './dto/create-retrieveRacePix.dto';
 import { PaymentRaceService } from 'src/payment_race/payment_race.service';
 import axios from 'axios';
 
@@ -87,6 +87,7 @@ export class CelCashService {
         break;
     }
     try{
+
       const pix_params = {
         "key": createAdvanceCashDto.key,
         "type": createAdvanceCashDto.type,
@@ -104,23 +105,47 @@ export class CelCashService {
     }
   }
 
+  async retrieveRace(createRetrieveRacePixDto:CreateRetrieveRacePixDto){
+    try{
+      const pix_params = {
+        "key" :  createRetrieveRacePixDto.key,
+        "type":  createRetrieveRacePixDto.type,
+        "value": createRetrieveRacePixDto.value,
+        "desc" : createRetrieveRacePixDto.desc
+      }
+      const response = await axios.post(`${process.env.GALAX_URL}/pix/payment`, pix_params, {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`,
+        },
+      })
+      
+    }catch(e){
+
+    }
+  }
+
   async webhook( payload: any){
-    switch (payload.Charge.mainPaymentMethodId) {
-      case 'pix':
-        if(payload.Transaction.status == 'payedPix'){
-          const params_payment = {
-            status:"paid"
+    if(payload.event == 'transaction.updateStatus' ){
+      switch (payload.Charge.mainPaymentMethodId) {
+        case 'pix':
+          if(payload.Transaction.status == 'payedPix'){
+            const params_payment = {
+              status:"paid"
+            }
+            const response = await this.paymentRaceService.update(payload.Charge.myId, params_payment)
+            if(response.status == 200){
+              return true
+            }
+            return{
+              status: 500,
+              message:'Payment internal incomplet'
+            }
           }
-          const response = await this.paymentRaceService.update(payload.Charge.myId, params_payment)
-          if(response.status == 200){
-            return true
-          }
-          return{
-            status: 500,
-            message:'Payment internal incomplet'
-          }
-        }
-      break;
+        break;
+      }
+    }
+    if(payload.event == 'company.cashOut' ){
+      
     }
   }
 
@@ -203,10 +228,10 @@ export class CelCashService {
     }
   }
 
-  async toReverse(createToReverseDto:CreateToReverseDto){
-    const response = await axios.put(`${process.env.GALAX_URL}/charges/${createToReverseDto.chargeId}/${createToReverseDto.typeId}/reverse`)
-    console.log(response)
-  }
+  // async toReverse(createToReverseDto:CreateToReverseDto){
+  //   const response = await axios.put(`${process.env.GALAX_URL}/charges/${createToReverseDto.chargeId}/${createToReverseDto.typeId}/reverse`)
+  //   console.log(response)
+  // }
 
   create(createCelCashDto: CreateCelCashDto) {
     return 'This action adds a new celCash';
