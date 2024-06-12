@@ -104,8 +104,18 @@ export class PaymentRaceService {
     return await this.paymentRace.findOne({where:{id}});
   }
 
-  update(id: number, updatePaymentRaceDto: UpdatePaymentRaceDto) {
-    return `This action updates a #${id} paymentRace`;
+  async update(id: string, updatePaymentRaceDto: UpdatePaymentRaceDto) {
+    const response = await this.paymentRace.update(id, updatePaymentRaceDto);
+    if(response.affected === 1){
+      return {
+        status:200,
+        message:'Updated paymentRace successfully'
+      }
+    }
+    return {
+      status:500,
+      message:'Error server internal'
+    }
   }
 
   remove(id: number) {

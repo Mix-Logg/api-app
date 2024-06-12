@@ -29,7 +29,7 @@ export class PaymentRaceController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePaymentRaceDto: UpdatePaymentRaceDto) {
-    return this.paymentRaceService.update(+id, updatePaymentRaceDto);
+    return this.paymentRaceService.update(id, updatePaymentRaceDto);
   }
 
   @Delete(':id')

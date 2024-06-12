@@ -108,10 +108,19 @@ export class CelCashService {
     switch (payload.Charge.mainPaymentMethodId) {
       case 'pix':
         if(payload.Transaction.status == 'payedPix'){
-          
-          return true
+          const params_payment = {
+            status:"paid"
+          }
+          const response = await this.paymentRaceService.update(payload.Charge.myId, params_payment)
+          if(response.status == 200){
+            return true
+          }
+          return{
+            status: 500,
+            message:'Payment internal incomplet'
+          }
         }
-        break;
+      break;
     }
   }
 
@@ -121,7 +130,6 @@ export class CelCashService {
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
     const currence = `${year}-${month}-${day}`;
-    console.log(createPaymentDto)
     const race_params = {
       type     :createPaymentDto.type,
       id_client:createPaymentDto.idUser,
