@@ -19,7 +19,7 @@ export class PaymentRaceRetrieveController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paymentRaceRetrieveService.findOne(+id);
+    return this.paymentRaceRetrieveService.findOne(id);
   }
 
   @Patch(':id')

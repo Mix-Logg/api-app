@@ -8,6 +8,9 @@ export class PaymentDelivery {
     @Column()
     id_user: number;
 
+    @Column()
+    webhookId: number;
+
     @Column({length: 50})
     amount_out: string;
 

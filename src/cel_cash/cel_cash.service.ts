@@ -8,6 +8,7 @@ import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { CreateRetrieveRacePixDto } from './dto/create-retrieveRacePix.dto';
 import { PaymentRaceService } from 'src/payment_race/payment_race.service';
+import { PaymentRaceRetrieveService } from 'src/payment_race-retrieve/payment_race-retrieve.service';
 import axios from 'axios';
 
 @Injectable()
@@ -21,7 +22,8 @@ export class CelCashService {
     private readonly driverService : DriverService,
     private readonly auxiliaryService: AuxiliaryService,
     private readonly userService: UserService,
-    private readonly paymentRaceService: PaymentRaceService
+    private readonly paymentRaceService: PaymentRaceService,
+    private readonly paymentRaceRetrieveService: PaymentRaceRetrieveService,
   ) {
     this.getToken();
     setTimeout(() => {
@@ -87,17 +89,16 @@ export class CelCashService {
         break;
     }
     try{
-
       const pix_params = {
-        "key": createAdvanceCashDto.key,
-        "type": createAdvanceCashDto.type,
+        "key"  : createAdvanceCashDto.key,
+        "type" : createAdvanceCashDto.type,
         "value": createAdvanceCashDto.value,
-        "desc": createAdvanceCashDto.desc
+        "desc" : createAdvanceCashDto.desc
       }
       const response = await axios.post(`${process.env.GALAX_URL}/pix/payment`, pix_params, {
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
-        },
+        }
       })
       console.log(response.data)
     }catch(error){
@@ -120,11 +121,12 @@ export class CelCashService {
       })
       
     }catch(e){
-
+      console.log(e)
     }
   }
 
   async webhook( payload: any){
+    console.log(payload)
     if(payload.event == 'transaction.updateStatus' ){
       switch (payload.Charge.mainPaymentMethodId) {
         case 'pix':
@@ -133,6 +135,7 @@ export class CelCashService {
               status:"paid"
             }
             const response = await this.paymentRaceService.update(payload.Charge.myId, params_payment)
+            console.log(response)
             if(response.status == 200){
               return true
             }
@@ -140,12 +143,32 @@ export class CelCashService {
               status: 500,
               message:'Payment internal incomplet'
             }
+          }else{
+            console.log(payload)
           }
         break;
       }
     }
     if(payload.event == 'company.cashOut' ){
+      const webhookId = payload.webhookId;
+      const idPayment = payload.Cashout.Pix.description.split(':');
+      const option = idPayment[1].split('-');
+      switch (option[0]) {
+        case 'raceRetrieve':
+          if(payload.Cashout.Pix.status == 'efectivated'){
+            const response = await this.paymentRaceRetrieveService.update(idPayment[1],{webhookId:webhookId.toString()})
+            if(response.status == 200){
+              return 'ação'
+            }
+            console.log(response)
+          }
+          // console.log(idPayment[1])
+          break;
       
+        case '':
+
+          break;
+      }
     }
   }
 

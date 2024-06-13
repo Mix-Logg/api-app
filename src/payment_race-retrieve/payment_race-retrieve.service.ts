@@ -37,12 +37,22 @@ export class PaymentRaceRetrieveService {
     return `This action returns all paymentRaceRetrieve`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paymentRaceRetrieve`;
+  findOne(id: string) {
+    return this.paymentRaceRetrieve.findOne({ where: { id } });
   }
 
-  update(id: number, updatePaymentRaceRetrieveDto: UpdatePaymentRaceRetrieveDto) {
-    return `This action updates a #${id} paymentRaceRetrieve`;
+  async update(id: number, updatePaymentRaceRetrieveDto: UpdatePaymentRaceRetrieveDto) {
+    const res = await this.paymentRaceRetrieve.update(id, updatePaymentRaceRetrieveDto);
+    if(res.affected){
+      return {
+        status: 200,
+        message:'Updated successfully'
+      }
+    }
+    return {
+      status: 500,
+      message:'Unable to update'
+    }
   }
 
   remove(id: number) {

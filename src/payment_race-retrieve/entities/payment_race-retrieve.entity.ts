@@ -12,6 +12,9 @@ export class PaymentRaceRetrieve {
     id_client: number;
 
     @Column()
+    webhookId: string;
+
+    @Column()
     value: string;
 
     @Column({length: 50 })
