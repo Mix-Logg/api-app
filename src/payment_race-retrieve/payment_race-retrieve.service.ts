@@ -41,7 +41,7 @@ export class PaymentRaceRetrieveService {
     return this.paymentRaceRetrieve.findOne({ where: { id } });
   }
 
-  async update(id: number, updatePaymentRaceRetrieveDto: UpdatePaymentRaceRetrieveDto) {
+  async update(id: string, updatePaymentRaceRetrieveDto: UpdatePaymentRaceRetrieveDto) {
     const res = await this.paymentRaceRetrieve.update(id, updatePaymentRaceRetrieveDto);
     if(res.affected){
       return {

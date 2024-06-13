@@ -4,6 +4,7 @@ import { UpdatePaymentRaceDto } from './dto/update-payment_race.dto';
 import { PaymentRace } from './entities/payment_race.entity';
 import { Repository } from 'typeorm';
 import { CreateCalculateDto } from './dto/create-calculate.dto';
+import { TaxService } from 'src/tax/tax.service';
 import * as bcrypt from 'bcrypt';
 import findTimeSP from 'hooks/time';
 @Injectable()
@@ -12,6 +13,7 @@ export class PaymentRaceService {
   constructor(
     @Inject('PAYMENTRACE_REPOSITORY')
     private readonly paymentRace: Repository<PaymentRace>,
+    private readonly taxService: TaxService
   ) {}
   
   async create(createPaymentRaceDto: CreatePaymentRaceDto) {
@@ -34,7 +36,7 @@ export class PaymentRaceService {
     }
   }
   
-  calculate(createCalculateDto: CreateCalculateDto) {
+  async calculate(createCalculateDto: CreateCalculateDto) {
     function formatTime(minutes: number): string {
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = Math.floor(minutes % 60);
@@ -62,31 +64,31 @@ export class PaymentRaceService {
       });
       return amount
     }
-
+    const tax = await this.taxService.findAll()
     let time = formatTime(createCalculateDto.time);
     let km = formatDistance(createCalculateDto.km);
     let valueKm;
     switch (createCalculateDto.typeVehicle) {
       case 'motorcycle':
-        valueKm = 0.5;
+        valueKm = tax[0].km_motorcycle;
         break;
       case 'tour':
-        valueKm = 0.75;
+        valueKm = tax[0].km_tour;
         break;
       case 'util':
-        valueKm = 1;
+        valueKm = tax[0].km_util;
         break;
       case 'van':
-        valueKm = 1.5;
+        valueKm = tax[0].km_van;
         break;
       case 'vuc':
-        valueKm = 1.9;
+        valueKm = tax[0].km_vuc;
         break;
       default:
         break;
     }
     let amount = calculateMoney(km, valueKm).toFixed(2);
-    let pay = amount.replace(/\./g, '').toString();
+    let pay = amount.replace(/\./g, '').toString() ;
     let payFormat = maskMoneyBRL(pay)
     return {
       time: time,

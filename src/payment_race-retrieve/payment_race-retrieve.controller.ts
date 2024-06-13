@@ -24,7 +24,7 @@ export class PaymentRaceRetrieveController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePaymentRaceRetrieveDto: UpdatePaymentRaceRetrieveDto) {
-    return this.paymentRaceRetrieveService.update(+id, updatePaymentRaceRetrieveDto);
+    return this.paymentRaceRetrieveService.update(id, updatePaymentRaceRetrieveDto);
   }
 
   @Delete(':id')

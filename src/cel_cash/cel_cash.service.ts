@@ -109,8 +109,8 @@ export class CelCashService {
   async retrieveRace(createRetrieveRacePixDto:CreateRetrieveRacePixDto){
     try{
       const pix_params = {
-        "key" :  createRetrieveRacePixDto.key,
-        "type":  createRetrieveRacePixDto.type,
+        "key"  : createRetrieveRacePixDto.key,
+        "type" : createRetrieveRacePixDto.type,
         "value": createRetrieveRacePixDto.value,
         "desc" : createRetrieveRacePixDto.desc
       }
@@ -119,14 +119,14 @@ export class CelCashService {
           'Authorization': `Bearer ${this.accessToken}`,
         },
       })
-      
+      console.log(response)
+      return response.data
     }catch(e){
       console.log(e)
     }
   }
 
   async webhook( payload: any){
-    console.log(payload)
     if(payload.event == 'transaction.updateStatus' ){
       switch (payload.Charge.mainPaymentMethodId) {
         case 'pix':
@@ -135,7 +135,6 @@ export class CelCashService {
               status:"paid"
             }
             const response = await this.paymentRaceService.update(payload.Charge.myId, params_payment)
-            console.log(response)
             if(response.status == 200){
               return true
             }
@@ -149,27 +148,27 @@ export class CelCashService {
         break;
       }
     }
-    if(payload.event == 'company.cashOut' ){
-      const webhookId = payload.webhookId;
-      const idPayment = payload.Cashout.Pix.description.split(':');
-      const option = idPayment[1].split('-');
-      switch (option[0]) {
-        case 'raceRetrieve':
-          if(payload.Cashout.Pix.status == 'efectivated'){
-            const response = await this.paymentRaceRetrieveService.update(idPayment[1],{webhookId:webhookId.toString()})
-            if(response.status == 200){
-              return 'ação'
-            }
-            console.log(response)
-          }
-          // console.log(idPayment[1])
-          break;
+    // if(payload.event == 'company.cashOut' ){
+    //   const webhookId = payload.webhookId;
+    //   const idPayment = payload.Cashout.Pix.description.split(':');
+    //   console.log(idPayment)
+    //   const option = idPayment[1].split('-');
+    //   switch (option[0]) {
+    //     case 'raceRetrieve':
+    //       if(payload.Cashout.Pix.status == 'efectivated'){
+    //         const response = await this.paymentRaceRetrieveService.update(idPayment[1],{webhookId:webhookId.toString()})
+    //         if(response.status == 200){
+    //           return 'ação'
+    //         }
+    //         console.log(response)
+    //       }
+    //       break;
       
-        case '':
+    //     case '':
 
-          break;
-      }
-    }
+    //       break;
+    //   }
+    // }
   }
 
   async createPayment(createPaymentDto:CreatePaymentDto ){
