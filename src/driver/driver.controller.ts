@@ -46,6 +46,7 @@ export class DriverController {
     return this.driverService.findAll();
   }
 
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.driverService.findOne(+id);

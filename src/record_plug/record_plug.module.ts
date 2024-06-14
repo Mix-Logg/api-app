@@ -11,5 +11,6 @@ import { AuxiliaryModule } from 'src/auxiliary/auxiliary.module';
   imports:[DatabaseModule, DriverModule, AuxiliaryModule],
   controllers: [RecordPlugController],
   providers: [...recordPlugProviders,RecordPlugService],
+  exports: [RecordPlugService]
 })
 export class RecordPlugModule {}

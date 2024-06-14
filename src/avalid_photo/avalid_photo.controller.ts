@@ -13,9 +13,13 @@ export class AvalidPhotoController {
   }
 
   @Get()
-  findAll() {
-    // 
+  findAll() { 
     return this.avalidPhotoService.findAll();
+  }
+
+  @Get('noAvalid')
+  findNoAvalid() { 
+    return this.avalidPhotoService.findNoAvalid();
   }
 
   @Get(':id/:am')

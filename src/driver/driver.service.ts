@@ -21,6 +21,18 @@ export class DriverService {
     return response.id
   }
 
+  async findAccepted(){
+    return await this.driverRepository.createQueryBuilder('driver')
+    .where('driver.delete_at IS NULL AND driver.cadastralStatus = 1')
+    .getMany();
+  }
+
+  async findNews(){
+    return await this.driverRepository.createQueryBuilder('driver')
+    .where('driver.delete_at IS NULL AND driver.cadastralStatus = 0')
+    .getMany();
+  }
+
   async findAll() {
     return await this.driverRepository.createQueryBuilder('driver')
     .where('driver.delete_at IS NULL')

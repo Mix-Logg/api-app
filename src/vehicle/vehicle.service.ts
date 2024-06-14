@@ -139,33 +139,35 @@ export class VehicleService {
   async report(){
     let reportDate = []; 
     const vehicles = await this.findAll();
-    console.log('vehicle',vehicles)
     for (const vehicle of vehicles) {
-        if (vehicle.am !== 'driver') {
-            continue;
-        }
-        let driver = await this.driverService.findOne(vehicle.uuid);
-        if (driver == null) {
-            continue;
-        }
-        
-        let owner = {
-            plate: vehicle.plate,
-            type: vehicle.type,
-            yearManufacture: vehicle.yearManufacture,
-            brand: vehicle.brand,
-            color: vehicle.color,
-            driver: driver.name,
-            cadaster: vehicle.cadastre,
-            nameOwner: vehicle.nameOwner,
-            cpfOwner: vehicle.cpfOwner,
-            phoneOwner: vehicle.phoneOwner,
-            cnpj: vehicle.cnpjOwner,
-            stateRegistrationOwner: vehicle.stateRegistrationOwner,
-            companyName: vehicle.companynameOwner
-        };
-        
-        reportDate.push(owner);
+      if (vehicle.am !== 'driver') {
+          continue;
+      }
+      let driver = await this.driverService.findOne(vehicle.uuid);
+      if (driver == null) {
+          continue;
+      }
+      const day    = driver.create_at.getUTCDate();
+      const month  = driver.create_at.getUTCMonth() + 1; // getUTCMonth() retorna os meses de 0 a 11
+      const year   = driver.create_at.getUTCFullYear();
+      const date   = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+      let owner    = {
+          create: date,
+          plate: vehicle.plate,
+          type: vehicle.type,
+          yearManufacture: vehicle.yearManufacture,
+          brand: vehicle.brand,
+          color: vehicle.color,
+          driver: driver.name,
+          cadaster: vehicle.cadastre,
+          nameOwner: vehicle.nameOwner,
+          cpfOwner: vehicle.cpfOwner,
+          phoneOwner: vehicle.phoneOwner,
+          cnpj: vehicle.cnpjOwner,
+          stateRegistrationOwner: vehicle.stateRegistrationOwner,
+          companyName: vehicle.companynameOwner
+      };
+      reportDate.push(owner);
     }
     
     return reportDate;

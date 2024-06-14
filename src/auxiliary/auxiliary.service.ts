@@ -25,6 +25,18 @@ export class AuxiliaryService {
     .getMany();
   }
 
+  async findAccepted(){
+    return await this.auxiliaryRepository.createQueryBuilder('auxiliary')
+    .where('auxiliary.delete_at IS NULL AND auxiliary.cadastralStatus = 1')
+    .getMany();
+  }
+
+  async findNews(){
+    return await this.auxiliaryRepository.createQueryBuilder('auxiliary')
+    .where('auxiliary.delete_at IS NULL AND auxiliary.cadastralStatus = 0')
+    .getMany();
+  }
+
   async findByIds(Ids: number[]){
     if(Ids.length == 0){
       return {

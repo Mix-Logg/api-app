@@ -24,6 +24,10 @@ export class RecordPlugController {
   findAll() {
     return this.recordPlugService.findAll();
   }
+  @Get('Accepteds')
+  findAccepteds(){
+    return this.recordPlugService.findAccepted();
+  }
 
   @Get(':uuid/:am/')
   findOne(@Param('uuid') uuid: number, @Param('am') am: string) {

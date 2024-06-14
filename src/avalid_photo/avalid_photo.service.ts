@@ -3,13 +3,16 @@ import { CreateAvalidPhotoDto } from './dto/create-avalid_photo.dto';
 import { UpdateAvalidPhotoDto } from './dto/update-avalid_photo.dto';
 import { AvalidPhoto } from './entities/avalid_photo.entity';
 import { Repository } from 'typeorm';
-
+import { DriverService } from 'src/driver/driver.service';
+import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
 @Injectable()
 export class AvalidPhotoService {
 
   constructor(
     @Inject('AVALIDPHOTO_REPOSITORY') 
     private avalidPhotoRepository: Repository<AvalidPhoto>,
+    private driverRepository  : DriverService,
+    private auxiliaryRepository     : AuxiliaryService
   ){}
 
   async create(createAvalidPhotoDto: CreateAvalidPhotoDto) {
@@ -47,6 +50,23 @@ export class AvalidPhotoService {
     }
   }
 
+  async findNoAvalid(){
+    const auxiliary  = await this.auxiliaryRepository.findNews()
+    const drivers    = await this.driverRepository.findNews()
+    const photos     = await this.findAll()
+    const photosDriversUuids = new Set(photos.filter(item => item.am === 'driver').map(item => item.uuid));
+    const photosAuxiliariesUuids = new Set(photos.filter(item => item.am === 'auxiliary').map(item => item.uuid));
+    
+    const naoEstaNaPhotosDriver = drivers.filter(driver => !photosDriversUuids.has(driver.id));
+    console.log(naoEstaNaPhotosDriver)
+    const naoEstaNaPhotosAuxiliary = auxiliary.filter(auxiliary => !photosAuxiliariesUuids.has(auxiliary.id));
+  
+    return {
+      driver   :naoEstaNaPhotosDriver,
+      auxiliary:naoEstaNaPhotosAuxiliary
+    };
+  }
+
   async update( updateAvalidPhotoDto: UpdateAvalidPhotoDto) {
     const id = updateAvalidPhotoDto.id
     const res = await this.avalidPhotoRepository
@@ -70,4 +90,6 @@ export class AvalidPhotoService {
     const remove = await this.avalidPhotoRepository.remove(avalidPhoto);
     return 200
   }
+
+
 }

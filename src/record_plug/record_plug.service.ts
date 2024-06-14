@@ -35,7 +35,7 @@ export class RecordPlugService {
     let auxiliaryData = res
     .filter(item => item.am === "auxiliary")
     .map(item => ({ id: item.uuid, }));
-    const driverIds = await driverData.map(objeto => objeto.id);
+    const driverIds    = await driverData.map(objeto => objeto.id);
     const auxiliaryIds = await auxiliaryData.map(objeto => objeto.id);
     return {
       driver:driverIds,
@@ -118,6 +118,23 @@ export class RecordPlugService {
     }else{
       return 500
     }
+  }
+
+  async findAccepted(){
+    const auxilairy  = await this.auxiliaryService.findAccepted()
+    const drivers = await this.driverService.findAccepted()
+    const plugs = await this.findAll()
+    const plugDriversUuids = new Set(plugs.filter(item => item.am === 'driver').map(item => item.uuid));
+    const plugAuxiliariesUuids = new Set(plugs.filter(item => item.am === 'auxiliary').map(item => item.uuid));
+  
+    // Filtrar motoristas e auxiliares que não estão na plug
+    const naoEstaNaPlugDriver = drivers.filter(driver => !plugDriversUuids.has(driver.id));
+    const naoEstaNaPlugAuxiliary = auxilairy.filter(auxiliary => !plugAuxiliariesUuids.has(auxiliary.id));
+  
+    return {
+      driver   :naoEstaNaPlugDriver,
+      auxiliary:naoEstaNaPlugAuxiliary
+    };
   }
 
   remove(id: number) {

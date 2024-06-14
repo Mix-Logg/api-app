@@ -53,7 +53,7 @@ export class CelCashService {
       setTimeout(() => this.getToken(), (response.data.expires_in - 60) * 1000);
     } catch (error) {
       console.log(base64AuthString)
-      console.log('Error obtaining access token:', error.response.data);
+      console.log('Error obtaining access token:', error.response);
     }
   }
 
