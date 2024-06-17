@@ -53,20 +53,13 @@ export class PaymentRaceService {
       } else {
         return parseFloat(distance.toFixed(2)); // Retornar a distância formatada com duas casas decimais como um número
       }
-    }
+    }  
     function calculateMoney(distancia: number, valorPorKm: number): number {
       return distancia * valorPorKm;
     }
-    const maskMoneyBRL = (value) => {
-      const amount = (value / 100).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      });
-      return amount
-    }
     const tax = await this.taxService.findAll()
     let time = formatTime(createCalculateDto.time);
-    let km = formatDistance(createCalculateDto.km);
+    let km   = formatDistance(createCalculateDto.km);
     let valueKm;
     switch (createCalculateDto.typeVehicle) {
       case 'motorcycle':
@@ -84,17 +77,12 @@ export class PaymentRaceService {
       case 'vuc':
         valueKm = tax[0].km_vuc;
         break;
-      default:
-        break;
     }
-    let amount = calculateMoney(km, valueKm).toFixed(2);
-    let pay = amount.replace(/\./g, '').toString() ;
-    let payFormat = maskMoneyBRL(pay)
+    let amount = calculateMoney(km, valueKm);
     return {
       time: time,
       km: km,
-      pay: pay,
-      payFormat: payFormat,
+      pay: amount
     };
   }
 
