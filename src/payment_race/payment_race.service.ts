@@ -37,6 +37,7 @@ export class PaymentRaceService {
   }
   
   async calculate(createCalculateDto: CreateCalculateDto) {
+    const tax = await this.taxService.findAll()
     function formatTime(minutes: number): string {
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = Math.floor(minutes % 60);
@@ -57,7 +58,35 @@ export class PaymentRaceService {
     function calculateMoney(distancia: number, valorPorKm: number): number {
       return distancia * valorPorKm;
     }
-    const tax = await this.taxService.findAll()
+    const checkValue = (amount, tax) => {
+      switch (createCalculateDto.typeVehicle) {
+        case 'motorcycle':
+          if(amount < tax[0].motorcycle_min){
+            return tax[0].motorcycle_min
+          }
+          return amount
+        case 'tour':
+          if(amount < tax[0].tour_min){
+            return tax[0].tour_min
+          }
+          return amount
+        case 'util':
+          if(amount < tax[0].util_min){
+            return tax[0].util_min
+          }
+          return amount
+        case 'van':
+          if(amount < tax[0].van_min){
+            return tax[0].van_min
+          }
+          return amount
+        case 'vuc':
+          if(amount < tax[0].vuc_min){
+            return tax[0].vuc_min
+          }
+          return amount
+      } 
+    }
     let time = formatTime(createCalculateDto.time);
     let km   = formatDistance(createCalculateDto.km);
     let valueKm;
@@ -79,10 +108,11 @@ export class PaymentRaceService {
         break;
     }
     let amount = calculateMoney(km, valueKm);
+    let checkAmount = checkValue(amount, tax);
     return {
       time: time,
       km: km,
-      pay: amount
+      pay: checkAmount
     };
   }
 
