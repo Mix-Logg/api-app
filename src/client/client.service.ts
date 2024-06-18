@@ -101,10 +101,7 @@ export class ClientService {
           msg: 'Email Invalid',
         };
       }
-      if (
-        createClientDto.phone.length < 11 ||
-        createClientDto.phone.length > 12
-      ) {
+      if (createClientDto.phone.length < 11 || createClientDto.phone.length > 12) {
         return {
           status: 409,
           msg: 'Phone Invalid',
@@ -186,6 +183,21 @@ export class ClientService {
         status: 500,
         msg: 'Error server internal',
       };
+    }
+  }
+
+  async updateSimple(id: number, updateClientDto: UpdateClientDto){
+    console.log(updateClientDto)
+    const res = await this.clientRepository.update(id, updateClientDto);
+    if(res.affected){
+      return {
+        status: 200,
+        message:'Updated successfully'
+      }
+    }
+    return {
+      status: 500,
+      message:'Unable to update'
     }
   }
 

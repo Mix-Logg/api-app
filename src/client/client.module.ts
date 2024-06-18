@@ -9,6 +9,6 @@ import { EmailModule } from 'src/email/email.module';
   imports:[DatabaseModule, EmailModule],
   controllers: [ClientController],
   providers: [...clientProviders,ClientService],
-  
+  exports:[ ClientService],
 })
 export class ClientModule {}

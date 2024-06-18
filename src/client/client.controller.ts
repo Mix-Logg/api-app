@@ -50,6 +50,11 @@ export class ClientController {
     return this.clientService.update(+id, updateClientDto);
   }
 
+  @Patch('simple/:id')
+  updateSimple(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
+    return this.clientService.updateSimple(+id, updateClientDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.clientService.remove(+id);

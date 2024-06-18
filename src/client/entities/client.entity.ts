@@ -14,6 +14,15 @@ export class Client {
     @Column({ length: 100 })
     email: string;
 
+    @Column({ length: 11 })
+    cpf: string;
+
+    @Column({ length: 200 })
+    pix: string;
+
+    @Column({ length: 50 })
+    type_pix: string;
+
     @Column({ length: 200 })
     password: string;
 

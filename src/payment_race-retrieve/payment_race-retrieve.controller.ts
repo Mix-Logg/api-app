@@ -17,6 +17,16 @@ export class PaymentRaceRetrieveController {
     return this.paymentRaceRetrieveService.findAll();
   }
 
+  @Get('pending')
+  findAllPending() {
+    return this.paymentRaceRetrieveService.findAllPending();
+  }
+
+  @Get('pay')
+  findAllPay() {
+    return this.paymentRaceRetrieveService.findAllPay();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.paymentRaceRetrieveService.findOne(id);

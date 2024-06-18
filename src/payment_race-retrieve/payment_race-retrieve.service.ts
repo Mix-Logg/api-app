@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreatePaymentRaceRetrieveDto } from './dto/create-payment_race-retrieve.dto';
 import { UpdatePaymentRaceRetrieveDto } from './dto/update-payment_race-retrieve.dto';
 import { PaymentRaceRetrieve } from './entities/payment_race-retrieve.entity';
+import { ClientService } from 'src/client/client.service';
+import { RaceService } from 'src/race/race.service';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import findTimeSP from 'hooks/time';
@@ -11,6 +13,8 @@ export class PaymentRaceRetrieveService {
   constructor(
     @Inject('PAYMENTRACERETRIEVE_REPOSITORY')
     private readonly paymentRaceRetrieve: Repository<PaymentRaceRetrieve>,
+    private readonly clientService: ClientService,
+    private readonly raceService  : RaceService
   ) {}
   
   async create(createPaymentRaceRetrieveDto: CreatePaymentRaceRetrieveDto) {
@@ -36,6 +40,35 @@ export class PaymentRaceRetrieveService {
   findAll() {
     return `This action returns all paymentRaceRetrieve`;
   }
+
+  async findAllPending(){
+    const allPending = [];
+    const response = await this.paymentRaceRetrieve.find({ where: { status: 'pending' } });
+    await Promise.all(response.map(async (pendigs) => {
+      const client = await this.clientService.findOneById(pendigs.id_client);
+      // const race   = await this.raceService.findOne(pendigs.id_race)
+      let date = {
+        id    : pendigs.id,
+        name  : client.name,
+        phone : client.phone,
+        value : pendigs.value,
+        tax   : pendigs.tax,
+        status: pendigs.status,
+        pix   : pendigs.pix,
+        type  : pendigs.type,
+        motion: pendigs.motion,
+        create: pendigs.create_at,
+      };
+      allPending.push(date);
+    }));
+
+    return allPending;
+  }
+
+  findAllPay(){
+    return this.paymentRaceRetrieve.find({ where: { status: 'pay' } });
+  }
+
 
   findOne(id: string) {
     return this.paymentRaceRetrieve.findOne({ where: { id } });
