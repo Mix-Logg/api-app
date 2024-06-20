@@ -35,10 +35,24 @@ export class FreightGateway {
     return this.freightService.findOne(id);
   }
 
+  @SubscribeMessage('cancelRace')
+  async cancelRace(@MessageBody() id: number) {
+    this.server.emit('cancelRace'  , id); 
+    this.server.emit('updateStatus', {id:id, isVisible: '0'});
+    await this.freightService.update(id, {id: id, isVisible: '0'});
+  }
+
+  @SubscribeMessage('driverCancel')
+  async driverCancel(@MessageBody()  id: number) {
+    this.server.emit('cancelRace'  , id); 
+    this.server.emit('updateStatus', {id:id, isVisible: '1'});
+    await this.freightService.update(id, {id: id, isVisible: '1'});
+  }
+
   @SubscribeMessage('updateStatus')
   async update(@MessageBody() updateFreightDto: UpdateFreightDto) {
+    this.server.emit('updateStatus', {id:updateFreightDto.id, isVisible: '1'}); 
     setTimeout(async () => {
-      this.server.emit('updateStatus', updateFreightDto.id); 
       await this.freightService.update(updateFreightDto.id, updateFreightDto);
     }, 3000);
   }

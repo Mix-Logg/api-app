@@ -8,7 +8,7 @@ import { EmailModule } from 'src/email/email.module';
 @Module({
   imports:[DatabaseModule, EmailModule],
   controllers: [ClientController],
-  providers: [...clientProviders,ClientService],
+  providers: [...clientProviders, ClientService],
   exports:[ ClientService],
 })
 export class ClientModule {}

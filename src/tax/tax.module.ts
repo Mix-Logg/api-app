@@ -7,7 +7,7 @@ import { taxProviders } from './tax.provider';
 @Module({
   imports: [DatabaseModule],
   controllers: [TaxController],
-  providers:[...taxProviders,TaxService],
+  providers:[...taxProviders, TaxService],
   exports:[TaxService]
 })
 export class TaxModule {}

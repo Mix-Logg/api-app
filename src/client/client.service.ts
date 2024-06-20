@@ -187,7 +187,6 @@ export class ClientService {
   }
 
   async updateSimple(id: number, updateClientDto: UpdateClientDto){
-    console.log(updateClientDto)
     const res = await this.clientRepository.update(id, updateClientDto);
     if(res.affected){
       return {

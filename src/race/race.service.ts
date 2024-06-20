@@ -35,9 +35,11 @@ export class RaceService {
   }
 
   findAllOpen(type: string) {
-    return this.raceRepository.find({
-      where: { isVisible: '1', vehicleType: type },
-    });
+    return this.raceRepository.createQueryBuilder('race')
+    .where('race.delete_at IS NULL')
+    .andWhere('race.vehicleType = :type', { type })
+    .getMany();
+
   }
 
   async findHistory(id: number) {

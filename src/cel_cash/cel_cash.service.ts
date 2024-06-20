@@ -143,7 +143,7 @@ export class CelCashService {
               message:'Payment internal incomplet'
             }
           }else{
-            console.log(payload)
+            console.log(payload.Transaction.status)
           }
         break;
       }

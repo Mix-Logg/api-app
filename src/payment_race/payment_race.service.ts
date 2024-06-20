@@ -126,7 +126,7 @@ export class PaymentRaceService {
 
   async update(id: string, updatePaymentRaceDto: UpdatePaymentRaceDto) {
     const response = await this.paymentRace.update(id, updatePaymentRaceDto);
-    if(response.affected === 1){
+    if(response.affected == 1){
       return {
         status:200,
         message:'Updated paymentRace successfully'
