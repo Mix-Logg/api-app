@@ -4,13 +4,15 @@ import { CreateFreightDto } from './dto/create-freight.dto';
 import { UpdateFreightDto } from './dto/update-freight.dto';
 import { CreateRaceDto } from 'src/race/dto/create-race.dto';
 import { Server } from 'socket.io';
-
+import { CancelDriverFreightDto } from './dto/cancelDriverRace-freight.dto';
+import { UserService } from 'src/user/user.service';
 @WebSocketGateway()
 export class FreightGateway {
   @WebSocketServer() server:Server;
 
   constructor(
     private readonly freightService: FreightService,
+    private readonly userService   : UserService,
   ){}
 
   // afterInit() {
@@ -43,10 +45,12 @@ export class FreightGateway {
   }
 
   @SubscribeMessage('driverCancel')
-  async driverCancel(@MessageBody()  id: number) {
-    this.server.emit('cancelRace'  , id); 
-    this.server.emit('updateStatus', {id:id, isVisible: '1'});
-    await this.freightService.update(id, {id: id, isVisible: '1'});
+  async driverCancel(@MessageBody()  data: CancelDriverFreightDto ){
+    this.server.emit('driverCancel', data.idRace); 
+    this.server.emit('cancelRace'  , data.idRace); 
+    this.server.emit('updateStatus', {id:data.idRace, isVisible: '1'});
+    await this.freightService.update(data.idRace, {id: data.idRace, isVisible: '1'});
+    await this.userService.taxCancelRace(data.am, data.uuid);
   }
 
   @SubscribeMessage('updateStatus')

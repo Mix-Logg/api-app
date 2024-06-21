@@ -56,7 +56,6 @@ export class RaceService {
 
   async update(id: number, updateRaceDto: UpdateRaceDto) {
     const res = await this.findOne(id);
-
     if (!res) {
       return {
         status: 500,
@@ -93,7 +92,20 @@ export class RaceService {
     }
 
     const response = await this.raceRepository.update(id, updateRaceDto);
+    if (response.affected) {
+      return {
+        status: 200,
+        msg: 'Successful update',
+      };
+    }
+    return {
+      status: 500,
+      msg: 'Failed to update',
+    };
+  }
 
+  async updateSimple(id: number, updateRaceDto: UpdateRaceDto) {
+    const response = await this.raceRepository.update(id, updateRaceDto);
     if (response.affected) {
       return {
         status: 200,
@@ -110,6 +122,7 @@ export class RaceService {
     try {
       const updateRaceDto: UpdateRaceDto = { delete_at: Time() };
       await this.raceRepository.update(id, updateRaceDto);
+      console.log('caiu aqui')
       return {
         msg: 'successful',
         status: 200,

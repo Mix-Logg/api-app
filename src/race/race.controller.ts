@@ -36,11 +36,17 @@ export class RaceController {
   findHistory(@Param('id') id: string) {
     return this.raceService.findHistory(+id);
   }
+  
+  @Patch('simple/:id')
+  updateSimple(@Param('id') id: string, @Body() updateRaceDto: UpdateRaceDto) {
+    return this.raceService.updateSimple(+id, updateRaceDto);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRaceDto: UpdateRaceDto) {
     return this.raceService.update(+id, updateRaceDto);
   }
+
 
   @Delete(':id')
   remove(@Param('id') id: number ) {

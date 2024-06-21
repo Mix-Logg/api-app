@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity'
 import { FindUser } from './dto/find-user.dto';
 import { AuthUserApp } from './dto/auth-user.dto';
+import { TaxService } from 'src/tax/tax.service';
 import * as bcrypt from 'bcryptjs-react';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class UserService {
   constructor(
     @Inject('USER_REPOSITORY') 
     private userRepository: Repository<User>,
+    private taxService : TaxService,
   ){}
 
   async create(createUserDto: CreateUserDto) {
@@ -79,6 +81,15 @@ export class UserService {
       return 500
     }else{
       return 200
+    }
+  }
+
+  async taxCancelRace(am:string, uuid:number){
+    const user   = await this.findOne(uuid, am);
+    const taxs   = await this.taxService.findAll();
+    if(user != 500){
+      const newAmount = (parseInt(user.amount) - taxs[0].driver_cancel)
+      this.update(user.id, {amount:newAmount.toString()})
     }
   }
 

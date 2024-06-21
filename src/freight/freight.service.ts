@@ -5,13 +5,12 @@ import { RaceService } from 'src/race/race.service';
 import { UserService } from 'src/user/user.service';
 import { CreateRaceDto } from 'src/race/dto/create-race.dto';
 import findTimeSP from 'hooks/time';
-import { TaxService } from 'src/tax/tax.service';
 @Injectable()
 export class FreightService {
   constructor(
     private raceService  : RaceService,
     private userService  : UserService,
-    private taxService   : TaxService,
+    
   ){}
 
   async create(createRaceDto: CreateRaceDto) {
@@ -30,17 +29,7 @@ export class FreightService {
   }
 
   async update(id: number, updateFreightDto: UpdateFreightDto) {
-    const time = findTimeSP()
-    updateFreightDto.delete_at = time;
     return await this.raceService.update(id, updateFreightDto)
-  }
-
-  async updateWalletDriver(id:number, amountRetrieve:string){
-    
-    const update = {
-
-    }
-    this.userService.update(id, update)
   }
 
   remove(id: number) {

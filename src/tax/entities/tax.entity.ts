@@ -53,6 +53,9 @@ export class Tax {
     @Column()
     pix_driverPaymentDefault: number;
 
+    @Column()
+    driver_cancel: number;
+
     @Column({ default:null })
     update_at: string;
 

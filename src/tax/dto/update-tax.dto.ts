@@ -15,5 +15,6 @@ export class UpdateTaxDto{
     pix_driverRetrieve?: number;
     pix_driverTaxPixRetrieve?: number;
     pix_driverPaymentDefault?: number;
+    driver_cancel?: number;
     update_at?: string;
 }
