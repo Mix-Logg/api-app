@@ -8,12 +8,14 @@ import { Vehicle } from './entities/vehicle.entity';
 import { Repository } from 'typeorm';
 import { UpdateAddressDto } from './dto/update-address-dto';
 import { DriverService } from 'src/driver/driver.service';
+import { RecordPlugService } from 'src/record_plug/record_plug.service';
 @Injectable()
 export class VehicleService {
   constructor(
     @Inject('VEHICLE_REPOSITORY') 
     private vehicleRepository: Repository<Vehicle>,
-    private readonly driverService : DriverService
+    private readonly driverService : DriverService,
+    private readonly plugService : RecordPlugService
   ){}
   
   create(createVehicleDto: CreateVehicleDto) {
@@ -169,7 +171,66 @@ export class VehicleService {
       };
       reportDate.push(owner);
     }
-    
+    return reportDate;
+  }
+
+  async reportDriver(){
+    let reportDate = []; 
+    const drivers = await this.driverService.findAll();
+    for (const driver of drivers) {
+      const vehicle = await this.findOne(driver.id, 'driver'); 
+      if (vehicle == null) {
+        continue;
+      }
+      const plug    = await this.plugService.findOne(driver.id, 'driver')
+      const day     = driver.create_at.getUTCDate();
+      const month   = driver.create_at.getUTCMonth() + 1; 
+      const year    = driver.create_at.getUTCFullYear();
+      const date    = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+      let step;
+      let stepUser;
+      if(plug != 500){
+        switch (plug.timeline) {
+          case 1:
+              step = 'EMAIL ENVIADO'
+              stepUser = 'ANALISE'
+              break;
+          case 2:
+              step = 'EM ANALISE'
+              stepUser = 'ANALISE'
+              break;
+          case 3:
+              if(plug.aproved === '1'){
+                  step = 'APROVADO';
+              }
+              if(plug.aproved === '0'){
+                  step = 'REPROVADO';
+              }
+              stepUser = 'ANALISE'
+              break;
+          case 4:
+              stepUser = 'ANALISE'
+              step = 'INTEGRADO'
+              break;
+          default:
+              step = 'FICHA NÃO INICIADA'
+              stepUser = 'CADASTRADO'
+              break;
+        }
+      }
+      let driverParams = {
+          create: date,
+          name:  driver.name,
+          cpf:   driver.cpf,
+          birth: driver.birth,
+          plate: vehicle.brand,
+          typeVehicle: vehicle.type === 'util' ? 'FIORINO' : vehicle.type,
+          brand   : vehicle.brand,
+          timeLine: stepUser,
+          occurrence: step
+      };
+      reportDate.push(driverParams);
+    }
     return reportDate;
   }
 

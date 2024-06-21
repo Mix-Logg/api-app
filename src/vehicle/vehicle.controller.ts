@@ -30,6 +30,11 @@ export class VehicleController {
   {
     return this.vehicleService.findOne(id, am);
   }
+
+  @Get('driverReport')
+  reportDriver(){
+    return this.vehicleService.reportDriver()
+  }
   
   @Get('report')
   report(){
@@ -41,8 +46,6 @@ export class VehicleController {
   {
     return this.vehicleService.findOnePlate(plate);
   }
-
-
 
   @Patch('antt')
   updateAntt(@Body() updateAntt: UpdateAntt) {
