@@ -32,6 +32,11 @@ export class FreightService {
     return await this.raceService.update(id, updateFreightDto)
   }
 
+  async updateFinish(id: number, updateFreightDto: UpdateFreightDto) {
+    UpdateFreightDto.delete_at = findTimeSP()
+    return await this.raceService.update(id, updateFreightDto)
+  }
+
   remove(id: number) {
     console.log('aq')
     return `This action removes a #${id} freight`;

@@ -41,7 +41,7 @@ export class FreightGateway {
   async cancelRace(@MessageBody() id: number) {
     this.server.emit('cancelRace'  , id); 
     this.server.emit('updateStatus', {id:id, isVisible: '0'});
-    await this.freightService.update(id, {id: id, isVisible: '0'});
+    await this.freightService.updateFinish(id, {id: id, isVisible: '0'});
   }
 
   @SubscribeMessage('driverCancel')
