@@ -22,6 +22,11 @@ export class VehicleController {
     return this.vehicleService.findAll();
   }
 
+  @Get('driver')
+  reportDriver(){
+    return this.vehicleService.reportDriver()
+  }
+
   @Get(':id/:am')
   findOne(
     @Param('id') id: number,
@@ -31,11 +36,6 @@ export class VehicleController {
     return this.vehicleService.findOne(id, am);
   }
 
-  @Get('driverReport')
-  reportDriver(){
-    return this.vehicleService.reportDriver()
-  }
-  
   @Get('report')
   report(){
     return this.vehicleService.report()
@@ -46,7 +46,7 @@ export class VehicleController {
   {
     return this.vehicleService.findOnePlate(plate);
   }
-
+  
   @Patch('antt')
   updateAntt(@Body() updateAntt: UpdateAntt) {
     return this.vehicleService.updateAntt(updateAntt);
