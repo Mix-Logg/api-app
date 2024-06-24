@@ -20,8 +20,14 @@ export class User {
     @Column({ length: 50, default: '0' })
     amount: string;
 
-    @CreateDateColumn({type: "timestamp"})
-    create_at: Date;
+    @Column({ length: 50 })
+    galaxHash: string;
+
+    @Column()
+    galaxId: string;
+
+    @CreateDateColumn()
+    create_at: string;
 
     @UpdateDateColumn({type: "timestamp", default:null, })
     update_at: Date;
