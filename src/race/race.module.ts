@@ -4,8 +4,10 @@ import { RaceController } from './race.controller';
 import { raceProviders } from './race.provider';
 import { DatabaseModule } from 'src/database/database.module';
 import { FreightService } from 'src/freight/freight.service';
+import { ClientModule } from 'src/client/client.module';
+import { DriverModule } from 'src/driver/driver.module';
 @Module({
-  imports:[DatabaseModule],
+  imports:[DatabaseModule, ClientModule, DriverModule],
   controllers: [RaceController],
   providers: [...raceProviders,RaceService],
   exports: [RaceService]

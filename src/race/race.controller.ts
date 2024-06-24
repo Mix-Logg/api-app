@@ -13,8 +13,8 @@ export class RaceController {
   }
 
   @Get()
-  findAll() {
-    return this.raceService.findAll();
+  findAllActive() {
+    return this.raceService.findAllActive();
   }
 
   @Get('open/:type')

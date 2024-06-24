@@ -3,6 +3,8 @@ import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
 import { Repository } from 'typeorm';
 import { Race } from './entities/race.entity';
+import { ClientService } from 'src/client/client.service';
+import { DriverService } from 'src/driver/driver.service';
 import Time from '../../hooks/time';
 
 @Injectable()
@@ -10,6 +12,8 @@ export class RaceService {
   constructor(
     @Inject('RACE_REPOSITORY')
     private raceRepository: Repository<Race>,
+    private clientService :ClientService,
+    private driverService :DriverService
   ) {}
 
   async create(createRaceDto: CreateRaceDto) {
@@ -30,8 +34,31 @@ export class RaceService {
     return response;
   }
 
-  findAll() {
-    return this.raceRepository.find();
+  async findAllActive() {
+    const racesSolid = []
+    const races = await this.raceRepository.createQueryBuilder('race')
+    .where('race.delete_at IS NULL')
+    .andWhere('race.idDriver IS NOT NULL')
+    .getMany();
+    await Promise.all(
+      races.map(async (race) => {
+        const client = await this.clientService.findOneById(race.idClient)
+        const driver = await this.driverService.findOne(race.idDriver)
+        const raceSolid = {
+          id         : race.id,
+          client     : client.name,
+          clientPhone: client.phone,
+          driver     : driver.name,
+          driverPhone: driver.phone,
+          vehicle    : race.vehicleType,
+          plate      : race.plate,
+          km         : race.km,
+          value      : race.value
+        }
+        racesSolid.push(raceSolid);
+      })
+    )
+    return racesSolid
   }
 
   findAllOpen(type: string) {
