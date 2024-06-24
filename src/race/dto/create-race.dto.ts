@@ -8,6 +8,7 @@ export class CreateRaceDto {
   finish: string;
   value: string;
   origin: string;
+  tax: string;
   destination: string;
   codeInitial?: string;
   codeFinish?: string;
