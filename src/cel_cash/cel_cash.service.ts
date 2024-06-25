@@ -38,7 +38,7 @@ export class CelCashService {
     const base64AuthString =  Buffer.from(authString).toString('base64');
     const body = {
       grant_type: 'authorization_code',
-      scope: 'customers.read customers.write plans.read plans.write transactions.read transactions.write webhooks.write balance.read balance.write cards.read cards.write card-brands.read subscriptions.read subscriptions.write charges.read charges.write boletos.read'
+      scope: 'customers.read customers.write plans.read plans.write transactions.read transactions.write webhooks.write balance.read balance.write cards.read cards.write card-brands.read subscriptions.read subscriptions.write charges.read charges.write boletos.read company.write'
     };
     try {
       const response = await axios.post(`${process.env.GALAX_URL}/token`, body, {
@@ -135,11 +135,9 @@ export class CelCashService {
       }
     }
     try{
-      const token = await this.getToken()
-      console.log(`${token}`)
       const response = await axios.post(`${process.env.GALAX_URL}/company/subaccount`, datesWallet, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${this.accessToken}`,
         },
       });
       console.log(response)

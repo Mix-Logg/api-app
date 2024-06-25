@@ -27,11 +27,12 @@ import { PaymentDeliveryModule } from './payment_delivery/payment_delivery.modul
 import { PaymentRaceModule } from './payment_race/payment_race.module';
 import { PaymentRaceRetrieveModule } from './payment_race-retrieve/payment_race-retrieve.module';
 import { TaxModule } from './tax/tax.module';
+import { RaceDriverCancelModule } from './race_driver-cancel/race_driver-cancel.module';
 
 
 
 @Module({
-  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, OperationModule, LeadModule, TeamModule, CelCashModule, PaymentDeliveryModule, PaymentRaceModule, PaymentRaceRetrieveModule, TaxModule],
+  imports: [ConfigModule.forRoot({ envFilePath: ['.env.development.local', '.env.development'],}) , DriverModule, AddressModule, UploadBucketModule, VehicleModule, AdminModule, AuthModule, AvalidPhotoModule, AuxiliaryModule, UserModule, RecordPlugModule, CompanyModule, CompanyModule, MotorcycleModule, TourModule, FreightModule, RaceModule, ClientModule, OperationModule, LeadModule, TeamModule, CelCashModule, PaymentDeliveryModule, PaymentRaceModule, PaymentRaceRetrieveModule, TaxModule, RaceDriverCancelModule],
   controllers: [AppController],
   providers: [AppService, EmailService],
 })
