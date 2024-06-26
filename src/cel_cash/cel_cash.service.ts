@@ -244,7 +244,7 @@ export class CelCashService {
   }
 
   async createPayment(createPaymentDto:CreatePaymentDto ){
-    const token = this.getToken()
+    const token = await this.getToken()
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
