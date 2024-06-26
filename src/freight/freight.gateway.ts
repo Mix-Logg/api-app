@@ -58,7 +58,7 @@ export class FreightGateway {
       idDelivery : data.uuid,
       idRace     : data.idRace
     }
-    await this.raceDriverCancel.create(cancelDriver)
+    await this.raceDriverCancel.create(cancelDriver);
   }
 
   @SubscribeMessage('updateStatus')

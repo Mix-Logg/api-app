@@ -18,11 +18,11 @@ export class RaceDriverCancelController {
   }
 
   @Get(':id/:am')
-  findOne(
+  findAllDelivery(
     @Param('id') id: number,
     @Param('am') am: string
   ) {
-    return this.raceDriverCancelService.findOne(am, id);
+    return this.raceDriverCancelService.findAllDelivery(am, id);
   }
 
   @Patch(':id')

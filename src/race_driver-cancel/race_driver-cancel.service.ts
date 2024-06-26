@@ -25,8 +25,8 @@ export class RaceDriverCancelService {
     return `This action returns all raceDriverCancel`;
   }
 
-  async findOne(am:string ,idDelivery: number) {
-    const user = await this.raceDriverCancel.findOne({
+  async findAllDelivery(am:string ,idDelivery: number) {
+    const user = await this.raceDriverCancel.find({
       where: {
         am, 
         idDelivery 
