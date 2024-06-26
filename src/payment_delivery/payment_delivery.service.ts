@@ -15,6 +15,7 @@ export class PaymentDeliveryService {
   async create(createPaymentDeliveryDto: CreatePaymentDeliveryDto) {
     const time = FindTimeSP()
     createPaymentDeliveryDto.create_at = time;
+    createPaymentDeliveryDto.status = 'pending'
     const response = await this.paymentDelivery.save(createPaymentDeliveryDto);
     if(response != null){
       return {

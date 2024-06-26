@@ -49,7 +49,6 @@ export class CelCashService {
 
       this.accessToken = response.data.access_token;
       this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
-      console.log(`Access Token: ${this.accessToken}`);
 
       // Renove o token 60 segundos antes de expirar
       setTimeout(() => this.getToken(), (response.data.expires_in - 60) * 1000);
@@ -245,6 +244,7 @@ export class CelCashService {
   }
 
   async createPayment(createPaymentDto:CreatePaymentDto ){
+    const token = this.getToken()
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -304,7 +304,7 @@ export class CelCashService {
     try{
       const response = await axios.post(`${process.env.GALAX_URL}/charges`, payment_params, {
         headers: {
-          'Authorization': `Bearer ${this.accessToken}`,
+          'Authorization': `Bearer ${token}`,
         },
       })
       if(createPaymentDto.type == 'pix'){
@@ -315,7 +315,7 @@ export class CelCashService {
       }
       return response.data;
     }catch(error){
-      console.log('erro',error.response.data.error.details)
+      console.log('erro',error.response.data.error)
       return{
         status:500,
         message:'Error cel_cash'

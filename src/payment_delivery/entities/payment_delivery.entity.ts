@@ -8,11 +8,11 @@ export class PaymentDelivery {
     @Column()
     id_user: number;
 
-    @Column()
-    webhookId: number;
-
     @Column({length: 50})
     amount_out: string;
+
+    @Column({length: 50})
+    status: string;
 
     @Column({length: 200})
     pix: string;
