@@ -6,5 +6,6 @@ export class CreatePaymentDeliveryDto {
     tax      ?: string;
     taxPix    : string;
     taxFull   : string;
+    status    : string;
     create_at?: string;
 }

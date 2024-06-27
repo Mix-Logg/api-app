@@ -5,6 +5,7 @@ import { UpdateCelCashDto } from './dto/update-cel_cash.dto';
 import { CreateAdvanceCashDto } from './dto/advance-cel_cash.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { CreateRetrieveRacePixDto } from './dto/create-retrieveRacePix.dto';
+import { CreateWalletDto } from './dto/createWallet-cel_cash.dto';
 @Controller('cel-cash')
 export class CelCashController {
   constructor(private readonly celCashService: CelCashService) {}
@@ -17,6 +18,11 @@ export class CelCashController {
   @Post('webhook-galax-pay')
   webhook(@Body() payload: any){
     return this.celCashService.webhook(payload);
+  }
+
+  @Post('wallet')
+  createWallet(@Body() createWalletDto: CreateWalletDto) {
+    return this.celCashService.createWallet(createWalletDto);
   }
 
   @Post('advance')

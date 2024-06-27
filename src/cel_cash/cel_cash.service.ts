@@ -9,8 +9,9 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { CreateRetrieveRacePixDto } from './dto/create-retrieveRacePix.dto';
 import { PaymentRaceService } from 'src/payment_race/payment_race.service';
 import { PaymentRaceRetrieveService } from 'src/payment_race-retrieve/payment_race-retrieve.service';
+import { CreateWalletDto } from './dto/createWallet-cel_cash.dto';
+import { AddressService } from 'src/address/address.service';
 import axios from 'axios';
-
 @Injectable()
 export class CelCashService {
   private readonly galaxId = process.env.GALAX_ID;
@@ -24,11 +25,37 @@ export class CelCashService {
     private readonly userService: UserService,
     private readonly paymentRaceService: PaymentRaceService,
     private readonly paymentRaceRetrieveService: PaymentRaceRetrieveService,
+    private readonly addressService: AddressService,
   ) {
-    this.getToken();
-    setTimeout(() => {
-      this.registerPayment()
-    }, 3000);
+    this.getTokenGlobal();
+    // setTimeout(() => {
+    //   this.registerPayment()
+    // }, 3000);
+  }
+
+  private async getTokenGlobal() {
+    const authString = `${this.galaxId}:${this.galaxHash}`;
+    const base64AuthString =  Buffer.from(authString).toString('base64');
+    const body = {
+      grant_type: 'authorization_code',
+      scope: 'customers.read customers.write plans.read plans.write transactions.read transactions.write webhooks.write balance.read balance.write cards.read cards.write card-brands.read subscriptions.read subscriptions.write charges.read charges.write boletos.read company.write'
+    };
+    try {
+      const response = await axios.post(`${process.env.GALAX_URL}/token`, body, {
+        headers: {
+          'Authorization': `Basic ${base64AuthString}`,
+        },
+      });
+
+      this.accessToken = response.data.access_token;
+      this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
+
+      // Renove o token 60 segundos antes de expirar
+      setTimeout(() => this.getToken(), (response.data.expires_in - 60) * 1000);
+    } catch (error) {
+      console.log(base64AuthString)
+      console.log('Error obtaining access token:', error.response);
+    }
   }
 
   private async getToken() {
@@ -45,12 +72,7 @@ export class CelCashService {
         },
       });
 
-      this.accessToken = response.data.access_token;
-      this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
-      // console.log(`Access Token: ${this.accessToken}`);
-
-      // Renove o token 60 segundos antes de expirar
-      setTimeout(() => this.getToken(), (response.data.expires_in - 60) * 1000);
+      return response.data.access_token;
     } catch (error) {
       console.log(base64AuthString)
       console.log('Error obtaining access token:', error.response);
@@ -75,6 +97,56 @@ export class CelCashService {
     }catch(error){
       console.log('erro Weebhook',error.response.data)
     }
+  }
+
+  async createWallet(createWalletDto: CreateWalletDto){
+    let delivery;
+    switch (createWalletDto.am) {
+      case 'auxiliary':
+        delivery = await this.auxiliaryService.findOne(createWalletDto.idDelivery)
+        break;
+      case 'driver':
+        delivery = await this.driverService.findOne(createWalletDto.idDelivery)
+        break;
+    }
+    const user    = await this.userService.findOne(createWalletDto.idDelivery, createWalletDto.am);
+    const address = await this.addressService.findOne(createWalletDto.idDelivery, createWalletDto.am)
+    const datesWallet = {
+      name    :delivery.name,
+      document:delivery.cpf,
+      phone   :delivery.phone,
+      emailContact:delivery.email,
+      canAccessPlatform: false,
+      softDescriptor:`Mix Serviços Logísticos`,
+      logo:`base_64`,
+      Professional:{
+        internalName:`others`,
+        inscription : createWalletDto.am == 'driver' ? delivery.cnh : delivery.rg
+      },
+      Address:{
+        zipCode:address.zipCode,
+        street :address.street,
+        number :address.number,
+        neighborhood:address.district,
+        complement:address.complement,
+        city :address.city,
+        state:address.uf 
+      }
+    }
+    try{
+      const response = await axios.post(`${process.env.GALAX_URL}/company/subaccount`, datesWallet, {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`,
+        },
+      });
+      console.log(response)
+    }catch(e){
+      console.log(e.response.data)
+    }
+    return
+    
+    // const response = await axios.post(`${process.env.GALAX_URL}/company/subaccount`)
+    // console.log(response)
   }
 
   async advance(createAdvanceCashDto:CreateAdvanceCashDto){
@@ -172,6 +244,7 @@ export class CelCashService {
   }
 
   async createPayment(createPaymentDto:CreatePaymentDto ){
+    const token = await this.getToken()
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -231,7 +304,7 @@ export class CelCashService {
     try{
       const response = await axios.post(`${process.env.GALAX_URL}/charges`, payment_params, {
         headers: {
-          'Authorization': `Bearer ${this.accessToken}`,
+          'Authorization': `Bearer ${token}`,
         },
       })
       if(createPaymentDto.type == 'pix'){
@@ -242,7 +315,7 @@ export class CelCashService {
       }
       return response.data;
     }catch(error){
-      console.log('erro',error.response.data.error.details)
+      console.log('erro',error.response.data.error)
       return{
         status:500,
         message:'Error cel_cash'

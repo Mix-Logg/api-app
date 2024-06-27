@@ -6,6 +6,7 @@ import { CreateRaceDto } from 'src/race/dto/create-race.dto';
 import { Server } from 'socket.io';
 import { CancelDriverFreightDto } from './dto/cancelDriverRace-freight.dto';
 import { UserService } from 'src/user/user.service';
+import { RaceDriverCancelService } from 'src/race_driver-cancel/race_driver-cancel.service';
 @WebSocketGateway()
 export class FreightGateway {
   @WebSocketServer() server:Server;
@@ -13,6 +14,7 @@ export class FreightGateway {
   constructor(
     private readonly freightService: FreightService,
     private readonly userService   : UserService,
+    private readonly raceDriverCancel   : RaceDriverCancelService,
   ){}
 
   // afterInit() {
@@ -51,6 +53,12 @@ export class FreightGateway {
     this.server.emit('updateStatus', {id:data.idRace, isVisible: '1'});
     await this.freightService.update(data.idRace, {id: data.idRace, isVisible: '1'});
     await this.userService.taxCancelRace(data.am, data.uuid);
+    const  cancelDriver = {
+      am         : data.am,
+      idDelivery : data.uuid,
+      idRace     : data.idRace
+    }
+    await this.raceDriverCancel.create(cancelDriver);
   }
 
   @SubscribeMessage('updateStatus')

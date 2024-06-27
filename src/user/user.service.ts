@@ -7,7 +7,7 @@ import { FindUser } from './dto/find-user.dto';
 import { AuthUserApp } from './dto/auth-user.dto';
 import { TaxService } from 'src/tax/tax.service';
 import * as bcrypt from 'bcryptjs-react';
-
+import findTimeSP from 'hooks/time';
 @Injectable()
 export class UserService {
   constructor(
@@ -18,6 +18,8 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
+      const time = await findTimeSP();
+      createUserDto.create_at = time
       await this.userRepository.save(createUserDto);
       return 200;
     } catch (error) {
