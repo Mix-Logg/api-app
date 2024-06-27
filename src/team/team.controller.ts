@@ -17,10 +17,16 @@ export class TeamController {
     return this.teamService.findAll();
   }
 
+  @Get('/report')
+  report() {
+    return this.teamService.report();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.teamService.findOne(+id);
   }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {

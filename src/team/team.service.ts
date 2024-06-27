@@ -56,6 +56,33 @@ export class TeamService {
     return allTeams;
   }
 
+  async report() {
+    let allTeams = []
+    const teams = await this.teamRepository.find();
+    await Promise.all(
+      teams.map(async (team) => {
+        const vehicle   = await this.vehicleService.findOneId(team.id_vehicle);
+        const driver    = await this.driverService.findOne(team.id_driver);
+        const auxiliary = await this.auxiliaryService.findOne(team.id_auxiliary);
+        const create = new Date(team.create_at)
+        const day     = create.getUTCDate();
+        const month   = create.getUTCMonth() + 1; 
+        const year    = create.getUTCFullYear();
+        const date    = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+        let group = {
+          create:date,
+          id: team.id,
+          driverName: driver.name,
+          auxiliaryName: auxiliary.name,
+          vehicle: vehicle.type,
+          plate  : vehicle.plate
+        }
+        allTeams.push(group)
+      })
+    )
+    return allTeams;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} team`;
   }

@@ -42,6 +42,12 @@ export class RaceService {
 
   }
 
+  findAllOpenNoType(){
+    return this.raceRepository.createQueryBuilder('race')
+    .where('race.delete_at IS NULL')
+    .getMany();
+  }
+
   async findHistory(id: number) {
     return await this.raceRepository.find({ where: { idClient: id } });
   }

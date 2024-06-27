@@ -16,6 +16,12 @@ export class RaceController {
   findAll() {
     return this.raceService.findAll();
   }
+  
+
+  @Get('/open')
+  findAllOpenNoType() {
+    return this.raceService.findAllOpenNoType();
+  }
 
   @Get('open/:type')
   findAllOpen( @Param('type') type: string ) {
