@@ -99,6 +99,13 @@ export class AuxiliaryService {
       }
   }
 
+  async findAuxiliaryToOperation(cpf: string) {
+    return await this.auxiliaryRepository.createQueryBuilder('auxiliary')
+      .where('auxiliary.delete_at IS NULL AND auxiliary.cpf = :cpf', { cpf })
+      .getMany();
+  }
+  
+
   async update(id: number, UpdateStatus: UpdateStatus) {
     const res = await this.auxiliaryRepository.save({
       id: id,

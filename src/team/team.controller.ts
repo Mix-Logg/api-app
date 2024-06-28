@@ -22,8 +22,8 @@ export class TeamController {
     return this.teamService.report();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('operation/:idDriver')
+  findOne(@Param('idDriver') id: string) {
     return this.teamService.findOne(+id);
   }
 
