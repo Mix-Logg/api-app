@@ -87,12 +87,14 @@ export class TeamService {
     const team = await this.teamRepository.createQueryBuilder('team')
     .where('team.delete_at IS NULL AND team.id_driver = :id_driver', { id_driver })
     .getMany();
-    console.log(team)
     const vehicle   = await this.vehicleService.findOneId(team[0].id_vehicle);
     const driver    = await this.driverService.findOne(team[0].id_driver);
     const auxiliary = await this.auxiliaryService.findOne(team[0].id_auxiliary);
     const datesTeam = {
-      nameDriver: driver.name,
+      id         : team[0].id,
+      idAuxiliary: team[0].id_auxiliary,
+      idDriver   : team[0].id_driver,
+      nameDriver : driver.name,
       nameAuxiliary: auxiliary.name,
       vehicle: vehicle.type
     }

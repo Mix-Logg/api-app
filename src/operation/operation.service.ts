@@ -12,7 +12,7 @@ export class OperationService {
   ){}
 
   async create(createOperationDto: CreateOperationDto) {
-    const timeCurrect = await findTimeSP()
+    const timeCurrect = await findTimeSP();
     createOperationDto.create_at = timeCurrect
     createOperationDto.status = '1'
     const response = await this.operationRepository.save(createOperationDto);
