@@ -5,5 +5,6 @@ export class CreateOperationTodayDto {
     idAuxiliary: number
     status: string
     operation:string
+    occurrence?:string
     create_at?:string
 }

@@ -3,6 +3,7 @@ export class UpdateOperationTodayDto {
     team?: string
     idDriver   ?: number
     idAuxiliary?: number
+    idAdmin?: number
     status    ?: string
     start     ?: string
     operation ?:string

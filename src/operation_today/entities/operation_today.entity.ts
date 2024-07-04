@@ -9,6 +9,9 @@ export class OperationToday {
     idDriver   : number;
 
     @Column()
+    idAdmin  : number;
+
+    @Column()
     idAuxiliary: number;
 
     @Column()
