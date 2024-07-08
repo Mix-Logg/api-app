@@ -28,8 +28,20 @@ export class OperationTodayService {
     }
   }
 
-  findAll() {
-    return `This action returns all operationToday`;
+  async findAll(date:string, operation:string) {
+    const response = await this.operationTodayRepository.find({
+      where: {
+        date,
+        operation
+      }
+    });
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registered not found'
+    }
   }
 
   async findOneToday(idDriver: number) {

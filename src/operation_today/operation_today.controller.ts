@@ -12,9 +12,12 @@ export class OperationTodayController {
     return this.operationTodayService.create(createOperationTodayDto);
   }
 
-  @Get()
-  findAll() {
-    return this.operationTodayService.findAll();
+  @Get('date/:date/:operation')
+  findAll(
+    @Param('date')      date: string,
+    @Param('operation') operation: string,
+  ){
+    return this.operationTodayService.findAll(date,operation);
   }
 
   @Get(':idDriver')
