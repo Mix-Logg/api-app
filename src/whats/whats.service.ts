@@ -15,10 +15,6 @@ export class WhatsService {
 
   constructor() {
     this.installAndExtractChrome();
-    setTimeout(() => {
-      console.log('init whats')
-      this.initWhatsAppClient();
-  }, 10000);
   }
 
   private installAndExtractChrome() {
@@ -40,11 +36,13 @@ export class WhatsService {
             console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
             return;
           }
-  
           console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
   
           // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
-          // this.initWhatsAppClient();
+          setTimeout(() => {
+            console.log('init whats')
+            this.initWhatsAppClient();
+          }, 4000);
         });
       }, 4000);
     });
