@@ -8,8 +8,8 @@ import { exec } from 'child_process';
 @Injectable()
 export class WhatsService {
 
-  private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
-  private readonly chromePackageUrl = '/chrome/google-chrome-stable_current_amd64.deb';
+  private readonly chromeDir        = path.resolve(__dirname, '../../../chrome');
+  private readonly chromePackageUrl = path.resolve(__dirname, '../../../chrome/google-chrome-stable_current_amd64.deb');
   private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb chrome-extracted`;
 
   constructor() {
