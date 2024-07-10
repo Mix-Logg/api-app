@@ -38,11 +38,10 @@ export class WhatsService {
           }
           console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
   
-          // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
-          // setTimeout(() => {
-          //   console.log('init whats')
-          //   this.initWhatsAppClient();
-          // }, 4000);
+          setTimeout(() => {
+            console.log('init whats')
+            this.initWhatsAppClient();
+          }, 4000);
         });
       }, 4000);
     });
