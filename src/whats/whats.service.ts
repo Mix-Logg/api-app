@@ -45,7 +45,7 @@ export class WhatsService {
         console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
 
         // Inicie o WhatsApp ou qualquer outra lógica aqui após a extração
-        this.initWhatsAppClient();
+        // this.initWhatsAppClient();
       });
     });
   }
