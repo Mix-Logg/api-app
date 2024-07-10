@@ -10,16 +10,14 @@ export class WhatsService {
 
   private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
   private readonly chromePackageUrl = 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb';
-  private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb chrome-extracted`;
+  private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb`;
 
   constructor() {
     this.installAndExtractChrome();
   }
 
   private installAndExtractChrome() {
-
     console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
-
     exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
@@ -29,10 +27,9 @@ export class WhatsService {
         console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
         return;
       }
-
       console.log(`Google Chrome baixado com sucesso em: ${this.chromePackagePath}`);
 
-      exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+      exec(`mkdir -p ${this.chromeDir} && dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
         if (error) {
           console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
           return;
@@ -49,6 +46,7 @@ export class WhatsService {
       });
     });
   }
+
 
   // private client: Client;
   // onModuleInit() {
