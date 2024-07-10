@@ -3,6 +3,7 @@ import { CreateWhatDto } from './dto/create-what.dto';
 import { UpdateWhatDto } from './dto/update-what.dto';
 import { Client, LocalAuth} from 'whatsapp-web.js'
 import * as qrcode from 'qrcode-terminal';
+import * as path from 'path';
 @Injectable()
 export class WhatsService {
 
@@ -11,7 +12,8 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        headless: true,         //true means browser wont be dispalyed, false means chromium opens with web whatsapp
+        executablePath: path.resolve(__dirname, '../../../chrome/chrome.exe'),
+        headless: true,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
