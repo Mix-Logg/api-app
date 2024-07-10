@@ -11,9 +11,11 @@ export class WhatsService {
   private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
   private readonly chromePackageUrl = 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb';
   private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb`;
+  private client: Client;
 
   constructor() {
     this.installAndExtractChrome();
+    this.whats()
   }
 
   private installAndExtractChrome() {
@@ -25,7 +27,6 @@ export class WhatsService {
       if (stderr) {
         console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
       }
-      console.log(`Google Chrome baixado com sucesso em: ${this.chromePackagePath}`);
       setTimeout(() => {
         exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
           if (error) {
@@ -42,48 +43,63 @@ export class WhatsService {
           // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
           // this.initWhatsAppClient();
         });
-        
       }, 5000);
+      setTimeout(() => {
+        exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+            return;
+          }
+          if (stderr) {
+            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+            return;
+          }
+  
+          console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
+  
+          // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
+          // this.initWhatsAppClient();
+        });
+      }, 6000);
     });
   }
 
+  
+  private whats() {
+    this.client = new Client({
+      authStrategy: new LocalAuth(),
+      puppeteer: {
+        executablePath: path.resolve(__dirname, '../../../chrome/opt/chrome.exe'),
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--unhandled-rejections=strict',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process',
+          '--disable-gpu'
+        ],
+      },
+      webVersionCache: {
+      type: 'remote',
+      remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2410.1.html',
+      }
+    });
 
-  // private client: Client;
-  // onModuleInit() {
-  //   this.client = new Client({
-  //     authStrategy: new LocalAuth(),
-  //     puppeteer: {
-  //       executablePath: path.resolve(__dirname, '../../../chrome/chrome.exe'),
-  //       headless: true,
-  //       args: [
-  //         '--no-sandbox',
-  //         '--disable-setuid-sandbox',
-  //         '--unhandled-rejections=strict',
-  //         '--disable-dev-shm-usage',
-  //         '--disable-accelerated-2d-canvas',
-  //         '--no-first-run',
-  //         '--no-zygote',
-  //         '--single-process',
-  //         '--disable-gpu'
-  //       ],
-  //     },
-  //     webVersionCache: {
-  //     type: 'remote',
-  //     remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2410.1.html',
-  //     }
-  //   });
+    this.client.on('qr', qr => {
+      console.log(qr)
+      qrcode.generate(qr, {small: true});
+    });
 
-  //   this.client.on('qr', qr => {
-  //     console.log(qr)
-  //     qrcode.generate(qr, {small: true});
-  //   });
+    this.client.on('ready', () => {
+      console.log('Cliente está pronto!');
+    });
 
-  //   this.client.on('ready', () => {
-  //     console.log('Cliente está pronto!');
-  //   });
-
-  //   this.client.initialize();
-  // }
+    this.client.initialize();
+  }
 
   create(createWhatDto: CreateWhatDto) {
     return 'This action adds a new what';
