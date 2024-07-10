@@ -38,10 +38,10 @@ export class WhatsService {
           }
           console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
   
-          // setTimeout(() => {
-          //   console.log('init whats')
-          //   this.initWhatsAppClient();
-          // }, 4000);
+          setTimeout(() => {
+            console.log('init whats')
+            this.initWhatsAppClient();
+          }, 8000);
         });
       }, 4000);
     });
