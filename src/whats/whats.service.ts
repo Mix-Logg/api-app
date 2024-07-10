@@ -39,10 +39,10 @@ export class WhatsService {
           console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
   
           // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
-          setTimeout(() => {
-            console.log('init whats')
-            this.initWhatsAppClient();
-          }, 4000);
+          // setTimeout(() => {
+          //   console.log('init whats')
+          //   this.initWhatsAppClient();
+          // }, 4000);
         });
       }, 4000);
     });
@@ -52,7 +52,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/opt/chrome.exe'),
+        executablePath: path.resolve(__dirname, '../../../chrome/opt/chrome'),
         headless: true,
         args: [
           '--no-sandbox',
