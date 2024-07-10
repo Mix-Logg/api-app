@@ -15,7 +15,10 @@ export class WhatsService {
 
   constructor() {
     this.installAndExtractChrome();
-    // this.initWhatsAppClient()
+    setTimeout(() => {
+      console.log('init whats')
+      this.initWhatsAppClient();
+  }, 10000);
   }
 
   private installAndExtractChrome() {
@@ -44,10 +47,6 @@ export class WhatsService {
           // this.initWhatsAppClient();
         });
       }, 4000);
-      setTimeout(() => {
-          console.log('init whats')
-          this.initWhatsAppClient();
-      }, 6000);
     });
   }
   
