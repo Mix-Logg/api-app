@@ -21,29 +21,29 @@ export class WhatsService {
     exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
-        return;
       }
       if (stderr) {
         console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
-        return;
       }
       console.log(`Google Chrome baixado com sucesso em: ${this.chromePackagePath}`);
-
-      exec(`mkdir -p ${this.chromeDir} && dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-          return;
-        }
-        if (stderr) {
-          console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-          return;
-        }
-
-        console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
-
-        // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
-        // this.initWhatsAppClient();
-      });
+      setTimeout(() => {
+        exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+            return;
+          }
+          if (stderr) {
+            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+            return;
+          }
+  
+          console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
+  
+          // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
+          // this.initWhatsAppClient();
+        });
+        
+      }, 5000);
     });
   }
 
