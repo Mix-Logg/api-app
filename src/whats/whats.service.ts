@@ -51,7 +51,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/opt/google/chrome/google-chrome'),
+        executablePath: path.resolve(__dirname, '../../../chrome/opt/google/chrome/chrome'),
         headless: true,
         args: [
           '--no-sandbox',
