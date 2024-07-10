@@ -9,17 +9,18 @@ import { exec } from 'child_process';
 export class WhatsService {
 
   private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
+  private readonly chromePackageUrl = 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb';
+  private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb`;
 
   constructor() {
     this.installAndExtractChrome();
   }
 
   private installAndExtractChrome() {
-    const chromePackageUrl = 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb';
-    const chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb`;
 
-    // Comando para baixar o pacote do Google Chrome
-    exec(`wget -O ${chromePackagePath} ${chromePackageUrl}`, (error, stdout, stderr) => {
+    console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
+
+    exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
         return;
@@ -29,10 +30,9 @@ export class WhatsService {
         return;
       }
 
-      console.log(`Google Chrome baixado com sucesso em: ${chromePackagePath}`);
+      console.log(`Google Chrome baixado com sucesso em: ${this.chromePackagePath}`);
 
-      // Comando para extrair o Google Chrome
-      exec(`dpkg -x ${chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+      exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
         if (error) {
           console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
           return;
@@ -44,7 +44,7 @@ export class WhatsService {
 
         console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
 
-        // Inicie o WhatsApp ou qualquer outra lógica aqui após a extração
+        // Inicialize o cliente WhatsApp ou outra lógica aqui após a extração
         // this.initWhatsAppClient();
       });
     });
