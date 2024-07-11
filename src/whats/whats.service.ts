@@ -70,9 +70,9 @@ export class WhatsService {
       }
       console.log('Google Chrome extraído com sucesso.');
       // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
-      setTimeout(()=>{
-        this.initWhatsAppClient()
-      },2000)
+      // setTimeout(()=>{
+      //   this.initWhatsAppClient()
+      // },2000)
     });
   }
   
