@@ -13,36 +13,36 @@ export class WhatsService {
   private client: Client;
 
   constructor() {
-    this.installAndExtractChrome();
+    this.initWhatsAppClient();
   }
 
-  private installAndExtractChrome() {
-    console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
-    exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
-      }
-      if (stderr) {
-        console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
-      }
-      setTimeout(() => {
-        exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
-          if (error) {
-            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-            return;
-          }
-          if (stderr) {
-            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-            return;
-          }
-          console.log('fim')
-          // setTimeout(()=>{
-          //   this.initWhatsAppClient()
-          // },3000)
-        });
-      }, 4000);
-    });
-  }
+  // private installAndExtractChrome() {
+  //   console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
+  //   exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
+  //     if (error) {
+  //       console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
+  //     }
+  //     if (stderr) {
+  //       console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
+  //     }
+  //     setTimeout(() => {
+  //       exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+  //         if (error) {
+  //           console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+  //           return;
+  //         }
+  //         if (stderr) {
+  //           console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+  //           return;
+  //         }
+  //         console.log('fim')
+  //         // setTimeout(()=>{
+  //         //   this.initWhatsAppClient()
+  //         // },3000)
+  //       });
+  //     }, 4000);
+  //   });
+  // }
 
   // private installAndExtractChrome() {
   //   console.log('iniciando')
@@ -69,7 +69,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/chrome-linux/chrome'),
+        // executablePath: path.resolve(__dirname, '../../../chrome/chrome-linux/chrome'),
         headless: true,
         args: [
           '--no-sandbox',
