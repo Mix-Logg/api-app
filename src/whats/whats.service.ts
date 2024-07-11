@@ -57,19 +57,22 @@ export class WhatsService {
 
   private installAndExtractChrome() {
     console.log('iniciando')
-    exec(`unzip ${path.resolve(__dirname,'../../../chrome/chromeLinux.zip') }`, (error, stdout, stderr) => {
+    const zipFilePath = path.resolve(__dirname, '../../../chrome/chromeLinux.zip');
+    const extractDir  = path.resolve(__dirname, '../../../chrome');
+    exec(`unzip ${zipFilePath} -d ${extractDir}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-        return
+        return;
       }
       if (stderr) {
-        console.error(`Erro ao extair o Google Chrome: ${stderr}`);
-        return
+        console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+        return;
       }
-      console.log('successo!')
-      // setTimeout(()=>{
-      //   this.initWhatsAppClient()
-      // },2000)
+      console.log('Google Chrome extraído com sucesso.');
+      // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
+      setTimeout(()=>{
+        this.initWhatsAppClient()
+      },2000)
     });
   }
   
