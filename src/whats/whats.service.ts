@@ -8,7 +8,7 @@ import { exec } from 'child_process';
 @Injectable()
 export class WhatsService {
 
-  private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
+  private readonly chromeDir = path.resolve(__dirname, '../../chrome');
   private client: Client;
 
   constructor() {
