@@ -16,53 +16,54 @@ export class WhatsService {
     this.installAndExtractChrome();
   }
 
-  // private installAndExtractChrome() {
-  //   console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
-  //   exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
-  //     if (error) {
-  //       console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
-  //     }
-  //     if (stderr) {
-  //       console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
-  //     }
-  //     setTimeout(() => {
-  //       exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
-  //         if (error) {
-  //           console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-  //           return;
-  //         }
-  //         if (stderr) {
-  //           console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-  //           return;
-  //         }
-  //         setTimeout(()=>{
-  //           this.initWhatsAppClient()
-  //         },3000)
-  //       });
-  //     }, 4000);
-  //   });
-  // }
-
   private installAndExtractChrome() {
-    console.log('iniciando')
-    const zipFilePath = path.resolve(__dirname, '../../../chrome/chromeLinux.zip');
-    const extractDir  = path.resolve(__dirname, '../../../chrome');
-    exec(`unzip ${zipFilePath} -d ${extractDir}`, (error, stdout, stderr) => {
+    console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
+    exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
       if (error) {
-        console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-        return;
+        console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
       }
       if (stderr) {
-        console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-        return;
+        console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
       }
-      console.log('Google Chrome extraído com sucesso.');
-      // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
-      // setTimeout(()=>{
-      //   this.initWhatsAppClient()
-      // },3000)
+      setTimeout(() => {
+        exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+            return;
+          }
+          if (stderr) {
+            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+            return;
+          }
+          console.log('fim')
+          // setTimeout(()=>{
+          //   this.initWhatsAppClient()
+          // },3000)
+        });
+      }, 4000);
     });
   }
+
+  // private installAndExtractChrome() {
+  //   console.log('iniciando')
+  //   const zipFilePath = path.resolve(__dirname, '../../../chrome/chromeLinux.zip');
+  //   const extractDir  = path.resolve(__dirname, '../../../chrome');
+  //   exec(`unzip ${zipFilePath} -d ${extractDir}`, (error, stdout, stderr) => {
+  //     if (error) {
+  //       console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+  //       return;
+  //     }
+  //     if (stderr) {
+  //       console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+  //       return;
+  //     }
+  //     console.log('Google Chrome extraído com sucesso.');
+  //     // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
+  //     // setTimeout(()=>{
+  //     //   this.initWhatsAppClient()
+  //     // },3000)
+  //   });
+  // }
   
   private initWhatsAppClient() {
     this.client = new Client({
