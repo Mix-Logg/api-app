@@ -35,23 +35,9 @@ export class WhatsService {
             console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
             return;
           }
-          console.log('fim')
-          // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
-          // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
-          //   if (error) {
-          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
-          //     return;
-          //   }
-          //   if (stderr) {
-          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
-          //     return;
-          //   }
-          //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
-          //   setTimeout(() => {
-          //     console.log('init whats')
-          //     this.initWhatsAppClient();
-          //   }, 7000);
-          // })
+          setTimeout(()=>{
+            this.initWhatsAppClient()
+          },3000)
         });
       }, 4000);
     });
@@ -82,7 +68,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/chrome-linux/chrome'),
+        executablePath: path.resolve(__dirname, '../../../chrome/usr/bin/google-chrome-stable'),
         headless: true,
         args: [
           '--no-sandbox',
