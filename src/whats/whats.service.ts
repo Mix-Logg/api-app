@@ -8,8 +8,6 @@ import { exec } from 'child_process';
 @Injectable()
 export class WhatsService {
 
-  private chromeZipPath = path.resolve(__dirname, '../../chrome-linux.zip');
-  private chromeExtractDir = path.resolve(__dirname, '../../../chrome');
   private client: Client;
 
   constructor() {
@@ -69,9 +67,9 @@ export class WhatsService {
         return
       }
       console.log('successo!')
-      setTimeout(()=>{
-        this.initWhatsAppClient()
-      },2000)
+      // setTimeout(()=>{
+      //   this.initWhatsAppClient()
+      // },2000)
     });
   }
   
