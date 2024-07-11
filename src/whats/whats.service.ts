@@ -18,44 +18,55 @@ export class WhatsService {
   }
 
   private installAndExtractChrome() {
-    console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
-    exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
+    exec(`npx @puppeteer/browsers install chrome@stable --path=${this.chromeDir}`, (error, stdout, stderr) => {
       if (error) {
-        console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
+        console.error(`Erro ao baixar o Chrome: ${error.message}`);
+        return;
       }
       if (stderr) {
-        console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
+        console.error(`Erro ao baixar o Chrome: ${stderr}`);
+        return;
       }
-      setTimeout(() => {
-        exec(`unzip chromium-browser.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
-          if (error) {
-            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-            return;
-          }
-          if (stderr) {
-            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-            return;
-          }
-          console.log('fim')
-          // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
-          // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
-          //   if (error) {
-          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
-          //     return;
-          //   }
-          //   if (stderr) {
-          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
-          //     return;
-          //   }
-          //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
-          //   setTimeout(() => {
-          //     console.log('init whats')
-          //     this.initWhatsAppClient();
-          //   }, 7000);
-          // })
-        });
-      }, 4000);
+      console.log('Chrome baixado com sucesso.');
     });
+    // console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
+    // exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
+    //   if (error) {
+    //     console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
+    //   }
+    //   if (stderr) {
+    //     console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
+    //   }
+    //   setTimeout(() => {
+    //     exec(`unzip chromium-browser.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
+    //       if (error) {
+    //         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+    //         return;
+    //       }
+    //       if (stderr) {
+    //         console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+    //         return;
+    //       }
+    //       console.log('fim')
+    //       // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
+    //       // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
+    //       //   if (error) {
+    //       //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
+    //       //     return;
+    //       //   }
+    //       //   if (stderr) {
+    //       //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
+    //       //     return;
+    //       //   }
+    //       //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
+    //       //   setTimeout(() => {
+    //       //     console.log('init whats')
+    //       //     this.initWhatsAppClient();
+    //       //   }, 7000);
+    //       // })
+    //     });
+    //   }, 4000);
+    // });
   }
   
   private initWhatsAppClient() {
