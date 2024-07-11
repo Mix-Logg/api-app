@@ -59,6 +59,7 @@ export class WhatsService {
   // }
 
   private installAndExtractChrome() {
+    console.log('iniciando')
     exec(`unzip chrome-linux.zip -d ${path.resolve(__dirname, '../../../chrome')}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
