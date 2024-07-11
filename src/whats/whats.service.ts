@@ -37,11 +37,21 @@ export class WhatsService {
             return;
           }
           console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
-  
-          setTimeout(() => {
-            console.log('init whats')
-            this.initWhatsAppClient();
-          }, 8000);
+          exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
+              return;
+            }
+            if (stderr) {
+              console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
+              return;
+            }
+            console.log(`Permissões ajustadas para o executável do Google Chrome`);
+            setTimeout(() => {
+              console.log('init whats')
+              this.initWhatsAppClient();
+            }, 7000);
+          })
         });
       }, 4000);
     });
