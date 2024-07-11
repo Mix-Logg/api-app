@@ -18,7 +18,8 @@ export class WhatsService {
   }
 
   private installAndExtractChrome() {
-    exec(`npx @puppeteer/browsers install chrome@stable --path=${this.chromeDir}`, (error, stdout, stderr) => {
+    
+    exec(`npx @puppeteer/browsers install chrome@stable`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao baixar o Chrome: ${error.message}`);
         return;
