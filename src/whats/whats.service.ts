@@ -8,7 +8,8 @@ import { exec } from 'child_process';
 @Injectable()
 export class WhatsService {
 
-  private readonly chromeDir = path.resolve(__dirname, '../../chrome');
+  private chromeZipPath = path.resolve(__dirname, '../../chrome-linux.zip');
+  private chromeExtractDir = path.resolve(__dirname, '../../../chrome');
   private client: Client;
 
   constructor() {
@@ -58,7 +59,7 @@ export class WhatsService {
 
   private installAndExtractChrome() {
     console.log('iniciando')
-    exec(`unzip chromeLinux.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
+    exec(`unzip ../../chrome/chromeLinux.zip`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
         return
@@ -78,7 +79,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/chrome-linux/chrome'),
+        executablePath: path.resolve(__dirname, '../../../chrome/chromeLinux/chrome'),
         headless: true,
         args: [
           '--no-sandbox',
