@@ -59,8 +59,7 @@ export class WhatsService {
   // }
 
   private installAndExtractChrome() {
-    console.log(`Extraindo Google Chrome de ${this.chromePackageUrl}`);
-    exec(`unzip chrome-linux.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
+    exec(`unzip chrome-linux.zip -d ${path.resolve(__dirname, '../../../chrome')}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
         return
@@ -70,6 +69,9 @@ export class WhatsService {
         return
       }
       console.log('successo!')
+      setTimeout(()=>{
+        this.initWhatsAppClient()
+      },2000)
     });
   }
   
@@ -77,7 +79,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/opt/google/chrome/'),
+        executablePath: path.resolve(__dirname, '../../../chrome/chrome-linux/chrome'),
         headless: true,
         args: [
           '--no-sandbox',
