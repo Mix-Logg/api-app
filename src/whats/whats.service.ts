@@ -70,9 +70,9 @@ export class WhatsService {
       }
       console.log('Google Chrome extraído com sucesso.');
       // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
-      // setTimeout(()=>{
-      //   this.initWhatsAppClient()
-      // },2000)
+      setTimeout(()=>{
+        this.initWhatsAppClient()
+      },3000)
     });
   }
   
@@ -80,7 +80,7 @@ export class WhatsService {
     this.client = new Client({
       authStrategy: new LocalAuth(),
       puppeteer: {
-        executablePath: path.resolve(__dirname, '../../../chrome/chromeLinux/chrome'),
+        executablePath: path.resolve(__dirname, '../../../chrome/chrome-linux/chrome'),
         headless: true,
         args: [
           '--no-sandbox',
