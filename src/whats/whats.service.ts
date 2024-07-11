@@ -9,8 +9,6 @@ import { exec } from 'child_process';
 export class WhatsService {
 
   private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
-  private readonly chromePackageUrl = 'https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/LAST_CHANGE -O LAST_CHANGE';
-  private readonly chromePackagePath = `${this.chromeDir}`;
   private client: Client;
 
   constructor() {
@@ -60,7 +58,7 @@ export class WhatsService {
 
   private installAndExtractChrome() {
     console.log('iniciando')
-    exec(`unzip chrome-linux.zip -d ${path.resolve(__dirname, '../../../chrome')}`, (error, stdout, stderr) => {
+    exec(`unzip chrome-linux.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
         return
