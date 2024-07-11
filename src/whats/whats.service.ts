@@ -9,8 +9,8 @@ import { exec } from 'child_process';
 export class WhatsService {
 
   private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
-  private readonly chromePackageUrl = 'https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/1083362/chrome-linux.zip -O chromium-browser.zip';
-  private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb`;
+  private readonly chromePackageUrl = 'https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/LAST_CHANGE -O LAST_CHANGE';
+  private readonly chromePackagePath = `${this.chromeDir}`;
   private client: Client;
 
   constructor() {
@@ -18,56 +18,45 @@ export class WhatsService {
   }
 
   private installAndExtractChrome() {
-    
-    exec(`npx @puppeteer/browsers install chrome@stable`, (error, stdout, stderr) => {
+
+    console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
+    exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
       if (error) {
-        console.error(`Erro ao baixar o Chrome: ${error.message}`);
-        return;
+        console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
       }
       if (stderr) {
-        console.error(`Erro ao baixar o Chrome: ${stderr}`);
-        return;
+        console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
       }
-      console.log('Chrome baixado com sucesso.');
+      setTimeout(() => {
+        exec(`unzip chromium-browser.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+            return;
+          }
+          if (stderr) {
+            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+            return;
+          }
+          console.log('fim')
+          // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
+          // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
+          //   if (error) {
+          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
+          //     return;
+          //   }
+          //   if (stderr) {
+          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
+          //     return;
+          //   }
+          //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
+          //   setTimeout(() => {
+          //     console.log('init whats')
+          //     this.initWhatsAppClient();
+          //   }, 7000);
+          // })
+        });
+      }, 4000);
     });
-    // console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
-    // exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
-    //   if (error) {
-    //     console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
-    //   }
-    //   if (stderr) {
-    //     console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
-    //   }
-    //   setTimeout(() => {
-    //     exec(`unzip chromium-browser.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
-    //       if (error) {
-    //         console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-    //         return;
-    //       }
-    //       if (stderr) {
-    //         console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-    //         return;
-    //       }
-    //       console.log('fim')
-    //       // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
-    //       // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
-    //       //   if (error) {
-    //       //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
-    //       //     return;
-    //       //   }
-    //       //   if (stderr) {
-    //       //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
-    //       //     return;
-    //       //   }
-    //       //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
-    //       //   setTimeout(() => {
-    //       //     console.log('init whats')
-    //       //     this.initWhatsAppClient();
-    //       //   }, 7000);
-    //       // })
-    //     });
-    //   }, 4000);
-    // });
   }
   
   private initWhatsAppClient() {
