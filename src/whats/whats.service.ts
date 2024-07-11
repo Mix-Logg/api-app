@@ -7,74 +7,76 @@ import * as path from 'path';
 import { exec } from 'child_process';
 @Injectable()
 export class WhatsService {
-
+  private readonly chromeDir = path.resolve(__dirname, '../../../chrome');
+  private readonly chromePackageUrl = 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb';
+  private readonly chromePackagePath = `${this.chromeDir}/google-chrome-stable_current_amd64.deb`;
   private client: Client;
 
   constructor() {
     this.installAndExtractChrome();
   }
 
-  // private installAndExtractChrome() {
-  //   console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
-  //   exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
-  //     if (error) {
-  //       console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
-  //     }
-  //     if (stderr) {
-  //       console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
-  //     }
-  //     setTimeout(() => {
-  //       exec(`unzip chromium-browser.zip -d ${this.chromeDir}`, (error, stdout, stderr) => {
-  //         if (error) {
-  //           console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-  //           return;
-  //         }
-  //         if (stderr) {
-  //           console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-  //           return;
-  //         }
-  //         console.log('fim')
-  //         // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
-  //         // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
-  //         //   if (error) {
-  //         //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
-  //         //     return;
-  //         //   }
-  //         //   if (stderr) {
-  //         //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
-  //         //     return;
-  //         //   }
-  //         //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
-  //         //   setTimeout(() => {
-  //         //     console.log('init whats')
-  //         //     this.initWhatsAppClient();
-  //         //   }, 7000);
-  //         // })
-  //       });
-  //     }, 4000);
-  //   });
-  // }
-
   private installAndExtractChrome() {
-    console.log('iniciando')
-    const zipFilePath = path.resolve(__dirname, '../../../chrome/chromeLinux.zip');
-    const extractDir  = path.resolve(__dirname, '../../../chrome');
-    exec(`unzip ${zipFilePath} -d ${extractDir}`, (error, stdout, stderr) => {
+    console.log(`Baixando Google Chrome de ${this.chromePackageUrl}`);
+    exec(`wget -O ${this.chromePackagePath} ${this.chromePackageUrl}`, (error, stdout, stderr) => {
       if (error) {
-        console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
-        return;
+        console.error(`Erro ao baixar o Google Chrome: ${error.message}`);
       }
       if (stderr) {
-        console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
-        return;
+        console.error(`Erro ao baixar o Google Chrome: ${stderr}`);
       }
-      console.log('Google Chrome extraído com sucesso.');
-      // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
-      setTimeout(()=>{
-        this.initWhatsAppClient()
-      },3000)
+      setTimeout(() => {
+        exec(`dpkg -x ${this.chromePackagePath} ${this.chromeDir}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+            return;
+          }
+          if (stderr) {
+            console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+            return;
+          }
+          console.log('fim')
+          // console.log(`Google Chrome extraído com sucesso em: ${this.chromeDir}`);
+          // exec(`chmod +x ${path.resolve(__dirname, '../../../chrome/opt/google/chrome/')}`, (error, stdout, stderr) => {
+          //   if (error) {
+          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${error.message}`);
+          //     return;
+          //   }
+          //   if (stderr) {
+          //     console.error(`Erro ao ajustar permissões do Google Chrome: ${stderr}`);
+          //     return;
+          //   }
+          //   console.log(`Permissões ajustadas para o executável do Google Chrome`);
+          //   setTimeout(() => {
+          //     console.log('init whats')
+          //     this.initWhatsAppClient();
+          //   }, 7000);
+          // })
+        });
+      }, 4000);
     });
   }
+
+  // private installAndExtractChrome() {
+  //   console.log('iniciando')
+  //   const zipFilePath = path.resolve(__dirname, '../../../chrome/chromeLinux.zip');
+  //   const extractDir  = path.resolve(__dirname, '../../../chrome');
+  //   exec(`unzip ${zipFilePath} -d ${extractDir}`, (error, stdout, stderr) => {
+  //     if (error) {
+  //       console.error(`Erro ao extrair o Google Chrome: ${error.message}`);
+  //       return;
+  //     }
+  //     if (stderr) {
+  //       console.error(`Erro ao extrair o Google Chrome: ${stderr}`);
+  //       return;
+  //     }
+  //     console.log('Google Chrome extraído com sucesso.');
+  //     // Continue com sua lógica aqui, como iniciar o cliente do WhatsApp
+  //     setTimeout(()=>{
+  //       this.initWhatsAppClient()
+  //     },3000)
+  //   });
+  // }
   
   private initWhatsAppClient() {
     this.client = new Client({
