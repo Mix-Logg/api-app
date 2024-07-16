@@ -17,13 +17,18 @@ export class TeamController {
     return this.teamService.findAll();
   }
 
+  @Get(':id')
+  findOneById(@Param('id') id: string) {
+    return this.teamService.findOneById(+id);
+  }
+
   @Get('/report')
   report() {
     return this.teamService.report();
   }
 
   @Get('operation/:idDriver')
-  findOne(@Param('idDriver') id: string) {
+  findOneByIdDriver(@Param('idDriver') id: string) {
     return this.teamService.findOne(+id);
   }
 
@@ -33,8 +38,8 @@ export class TeamController {
     return this.teamService.update(+id, updateTeamDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teamService.remove(+id);
+  @Patch('delete/:id')
+  remove(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
+    return this.teamService.remove(+id,updateTeamDto);
   }
 }
