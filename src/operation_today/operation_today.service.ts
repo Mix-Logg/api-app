@@ -40,7 +40,7 @@ export class OperationTodayService {
     }
     return {
       status: 500,
-      message: 'Registered not found'
+      message: 'Registereds not found'
     }
   }
 

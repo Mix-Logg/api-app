@@ -28,8 +28,21 @@ export class OperationService {
     }
   }
 
-  findAll() {
-    return `This action returns all operation`;
+  async findAllIds() {
+    const response = await this.operationRepository.find({
+    });
+    let driverData = response
+    .filter(item => item.am === "driver")
+    .map(item => ({ id: item.uuid, }));
+    let auxiliaryData = response
+    .filter(item => item.am === "auxiliary")
+    .map(item => ({ id: item.uuid, }));
+    const driverIds = [...new Set(driverData.map(objeto => objeto.id))];
+    const auxiliaryIds = [...new Set(auxiliaryData.map(objeto => objeto.id))];
+    return {
+      driver:driverIds,
+      auxiliary:auxiliaryIds
+    }
   }
 
   async findOne (uuid: number, am:string ) {

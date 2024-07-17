@@ -14,7 +14,7 @@ export class OperationController {
 
   @Get()
   findAll() {
-    return this.operationService.findAll();
+    return this.operationService.findAllIds();
   }
 
   @Get('inactive')
