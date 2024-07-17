@@ -89,7 +89,13 @@ export class TeamService {
   }
 
   async findOneById(id: number) {
-    const team      = await this.teamRepository.findOne({where:{id: id}});
+    const team      = await this.teamRepository.findOne(
+      {
+        where:{
+          id: id,
+          delete_at: IsNull() 
+        }
+      });
     const vehicle   = await this.vehicleService.findOneId(team.id_vehicle);
     const driver    = await this.driverService.findOne(team.id_driver);
     const auxiliary = await this.auxiliaryService.findOne(team.id_auxiliary);
