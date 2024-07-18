@@ -6,7 +6,13 @@ export class Training {
     id: number;
 
     @Column()
+    id_admin: number;
+
+    @Column()
     uuid: number;
+
+    @Column({ length: 50 })
+    operation: string;
 
     @Column({ length: 50 })
     am: string;

@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { Training } from './entities/training.entity';
-import { Repository } from 'typeorm';
-
+import { IsNull, Repository } from 'typeorm';
+import FindTimeSP from 'hooks/time';
 @Injectable()
 export class TrainingService {
   constructor(
@@ -11,16 +11,66 @@ export class TrainingService {
     private trainingRepository: Repository<Training>,
   ){}
 
-  create(createTrainingDto: CreateTrainingDto) {
-    return 'This action adds a new training';
+  async create(createTrainingDto: CreateTrainingDto) {
+    const time = FindTimeSP()
+    createTrainingDto.create_at = time;
+    const response = await this.trainingRepository.save(createTrainingDto);
+    if(response != null){
+      return {
+        status: 201,
+        message:'Successfully created training'
+      }
+    }
+    return {
+      status: 500,
+      message:'Server error'
+    }
   }
 
-  findAll() {
-    return `This action returns all training`;
+  async findAll(){
+    const response = await this.trainingRepository.find({
+      where: {
+        delete_at: IsNull()
+      }
+    });
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registered not found'
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} training`;
+  async findAlltoOne(uuid: number, am :string) {
+    const response = await this.trainingRepository.find({
+      where: {
+        uuid,
+        am
+      }
+    });
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registered not found'
+    }
+  }
+
+  async findOne(id: number) {
+    const response = await this.trainingRepository.findOne({
+      where: {
+        id
+      }
+    });
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registered not found'
+    }
   }
 
   update(id: number, updateTrainingDto: UpdateTrainingDto) {
@@ -31,3 +81,4 @@ export class TrainingService {
     return `This action removes a #${id} training`;
   }
 }
+

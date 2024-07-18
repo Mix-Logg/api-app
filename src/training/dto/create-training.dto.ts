@@ -1,7 +1,8 @@
 export class CreateTrainingDto {
-    uuid: number;
-    am: string;
-    occurence: string;
-    date: Date;
-    create_at: string;
+    id_admin :  number;
+    uuid     :  number;
+    am       :  string;
+    operation:  string;
+    date     :  Date;
+    create_at?: string;
 }

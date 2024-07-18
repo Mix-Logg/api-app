@@ -17,6 +17,11 @@ export class TrainingController {
     return this.trainingService.findAll();
   }
 
+  @Get('all/:uuid/:am')
+  findAlltoOne(@Param('uuid') uuid: number, @Param('am') am: string) {
+    return this.trainingService.findAlltoOne(uuid, am);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.trainingService.findOne(+id);
