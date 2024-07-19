@@ -14,6 +14,9 @@ export class Training {
     @Column({ length: 50 })
     operation: string;
 
+    @Column({ length: 1 })
+    complet: string;
+
     @Column({ length: 50 })
     am: string;
 
