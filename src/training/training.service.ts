@@ -95,7 +95,6 @@ export class TrainingService {
     const response = await this.trainingRepository.find({
       where:{
         complet : '1',
-        delete_at: IsNull()
       }
     });
     let driverData = response
