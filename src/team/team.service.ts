@@ -49,6 +49,7 @@ export class TeamService {
         const driver    = await this.driverService.findOne(team.id_driver);
         const auxiliary = await this.auxiliaryService.findOne(team.id_auxiliary);
         let group = {
+          create: team.create_at,
           id: team.id,
           driverName   : driver.name,
           auxiliaryName: auxiliary.name,
