@@ -46,6 +46,22 @@ export class UserService {
     }
   }
 
+  async findOneByCpf(cpf:string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        cpf
+      }
+    });
+    if(user === null){
+      return {
+        message: 'Registered not found',
+        status:  500
+      }
+    }else{
+      return user
+    }
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     const res = await this.userRepository.update(id, updateUserDto);
     if(res.affected){

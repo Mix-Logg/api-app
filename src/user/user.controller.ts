@@ -23,6 +23,13 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('one/:cpf')
+  findOneById(
+    @Param('cpf') cpf: string,
+  ) {
+    return this.userService.findOneByCpf(cpf);
+  }
+
   @Get(':id/:am/')
   findOne(
     @Param('id') id: number,
