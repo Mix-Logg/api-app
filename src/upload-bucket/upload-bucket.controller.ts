@@ -65,7 +65,6 @@ export class UploadBucketController {
       secretAccessKey: process.env.BUCKET_SECRET_KEY
     });
     const bucketName = process.env.BUCKET_NAME;
-    
     const paramsFile = {
       Bucket: bucketName,
       Key: am+'/'+id+'/'+file

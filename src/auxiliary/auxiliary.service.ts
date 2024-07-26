@@ -51,7 +51,14 @@ export class AuxiliaryService {
   }
 
   async findOne(id: number) {
-    return await this.auxiliaryRepository.findOne({where:{id}});
+    const response = await this.auxiliaryRepository.findOne({where:{id}});
+    if(response != null){
+      return response
+    }
+    return {
+      status:500,
+      message:'Auxiliary does not exist'
+    }
   }
 
   async verifyCpf(cpf:string){

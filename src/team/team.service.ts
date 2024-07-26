@@ -105,7 +105,7 @@ export class TeamService {
       idAuxiliary: team.id_auxiliary,
       idDriver   : team.id_driver,
       nameDriver : driver.name,
-      nameAuxiliary: auxiliary.name,
+      nameAuxiliary: team[0].id_auxiliary ?  auxiliary.name : 'Não tem auxiliar' ,
       vehicle: vehicle.type,
       plate  : vehicle.plate
     }
@@ -124,7 +124,7 @@ export class TeamService {
       idAuxiliary: team[0].id_auxiliary,
       idDriver   : team[0].id_driver,
       nameDriver : driver.name,
-      nameAuxiliary: auxiliary.name,
+      nameAuxiliary: team[0].id_auxiliary ?  auxiliary.name : 'Não tem auxiliar' ,
       vehicle: vehicle.type
     }
     return datesTeam;
