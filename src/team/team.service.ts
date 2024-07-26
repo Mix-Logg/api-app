@@ -48,11 +48,17 @@ export class TeamService {
         const vehicle   = await this.vehicleService.findOneId(team.id_vehicle);
         const driver    = await this.driverService.findOne(team.id_driver);
         const auxiliary = await this.auxiliaryService.findOne(team.id_auxiliary);
+        let nameAuxiliary:string
+        if ('status' in auxiliary && 'message' in auxiliary) {
+          nameAuxiliary =' Não tem auxiliar'
+        }else{
+          auxiliary.name
+        }
         let group = {
           create: team.create_at,
           id: team.id,
           driverName   : driver.name,
-          auxiliaryName: auxiliary.name,
+          auxiliaryName: nameAuxiliary,
           vehicle      : vehicle.type,
           plate        : vehicle.plate
         }
@@ -75,11 +81,17 @@ export class TeamService {
         const month   = create.getUTCMonth() + 1; 
         const year    = create.getUTCFullYear();
         const date    = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+        let nameAuxiliary:string
+        if ('status' in auxiliary && 'message' in auxiliary) {
+          nameAuxiliary =' Não tem auxiliar'
+        }else{
+          auxiliary.name
+        }
         let group = {
           create:date,
           id: team.id,
           driverName: driver.name,
-          auxiliaryName: auxiliary.name,
+          auxiliaryName: nameAuxiliary,
           vehicle: vehicle.type,
           plate  : vehicle.plate
         }
@@ -100,12 +112,19 @@ export class TeamService {
     const vehicle   = await this.vehicleService.findOneId(team.id_vehicle);
     const driver    = await this.driverService.findOne(team.id_driver);
     const auxiliary = await this.auxiliaryService.findOne(team.id_auxiliary);
+    let nameAuxiliary:string
+    if ('status' in auxiliary && 'message' in auxiliary) {
+      nameAuxiliary =' Não tem auxiliar'
+    }else{
+      auxiliary.name
+    }
+
     const datesTeam = {
       id         : team.id,
       idAuxiliary: team.id_auxiliary,
       idDriver   : team.id_driver,
       nameDriver : driver.name,
-      nameAuxiliary: team[0].id_auxiliary ?  auxiliary.name : 'Não tem auxiliar' ,
+      nameAuxiliary: nameAuxiliary,
       vehicle: vehicle.type,
       plate  : vehicle.plate
     }
@@ -119,12 +138,18 @@ export class TeamService {
     const vehicle   = await this.vehicleService.findOneId(team[0].id_vehicle);
     const driver    = await this.driverService.findOne(team[0].id_driver);
     const auxiliary = await this.auxiliaryService.findOne(team[0].id_auxiliary);
+    let nameAuxiliary:string
+        if ('status' in auxiliary && 'message' in auxiliary) {
+          nameAuxiliary =' Não tem auxiliar'
+        }else{
+          auxiliary.name
+        }
     const datesTeam = {
       id         : team[0].id,
       idAuxiliary: team[0].id_auxiliary,
       idDriver   : team[0].id_driver,
       nameDriver : driver.name,
-      nameAuxiliary: team[0].id_auxiliary ?  auxiliary.name : 'Não tem auxiliar' ,
+      nameAuxiliary: nameAuxiliary,
       vehicle: vehicle.type
     }
     return datesTeam;
