@@ -6,6 +6,7 @@ import { IsNull, Repository } from 'typeorm';
 import { VehicleService } from 'src/vehicle/vehicle.service';
 import { DriverService } from 'src/driver/driver.service';
 import { AuxiliaryService } from 'src/auxiliary/auxiliary.service';
+import { OperationService } from 'src/operation/operation.service';
 import FindTimeSP from 'hooks/time';
 import findTimeSP from 'hooks/time';
 
@@ -17,7 +18,8 @@ export class TeamService {
     private teamRepository: Repository<Team>,
     private vehicleService: VehicleService,
     private driverService : DriverService,
-    private auxiliaryService: AuxiliaryService
+    private auxiliaryService: AuxiliaryService,
+    private operationService: OperationService
   ) {}
 
   async create(createTeamDto: CreateTeamDto) {
@@ -48,17 +50,19 @@ export class TeamService {
         const vehicle   = await this.vehicleService.findOneId(team.id_vehicle);
         const driver    = await this.driverService.findOne(team.id_driver);
         const auxiliary = await this.auxiliaryService.findOne(team.id_auxiliary);
+        const operation = await this.operationService.findOne(team.id_driver, 'driver')
         let nameAuxiliary:string
         if ('status' in auxiliary && 'message' in auxiliary) {
           nameAuxiliary =' Não tem auxiliar'
         }else{
-          auxiliary.name
+          nameAuxiliary = auxiliary.name
         }
         let group = {
-          create: team.create_at,
-          id: team.id,
+          operation    : operation.status == 500 ? 'Não tem operação' : operation, 
+          create       : team.create_at,
+          id           : team.id,
           driverName   : driver.name,
-          auxiliaryName: nameAuxiliary,
+          auxiliaryName: team.id_auxiliary ? nameAuxiliary : ' Não tem auxiliar',
           vehicle      : vehicle.type,
           plate        : vehicle.plate
         }
@@ -85,13 +89,13 @@ export class TeamService {
         if ('status' in auxiliary && 'message' in auxiliary) {
           nameAuxiliary =' Não tem auxiliar'
         }else{
-          auxiliary.name
+          nameAuxiliary = auxiliary.name
         }
         let group = {
           create:date,
           id: team.id,
           driverName: driver.name,
-          auxiliaryName: nameAuxiliary,
+          auxiliaryName: team.id_auxiliary ? nameAuxiliary : ' Não tem auxiliar',
           vehicle: vehicle.type,
           plate  : vehicle.plate
         }
@@ -116,7 +120,7 @@ export class TeamService {
     if ('status' in auxiliary && 'message' in auxiliary) {
       nameAuxiliary =' Não tem auxiliar'
     }else{
-      auxiliary.name
+      nameAuxiliary = auxiliary.name
     }
 
     const datesTeam = {
@@ -124,7 +128,7 @@ export class TeamService {
       idAuxiliary: team.id_auxiliary,
       idDriver   : team.id_driver,
       nameDriver : driver.name,
-      nameAuxiliary: nameAuxiliary,
+      nameAuxiliary: team.id_auxiliary ? nameAuxiliary : ' Não tem auxiliar',
       vehicle: vehicle.type,
       plate  : vehicle.plate
     }
@@ -142,14 +146,14 @@ export class TeamService {
         if ('status' in auxiliary && 'message' in auxiliary) {
           nameAuxiliary =' Não tem auxiliar'
         }else{
-          auxiliary.name
+          nameAuxiliary = auxiliary.name
         }
     const datesTeam = {
       id         : team[0].id,
       idAuxiliary: team[0].id_auxiliary,
       idDriver   : team[0].id_driver,
       nameDriver : driver.name,
-      nameAuxiliary: nameAuxiliary,
+      nameAuxiliary:  team[0].id_auxiliary ? nameAuxiliary : ' Não tem auxiliar',
       vehicle: vehicle.type
     }
     return datesTeam;

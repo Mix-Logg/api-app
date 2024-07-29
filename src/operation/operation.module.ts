@@ -7,5 +7,6 @@ import { operationProviders } from './operation.provider';
   imports:[DatabaseModule],
   controllers: [OperationController],
   providers: [...operationProviders,OperationService],
+  exports:[OperationService]
 })
 export class OperationModule {}
