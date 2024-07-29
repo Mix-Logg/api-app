@@ -28,6 +28,16 @@ export class OperationService {
     }
   }
 
+  async findAllById(uuid: number, am: string){
+    const operations = await this.operationRepository.find({
+      where: {
+        uuid,
+        am
+      }
+    });
+    return operations
+  }
+
   async findAllIds() {
     const response = await this.operationRepository.find({
     });

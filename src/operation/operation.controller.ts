@@ -22,6 +22,14 @@ export class OperationController {
     return this.operationService.findInactive();
   }
 
+  @Get('all/:uuid/:am')
+  findAllById(
+    @Param('uuid') uuid: number,
+    @Param('am')   am: string,
+  ) {
+    return this.operationService.findAllById(+uuid, am);
+  }
+
   @Get('active')
   findActive() {
     return this.operationService.findActive();
