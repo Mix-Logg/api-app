@@ -27,6 +27,17 @@ export class DriverService {
     .getMany();
   }
 
+  async findByCpf(cpf:string){
+    const response = await this.driverRepository.findOne({where:{cpf}});
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registereds not found'
+    }
+  }
+
   async findNews(){
     return await this.driverRepository.createQueryBuilder('driver')
     .where('driver.delete_at IS NULL AND driver.cadastralStatus = 0')

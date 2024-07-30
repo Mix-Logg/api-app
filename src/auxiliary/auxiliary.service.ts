@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateAuxiliaryDto } from './dto/create-auxiliary.dto';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UpdateStatus } from './dto/update-status-driver.dto';
 import { Auxiliary } from './entities/auxiliary.entity';
 import { UpdateCpf } from './dto/update-cpf-auxiliary.dto';
@@ -107,9 +107,21 @@ export class AuxiliaryService {
   }
 
   async findAuxiliaryToOperation(cpf: string) {
-    return await this.auxiliaryRepository.createQueryBuilder('auxiliary')
-      .where('auxiliary.delete_at IS NULL AND auxiliary.cpf = :cpf', { cpf })
-      .getMany();
+    const response = await this.auxiliaryRepository.findOne(
+      {
+        where:{
+          cpf,
+          delete_at: IsNull()
+        }
+      }
+    );
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registereds not found'
+    }
   }
   
 

@@ -22,6 +22,13 @@ export class OperationController {
     return this.operationService.findInactive();
   }
 
+  @Get('/find/ById/:id')
+  findOneById(
+    @Param('id') id: number,
+  ) {
+    return this.operationService.findOneById(id);
+  }
+
   @Get('all/:uuid/:am')
   findAllById(
     @Param('uuid') uuid: number,

@@ -72,6 +72,21 @@ export class OperationService {
     }
   }
 
+  async findOneById(id: number){
+    const response = await this.operationRepository.findOne({
+      where: {
+        id
+      }
+    });
+    if(response != null){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registered not found'
+    }
+  }
+
   async findActive(){
     const active = await this.operationRepository.find({
       where: {

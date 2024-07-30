@@ -40,6 +40,13 @@ export class AuxiliaryController {
     return this.auxiliaryService.findAuxiliaryToOperation(cpf);
   }
 
+  @Get('find/ByCpf/:cpf')
+  findAuxiliaryById(
+    @Param('cpf') cpf: string,
+  ){
+    return this.auxiliaryService.findAuxiliaryToOperation(cpf);
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

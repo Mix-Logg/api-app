@@ -46,12 +46,17 @@ export class DriverController {
     return this.driverService.findAll();
   }
 
+  @Get('find/ByCpf/:cpf')
+  findByCpf(
+    @Param('cpf') cpf: string,
+  ) {
+    return this.driverService.findByCpf(cpf);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.driverService.findOne(+id);
   }
-
 
   @Get(':cpf/:rg')
   findOneDriver(
