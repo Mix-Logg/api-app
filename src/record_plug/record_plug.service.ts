@@ -35,8 +35,25 @@ export class RecordPlugService {
     let auxiliaryData = res
     .filter(item => item.am === "auxiliary")
     .map(item => ({ id: item.uuid, }));
-    const driverIds    = await driverData.map(objeto => objeto.id);
-    const auxiliaryIds = await auxiliaryData.map(objeto => objeto.id);
+    const driverIds = await Promise.all(
+      driverData.map(async (driver) => {  
+        const response = await this.driverService.findOne(driver.id);
+        if (!response.delete_at) {
+          return driver.id;
+        }
+        return null; 
+      })
+    );
+    // const auxiliaryIds = await auxiliaryData.map(objeto => objeto.id);
+    const auxiliaryIds = await Promise.all(
+      auxiliaryData.map(async (auxiliary) => {  
+        const response = await this.auxiliaryService.findOne(auxiliary.id);
+        if ('delete_at' in response && !response.delete_at) {
+          return auxiliary.id;
+        }
+        return null; 
+      })
+    );
     return {
       driver:driverIds,
       auxiliary:auxiliaryIds
