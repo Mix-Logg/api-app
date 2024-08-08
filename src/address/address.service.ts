@@ -11,7 +11,17 @@ export class AddressService {
     private addressRepository: Repository<Address>,
   ){}
   create(createAddressDto: CreateAddressDto) {
-    return this.addressRepository.save(createAddressDto);
+    const response = this.addressRepository.save(createAddressDto);
+    if(response){
+      return {
+        status:201,
+        result:'Successfully created address'
+      }
+    }
+    return {
+      status :500,
+      result :'Server internal error'
+    }
   }
 
   findAll() {

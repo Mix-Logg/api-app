@@ -1,4 +1,4 @@
 export class CreateAddressDto {
-    am : string
+    am  :string
     uuid: number
 }

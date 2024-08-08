@@ -3,24 +3,45 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
 import { Repository } from 'typeorm';
-
+import { AddressService } from 'src/address/address.service';
 @Injectable()
 export class CompanyService {
   constructor(
     @Inject('COMPANY_REPOSITORY')
     private companyRepository: Repository<Company>,
-  ) {}
+    private addressService: AddressService,
+  ) {};
+
   async create(createCompanyDto: CreateCompanyDto) {
     const response = await this.companyRepository.save(createCompanyDto);
-    if (response != null) {
-      return 200;
-    }
-    return 500;
-  }
+    if(response){
+      const dtoAddress = {
+        am  :'company',
+        uuid: response.id
+      }
+      const address = this.addressService.create(dtoAddress)
+      if(address.status == 201){
+        return {
+          status : 201 ,
+          data   :{
+            id   : response.id,
+          }
+        }
+      }
+      return {
+        status : 501,
+        message:'created company without address'
+      }
+    };
+    return {
+      status: 500,
+      msg: "Internal Server Error"
+    };
+  };
 
   findAll() {
     return this.companyRepository.find();
-  }
+  };
 
   async findOne(companyTelephone: string, email: string) {
     const existingRecordByEmail = await this.companyRepository.findOne({
@@ -39,9 +60,11 @@ export class CompanyService {
       return obj;
     }
 
-    return 200;
-  }
-
+    return {
+      status: 500,
+      message: 'Company not found'
+    };
+  };
 
   async update(updateCompanyDto: UpdateCompanyDto) {
     const id = updateCompanyDto.id
@@ -58,9 +81,9 @@ export class CompanyService {
     }else{
       return 500
     }
-  }
+  };
   
   remove(id: number) {
     return `This action removes a #${id} company`;
-  }
+  };
 }

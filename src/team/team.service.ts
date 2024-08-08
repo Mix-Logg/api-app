@@ -60,6 +60,8 @@ export class TeamService {
         let group = {
           operation    : operation.status == 500 ? 'Não tem operação' : operation, 
           create       : team.create_at,
+          idDriver     : team.id_driver,
+          idAuxiliary  : team.id_auxiliary,
           id           : team.id,
           driverName   : driver.name,
           auxiliaryName: team.id_auxiliary ? nameAuxiliary : ' Não tem auxiliar',

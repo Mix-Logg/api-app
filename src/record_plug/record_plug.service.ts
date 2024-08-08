@@ -44,7 +44,6 @@ export class RecordPlugService {
         return null; 
       })
     );
-    // const auxiliaryIds = await auxiliaryData.map(objeto => objeto.id);
     const auxiliaryIds = await Promise.all(
       auxiliaryData.map(async (auxiliary) => {  
         const response = await this.auxiliaryService.findOne(auxiliary.id);
