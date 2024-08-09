@@ -3,5 +3,6 @@ export class CreateLeadDto {
     phone:string
     typeVehicle:string
     name:string
+    label?:string
     create_at:string
 }
