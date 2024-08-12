@@ -7,7 +7,7 @@ import {
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import Time from '../../hooks/time';
 import { Sign } from './dto/sign-client.dto';
 import { sendCodeEmail } from './dto/sendCodeEmail-client.dto';
@@ -133,8 +133,19 @@ export class ClientService {
     }
   }
 
-  findAll() {
-    return this.clientRepository.find();
+  async findAll(){
+    const response = await this.clientRepository.find({
+      where: {
+        delete_at: IsNull()
+      }
+    });
+    if(response){
+      return response
+    }
+    return {
+      status: 500,
+      message: 'Registereds not found'
+    }
   }
 
   findOne(email: string) {

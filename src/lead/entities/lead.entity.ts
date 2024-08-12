@@ -13,6 +13,15 @@ export class Lead {
     
     @Column({ length: 50, default:null })
     phone: string;
+
+    @Column({ length: 50, default:null })
+    label: string;
+
+    @Column({ length: 50, default:null })
+    region: string;
+
+    @Column({ length: 50, default:null })
+    measure: string;
     
     @Column({ length: 200, default:null })
     observation: string;
