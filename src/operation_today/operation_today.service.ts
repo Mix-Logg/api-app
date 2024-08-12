@@ -2,7 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateOperationTodayDto } from './dto/create-operation_today.dto';
 import { UpdateOperationTodayDto } from './dto/update-operation_today.dto';
 import { OperationToday } from './entities/operation_today.entity';
+import { VehicleService } from 'src/vehicle/vehicle.service';
 import { IsNull, Repository } from 'typeorm';
+import Mask from 'hooks/mask';
 import findTimeSP from 'hooks/time';
 
 @Injectable()
@@ -10,6 +12,7 @@ export class OperationTodayService {
   constructor(
     @Inject('OPERATIONTODAY_REPOSITORY') 
     private operationTodayRepository: Repository<OperationToday>,
+    private vehicleService: VehicleService,
   ){}
 
   async create(createOperationTodayDto: CreateOperationTodayDto) {
@@ -26,7 +29,7 @@ export class OperationTodayService {
       status: 500,
       message:'Error creating'
     }
-  }
+  };
 
   async findAll(date:string, operation:string) {
     const response = await this.operationTodayRepository.find({
@@ -42,7 +45,7 @@ export class OperationTodayService {
       status: 500,
       message: 'Registereds not found'
     }
-  }
+  };
 
   async findOneToday(idDriver: number) {
     const response = await this.operationTodayRepository.findOne({
@@ -58,7 +61,7 @@ export class OperationTodayService {
       status: 500,
       message: 'Registered not found'
     }
-  }
+  };
 
   async update(id: number, updateOperationTodayDto: UpdateOperationTodayDto) {
     const time = findTimeSP()
@@ -74,7 +77,7 @@ export class OperationTodayService {
       status: 500,
       message:'Unable to update'
     }
-  }
+  };
 
   async remove(id: number, updateOperationTodayDto: UpdateOperationTodayDto) {
     if (!id || typeof id !== 'number') {
@@ -110,6 +113,29 @@ export class OperationTodayService {
         message: 'An error occurred while trying to delete the operation'
       };
     }
-  }
+  };
+
+  async report() {
+    let allOperation = []
+    const operations = await this.operationTodayRepository.find();
+    await Promise.all(
+      operations.map(async (operation) => {
+        const vehicle = await this.vehicleService.findOne(operation.idDriver, 'driver');
+        const peoples = JSON.parse(operation.team)
+        let report = {
+          date   : operation.date,
+          status : operation.status == 'pending' ? 'pendente' : operation.status == 'cancel' ? 'cancelado' : operation.status == 'confirm' ? 'confirmado' : operation.status == 'unavailable' ? 'indisponível' : '',
+          start  : operation.start ? Mask('hoursAndMin',operation.start) : '',
+          plate  : vehicle.plate,
+          driver : peoples.driver,
+          auxiliary  : peoples.auxiliary,
+          operation  : operation.operation,
+          occurrence : operation.occurrence,
+        }
+        allOperation.push(report)
+      })
+    )
+    return allOperation;
+  };
   
 }

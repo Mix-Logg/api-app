@@ -20,6 +20,11 @@ export class OperationTodayController {
     return this.operationTodayService.findAll(date,operation);
   }
 
+  @Get('report')
+  report() {
+    return this.operationTodayService.report();
+  }
+
   @Get(':idDriver')
   findOneToday(@Param('idDriver') idDriver: string) {
     return this.operationTodayService.findOneToday(+idDriver);
