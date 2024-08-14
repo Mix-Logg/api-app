@@ -68,6 +68,9 @@ export default function Mask(type : any, value : any){
               });
             return amount.replace(/\d/g, '*');
         case 'capitalize':
+            if(!value){
+                return value
+            }
             return value.toLowerCase().replace(/(^|\s)\S/g, function(char) {
             return char.toUpperCase();
             });
