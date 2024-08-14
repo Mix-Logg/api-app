@@ -125,7 +125,7 @@ export class OperationTodayService {
       operations.map( async (operation) => {
         const vehicle = await this.vehicleService.findOne(operation.idDriver, 'driver');
         const peoples = JSON.parse(operation.team)
-        const cubing  = JSON.parse(vehicle.cubing)
+        const cubing  = JSON.parse(vehicle.cubing) 
         let report = {
           date   : operation.date,
           status : operation.status,
@@ -133,7 +133,7 @@ export class OperationTodayService {
           plate  : vehicle.plate,
           vehicleType   : vehicle.type,
           trackerBrand  : vehicle.trackerBrand,
-          cubing        : `${cubing.altura}x${cubing.largura}x${cubing.comprimento}`,
+          cubing        : cubing ? `${cubing.altura}x${cubing.largura}x${cubing.comprimento}` : '',
           driver     : peoples.driver,
           auxiliary  : peoples.auxiliary,
           operation  : operation.operation,
