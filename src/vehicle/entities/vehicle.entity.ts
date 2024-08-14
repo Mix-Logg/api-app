@@ -117,6 +117,15 @@ export class Vehicle {
     @Column({ length: 60 })
     district: string;
 
+    @Column({ length: 50 })
+    trackerBrand: string;
+
+    @Column({ length: 50 })
+    trackerStatus: string;
+
+    @Column({ length: 50 })
+    trackerNumber: string;
+
     @Column({ length: 40, default: null })
     cityOwner: string;
 

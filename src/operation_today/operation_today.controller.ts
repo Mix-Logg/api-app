@@ -20,9 +20,12 @@ export class OperationTodayController {
     return this.operationTodayService.findAll(date,operation);
   }
 
-  @Get('report')
-  report() {
-    return this.operationTodayService.report();
+  @Get('report/:initial/:finish')
+  report(
+    @Param('initial') initial: string,
+    @Param('finish')  finish: string,
+  ) {
+    return this.operationTodayService.report(initial, finish);
   }
 
   @Get(':idDriver')

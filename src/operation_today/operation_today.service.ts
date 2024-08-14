@@ -3,7 +3,7 @@ import { CreateOperationTodayDto } from './dto/create-operation_today.dto';
 import { UpdateOperationTodayDto } from './dto/update-operation_today.dto';
 import { OperationToday } from './entities/operation_today.entity';
 import { VehicleService } from 'src/vehicle/vehicle.service';
-import { IsNull, Repository } from 'typeorm';
+import { Between, IsNull, Repository } from 'typeorm';
 import Mask from 'hooks/mask';
 import findTimeSP from 'hooks/time';
 
@@ -115,26 +115,33 @@ export class OperationTodayService {
     }
   };
 
-  async report() {
+  async report(initial:string ,finish:string) {
     let allOperation = []
-    const operations = await this.operationTodayRepository.find();
+    const operations =  await this.operationTodayRepository.query(`
+      SELECT * FROM operation_today
+       WHERE STR_TO_DATE(date, '%d/%m/%Y') BETWEEN STR_TO_DATE(?, '%d/%m/%Y') AND STR_TO_DATE(?, '%d/%m/%Y')
+    `, [Mask('date',initial), Mask('date',finish)]);
     await Promise.all(
-      operations.map(async (operation) => {
+      operations.map( async (operation) => {
         const vehicle = await this.vehicleService.findOne(operation.idDriver, 'driver');
         const peoples = JSON.parse(operation.team)
+        const cubing  = JSON.parse(vehicle.cubing)
         let report = {
           date   : operation.date,
-          status : operation.status == 'pending' ? 'pendente' : operation.status == 'cancel' ? 'cancelado' : operation.status == 'confirm' ? 'confirmado' : operation.status == 'unavailable' ? 'indisponível' : '',
-          start  : operation.start ? Mask('hoursAndMin',operation.start) : '',
+          status : operation.status,
+          start  : operation.start,
           plate  : vehicle.plate,
-          driver : peoples.driver,
+          vehicleType   : vehicle.type,
+          trackerBrand  : vehicle.trackerBrand,
+          cubing        : `${cubing.altura}x${cubing.largura}x${cubing.comprimento}`,
+          driver     : peoples.driver,
           auxiliary  : peoples.auxiliary,
           operation  : operation.operation,
           occurrence : operation.occurrence,
         }
         allOperation.push(report)
       })
-    )
+    );
     return allOperation;
   };
   

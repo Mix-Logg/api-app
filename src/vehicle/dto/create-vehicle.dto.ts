@@ -7,7 +7,7 @@ export class CreateVehicleDto {
     weight? :  string
     plate : string
     phoneOwner: string
-    trackerStatus: boolean
+    trackerStatus: string
     trackerBrand : string
     trackerNumber : string
     relationOwner : null
