@@ -38,6 +38,40 @@ export class LeadService {
     return this.leadRepository.find();
   }
 
+  async findAllStatistics() {
+    try{
+      let response;
+  
+      response = await this.leadRepository.find();
+      const totalLead = response.length;
+  
+      response = await this.getLeadsGroupedByDayAndWeekday();
+      const topDaysWithMostRecords = response;
+  
+      response = await this.getVehicleCounts();
+      const totalVehicleByType = response;
+
+      response = await this.getRecordsGroupedByDate();
+      const totalRecordsCreate = response;
+  
+      return {
+        status:200,
+        totalLead:totalLead,
+        totalRecordsCreate:totalRecordsCreate,
+        totalVehicleByType: totalVehicleByType,
+        topDaysWithMostRecords: topDaysWithMostRecords,
+      }
+
+    }catch(e){
+
+      return {
+        status:500,
+        message:'Erro interno'
+      }
+    }
+
+  }
+
   async findOne(id: number) {
     const lead = await this.leadRepository.findOne({where:{id}});
     if(lead != null){
@@ -132,4 +166,50 @@ export class LeadService {
   async remove(id: number) {
     return `This action removes a #${id} lead`;
   }
+
+  private async getLeadsGroupedByDayAndWeekday(): Promise<any> {
+    const response = await this.leadRepository
+      .createQueryBuilder('lead')
+      .select([
+        "DATE_FORMAT(lead.create_at, '%d/%m/%Y') AS day", // Formato pt-BR para data
+        `CASE 
+          WHEN DAYOFWEEK(lead.create_at) = 1 THEN 'Domingo'
+          WHEN DAYOFWEEK(lead.create_at) = 2 THEN 'Segunda-feira'
+          WHEN DAYOFWEEK(lead.create_at) = 3 THEN 'Terça-feira'
+          WHEN DAYOFWEEK(lead.create_at) = 4 THEN 'Quarta-feira'
+          WHEN DAYOFWEEK(lead.create_at) = 5 THEN 'Quinta-feira'
+          WHEN DAYOFWEEK(lead.create_at) = 6 THEN 'Sexta-feira'
+          WHEN DAYOFWEEK(lead.create_at) = 7 THEN 'Sábado'
+          END AS weekday`, // Dia da semana em português
+        'COUNT(*) AS total_records', // Total de registros por dia
+      ])
+      .groupBy('day, weekday')
+      .orderBy('total_records', 'DESC')
+      .limit(5) // Limita o resultado a 5
+      .getRawMany(); // Usamos getRawMany() para obter resultados "raw" (não transformados em entidade)
+
+    return response;
+  };
+
+  private async getVehicleCounts(): Promise<any> {
+    const vehicleCounts = await this.leadRepository
+      .createQueryBuilder('lead')
+      .select('lead.typeVehicle', 'typeVehicle') // Seleciona a coluna typeVehicle
+      .addSelect('COUNT(*)', 'total')            // Contagem de registros por tipo
+      .groupBy('lead.typeVehicle')               // Agrupa pelos tipos de veículo
+      .orderBy('total', 'DESC')                  // Ordena pela contagem em ordem decrescente
+      .getRawMany();                             // Retorna os resultados em formato raw
+
+    return vehicleCounts;
+  };
+
+  private async getRecordsGroupedByDate() {
+    return this.leadRepository
+      .createQueryBuilder('record')
+      .select('DATE(record.create_at) AS create_at')
+      .addSelect('COUNT(*) AS total')
+      .groupBy('DATE(record.create_at)')
+      .orderBy('DATE(record.create_at)', 'ASC')
+      .getRawMany();
+  };
 }

@@ -34,6 +34,11 @@ export class LeadController {
     return this.leadService.findAll();
   }
 
+  @Get('statistics')
+  findAllStatistics() {
+    return this.leadService.findAllStatistics();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.leadService.findOne(+id);
