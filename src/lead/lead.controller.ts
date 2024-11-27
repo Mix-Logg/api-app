@@ -34,6 +34,11 @@ export class LeadController {
     return this.leadService.findAll();
   }
 
+  @Get('upload/private')
+  uploadPrivate() {
+    return this.leadService.uploadPrivate();
+  }
+
   @Get('statistics')
   findAllStatistics() {
     return this.leadService.findAllStatistics();

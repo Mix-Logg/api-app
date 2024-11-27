@@ -5,6 +5,8 @@ import { UploadLeadDto } from './dto/upload-lead-dto';
 import { Lead } from './entities/lead.entity';
 import { Repository } from 'typeorm';
 import findTimeSP from 'hooks/time';
+import * as fs from 'fs';
+import * as Papa from 'papaparse';
 @Injectable()
 export class LeadService {
   constructor(
@@ -167,6 +169,33 @@ export class LeadService {
     return `This action removes a #${id} lead`;
   }
 
+  async uploadPrivate(){
+    const csvPath = 'C:/Users/Mix - Matheus/Desktop/M2C projects/mix/api-app/upload/mixTratados.csv'
+    const fileContent = fs.readFileSync(csvPath, 'utf8');
+
+    const parsedData = Papa.parse(fileContent, {
+      header: true,         // A primeira linha é o cabeçalho
+      skipEmptyLines: true  // Ignorar linhas vazias
+    });
+
+    // Mapear os dados para o formato correto e preparar para inserção
+    const leads = parsedData.data.map(async (row: any) => {
+      let newLead =  {
+        name: this.capitalizeWords(row['name']),  // Certifique-se de que os campos correspondem ao seu CSV
+        typeVehicle: row['typeVehicle'].toLowerCase(),
+        phone: '55'+row['phone'],
+      };
+      if(!newLead.name || newLead.phone == '55' || !newLead.typeVehicle ){
+        return
+      }
+      // console.log(newLead)
+      let response = await this.create(newLead)
+      console.log(response)
+    });
+
+    
+  }
+
   private async getLeadsGroupedByDayAndWeekday(): Promise<any> {
     const response = await this.leadRepository
       .createQueryBuilder('lead')
@@ -212,4 +241,11 @@ export class LeadService {
       .orderBy('DATE(record.create_at)', 'ASC')
       .getRawMany();
   };
+
+  private capitalizeWords(str: string): string {
+    return str
+      .split(' ')  // Divide a string em um array de palavras
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())  // Capitaliza a primeira letra de cada palavra
+      .join(' ');  // Junta as palavras de volta em uma string
+  }
 }
