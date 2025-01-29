@@ -17,6 +17,8 @@ export class DriverService {
   ){}
  
   async create(createDriverDto: CreateDriverDto) {  
+    const timeSP = FindTimeSP();
+    createDriverDto.create_at = new Date(timeSP);
     const response = await this.driverRepository.save(createDriverDto);
     return response.id
   }

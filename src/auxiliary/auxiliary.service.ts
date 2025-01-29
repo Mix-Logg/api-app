@@ -7,6 +7,7 @@ import { UpdateCpf } from './dto/update-cpf-auxiliary.dto';
 import { UpdateCnh } from './dto/update-cnh-auxiliary.dto';
 import FindTimeSP from 'hooks/time';
 
+
 @Injectable()
 export class AuxiliaryService {
   constructor(
@@ -15,6 +16,8 @@ export class AuxiliaryService {
   ){}
 
   async create(createAuxiliaryDto: CreateAuxiliaryDto) {
+    const timeSP = FindTimeSP();
+    createAuxiliaryDto.create_at = new Date(timeSP);
     const response = await this.auxiliaryRepository.save(createAuxiliaryDto);
     return response.id
   }
