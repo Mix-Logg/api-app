@@ -3,5 +3,5 @@ export class CreateCompanyDto {
   email: string;
   companyTelephone: string;
   cnpj: string;
-  branchActivity: string;
+  branchActivity?: string;
 }
